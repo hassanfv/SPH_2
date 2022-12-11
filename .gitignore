@@ -1,0 +1,12 @@
+*.pkl
+*.png
+*.jpg
+*/__pycache__/*
+__pycache__/
+*.zip
+*.tgz
+*.dat
+*.hdf5
+*.csv
+*/restartfiles/*
+*/.ipynb_checkpoints/*
