@@ -1,0 +1,5 @@
+
+We randomly select any number of particles we want and create a new IC.
+IMPORTANT: the sum od all particles in the subsample should be normalized again to 1.0 !!!!
+
+By this approach we want to keep the same noise in the IC for different number of particles.

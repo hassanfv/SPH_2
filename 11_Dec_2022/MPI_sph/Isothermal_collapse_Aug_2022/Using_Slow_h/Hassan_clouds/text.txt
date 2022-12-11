@@ -1,0 +1,12 @@
+UnitMass_in_g = 1.9890000000000002e+34
+UnitRadius_in_cm = 7.945481766383072e+17
+unitVelocity = 40869.98
+
+unitTime (Myrs) = 0.61604
+
+UnitDensity_in_cgs = 3.9652819860391153e-20
+Unit_P_in_cgs = 6.623431742919536e-11
+
+c_0 = 32813.3
+rho_crit = 5e-14
+
