@@ -135,7 +135,7 @@ gamma = 5./3.
 #with open(dirx + filez[j], 'rb') as f:
 #	dictx = pickle.load(f)
 
-nam = 'G-0.800006.csv'
+nam = 'G-0.800792.csv'
 
 df = pd.read_csv(nam)
 

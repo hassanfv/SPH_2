@@ -1,6 +1,4 @@
 *.pkl
-*.png
-*.jpg
 */__pycache__/*
 __pycache__/
 *.zip

@@ -72,7 +72,7 @@ int main(){
   float unitVelocity = sqrt(grav_const_in_cgs * UnitMass_in_g / UnitRadius_in_cm);
 
   // Reading Hydra file.
-  string fname = "GPU_IC_Arrega_113k.csv"; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  string fname = "GPU_IC_Arrega_212k.csv"; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   vector<vector<string>> content;
   vector<string> row;
@@ -505,7 +505,7 @@ int main(){
       ofstream outfile("G-"+ to_string(t) + ".csv");
       
       outfile << "x" << "," << "y" << "," << "z" << "," << "vx" << "," << "vy" << ","
-              << "vz" << "," << "h" << "," << "rho" << "u" << endl; // this will be the header !
+              << "vz" << "," << "h" << "," << "rho" << "," << "u" << endl; // this will be the header !
 
       for(int i = 0; i < N; i++){
         outfile << x[i] << "," << y[i] << "," << z[i] << ","

@@ -9,15 +9,16 @@ import matplotlib.pyplot as plt
 
 np.random.seed(42)
 
-NSample = 212472 # The desired number of particles to be included in ONE cloud in the IC.
+NSample = 212472 #113104 #212472 # The desired number of particles to be included in ONE cloud in the IC.
 NSample = int(NSample)
 
-with open('Main_IC_Grid_113k.pkl', 'rb') as f:
+with open('Main_IC_Grid_212k.pkl', 'rb') as f:
 	data = pickle.load(f)
 
 r = data['r']
 
 print(r.shape)
+
 
 if NSample > r.shape[0]:
 	print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
@@ -55,7 +56,7 @@ vx = np.round(v[:, 0], 5)
 vy = np.round(v[:, 1], 5)
 vz = np.round(v[:, 2], 5)
 
-epsilon = 0.1 + np.zeros(len(x))
+epsilon = 0.05 + np.zeros(len(x))
 
 dictx = {'x': x, 'y': y, 'z': z, 'vx': vx, 'vy': vy, 'vz': vz, 'm': m, 'h': np.round(h, 6), 'eps': epsilon, 'u': u}
 
