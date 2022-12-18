@@ -200,7 +200,7 @@ def J_neu_func(neu, eV, Jcoeff, J912QSO, RFiD):
 #===== RadiationField
 def RadiationField():
 
-	RFiD = 'NotQSO' # if you want J912 of a quasar set this to 'QSO'.
+	RFiD = 'QSO' # if you want J912 of a quasar set this to 'QSO'.
 	Jcoeff = 5.0
 
 	#------- A typical Eclipsing DLA Quasar -------

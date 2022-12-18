@@ -31,9 +31,5 @@ plt.xlim(4, 7)
 plt.ylim(-24.5, -21.5)
 
 
-#plt.xscale('log')
-#plt.yscale('log')
-
-
 plt.show()
 
