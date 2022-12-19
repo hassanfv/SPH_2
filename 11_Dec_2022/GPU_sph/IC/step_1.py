@@ -108,7 +108,7 @@ masses = Mcld / Npart + np.zeros(Npart)
 
 G = 1.0
 gamma = 5./3.
-Mach = 10.0
+Mach = 0.0 # Place holder !!! Please update it in step_3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 MachVel = Mach*c_s / 100. / 1000. # km/s
 print(f'Mach = {Mach} corresponds to Velocity = {MachVel:.3f} km/s')

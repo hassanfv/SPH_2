@@ -30,6 +30,10 @@ t = res[:, 0]
 u = res[:, 1]
 
 plt.scatter(t, u, s = 20, color = 'black')
+#plt.xlim(0.0, 0.0075)
+plt.xlabel('t')
+plt.ylabel('u')
+plt.savefig('u_vs_t.png')
 plt.show()
 
 

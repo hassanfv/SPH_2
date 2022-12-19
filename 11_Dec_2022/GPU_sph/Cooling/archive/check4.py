@@ -1,6 +1,6 @@
 
 import numpy as np
-from photolibs import *
+from photolibs2 import *
 import matplotlib.pyplot as plt
 
 
@@ -22,9 +22,9 @@ print('Unit_u_in_cgs = ', Unit_u_in_cgs)
 XH = 0.76
 mH = 1.6726e-24 # gram
 
-dt = 1e-3
+dt = 1e-4
 
-rhot = 0.014 # in code unit
+rhot = 0.14 # in code unit
 ut = 60.0  # in code unit
 
 ut = ut*Unit_u_in_cgs

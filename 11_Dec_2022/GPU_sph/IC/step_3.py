@@ -61,6 +61,11 @@ unitTime_in_s = (unitLength_in_cm**3/grav_const_in_cgs/unitMass_in_g)**0.5
 print(f'unitTime_in_s = {unitTime_in_s:.4E}')
 unitVelocity_in_cm_per_s = unitLength_in_cm / unitTime_in_s
 c_s = paramz[1]
+
+update_Mach = True
+if update_Mach:
+	paramz[7] = 20.0
+
 Mach = paramz[7]
 vL = np.zeros_like(rL)
 vR = vL.copy()
