@@ -9,7 +9,7 @@ with open('coolingGrid_J_0.0.pkl', 'rb') as f:
 
 
 cols = ['u_ad', 'rho', 'dt', 'delta_u'] # all in physical cgs unit. (delta_u = u_ad - u_after_cooling)
-					# Note: u_after_colling = u_ad + delta_u !!!!!!!
+					# Note again: u_after_colling = u_ad + delta_u !!!!!!!
 
 df = pd.DataFrame(data, columns = cols)
 df = df.sort_values(['u_ad', 'rho'], ascending = [True, True])

@@ -38,8 +38,8 @@ nCPUs = comm.Get_size()
 XH = 0.76
 mH = 1.6726e-24 # gram
 
-N = N_rho = 1000
-N_u = 1000
+N = N_rho = 100
+N_u = 10
 
 #------- used in MPI --------
 count = N // nCPUs
@@ -92,7 +92,7 @@ else:
 
 res = comm.bcast(res, root = 0)
 comm.Barrier()
-#if rank == 0:
+
 print('TA = ', time.time() - TA)
 #----------------------------
 

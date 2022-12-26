@@ -115,6 +115,27 @@ def phCrossSection(neu, E0, sig0, ya, P, yw, y0, y1):
 	return sig
 
 
+
+#===== phCrossSectionX (Verner et al - 1996) ===> Here we use a "for loop" instead of array operations!!
+def phCrossSectionX(neu, E0, sig0, ya, P, yw, y0, y1):
+
+	N = len(neu)
+	sig = np.zeros(N)
+
+	for i in range(N):
+		
+		E = neu_to_eV(neu[i])
+		
+		x = E/E0 - y0
+		y = np.sqrt(x**2 + y1**2)
+		Fy = (((x - 1)**2 + yw**2) * y**(0.5*P - 5.5)) * (1.0 + np.sqrt(y/ya))**(-P)
+		
+		sig[i] = sig0 * Fy * 1e-18
+	
+	return sig
+
+
+
 #===== RandCIRates (Recombination and Collisional Ionization Rates)
 def RandCIRates(T):
 
@@ -222,9 +243,9 @@ def RadiationField():
 	neuHep = np.arange(eV_to_neu(E_Hep)/1e16, 6.0, 0.02) * 1e16
 	neuHe0 = np.arange(eV_to_neu(E_He0)/1e16, 6.0, 0.02) * 1e16
 
-	sigH0  = phCrossSection(neuH0, 4.298E-1, 5.475E4, 3.288E1, 2.963, 0.0, 0.0, 0.0) # H0
-	sigHe0 = phCrossSection(neuHe0, 1.361E+1, 9.492E2, 1.469E0, 3.188, 2.039, 4.434E-1, 2.136) # He0
-	sigHep = phCrossSection(neuHep, 1.720E+0, 1.369E4, 3.288E1, 2.963, 0.0, 0.0, 0.0) # Hep
+	sigH0  = phCrossSectionX(neuH0, 4.298E-1, 5.475E4, 3.288E1, 2.963, 0.0, 0.0, 0.0) # H0
+	sigHe0 = phCrossSectionX(neuHe0, 1.361E+1, 9.492E2, 1.469E0, 3.188, 2.039, 4.434E-1, 2.136) # He0
+	sigHep = phCrossSectionX(neuHep, 1.720E+0, 1.369E4, 3.288E1, 2.963, 0.0, 0.0, 0.0) # Hep
 
 	#***********************************************************************************************************
 	#***************************************** Photoionization rate ********************************************
