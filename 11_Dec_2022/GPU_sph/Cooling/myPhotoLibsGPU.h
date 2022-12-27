@@ -306,15 +306,15 @@ __host__ __device__
 hfv_type RandCIRates(float T)
 {
     /****** Recombination and Collisional Ionization Rates ************/
-    float Tfact = 1.0 / (1.0 + sqrt(T / 1e5));
+    float Tfact = 1.0f / (1.0f + sqrt(T / 1e5));
 
     // Recombination (Cen 1992)
     // Hydrogen II:
-    float AlphaHp = 8.41e-11 * pow(T / 1000.0, -0.2) / (1. + pow(T / 1e6, 0.7)) / sqrt(T);
+    float AlphaHp = 8.41e-11 * pow(T / 1000.0f, -0.2) / (1. + pow(T / 1e6, 0.7)) / sqrt(T);
     // Helium II:
     float AlphaHep = 1.5e-10 * pow(T, -0.6353);
     // Helium III:
-    float AlphaHepp = 4. * AlphaHp;
+    float AlphaHepp = 4.0f * AlphaHp;
 
     // dielectric recombination
     float Alphad = 1.9e-3 * pow(T, -1.5) * exp(-470000.0 / T) * (1. + 0.3 * exp(-94000.0 / T));
@@ -365,16 +365,16 @@ hfv_type getAbundance(float Temp, float nHcgs, float gJH0, float gJHe0, float gJ
 
     float nH0, nHp, nHe0, nHep, nHepp;
 
-    while ((abs(ne - ne_old) > 0.01 * ne) && (niter < MAXITER))
+    while ((abs(ne - ne_old) > 0.0001f * ne) && (niter < MAXITER))
     {
         ne_old = ne;
 
         nH0 = aHp / (aHp + geH0 + gJH0 / (ne * nHcgs));
-        nHp = 1.0 - nH0;
-        nHep = y / (1.0 + (aHep + ad) / (geHe0 + gJHe0 / (ne * nHcgs)) + (geHep + gJHep / (ne * nHcgs)) / aHepp);
+        nHp = 1.0f - nH0;
+        nHep = y / (1.0f + (aHep + ad) / (geHe0 + gJHe0 / (ne * nHcgs)) + (geHep + gJHep / (ne * nHcgs)) / aHepp);
         nHe0 = nHep * (aHep + ad) / (geHe0 + gJHe0 / (ne * nHcgs));
         nHepp = nHep * (geHep + gJHep / (ne * nHcgs)) / aHepp;
-        ne = nHp + nHep + 2.0 * nHepp;
+        ne = nHp + nHep + 2.0f * nHepp;
 
         niter++;
     }
@@ -446,7 +446,7 @@ float coolingHeatingRates(float Temp, float nHcgs)
     float BetaHep = 5.54e-17 * pow(Temp, -0.397f) * exp(-473638.0f / Temp) * Tfact;
     // free-free:
     float cte = 5.5f - log10(Temp);
-    float Betaff = 1.43e-27 * sqrt(Temp) * (1. + 0.34 * exp(-cte * cte / 3));
+    float Betaff = 1.43e-27 * sqrt(Temp) * (1.0f + 0.34f * exp(-cte * cte / 3.0f));
 
     float LambdaExcH0 = BetaH0 * ne * nH0;
     float LambdaExcHep = BetaHep * ne * nHep;
@@ -479,14 +479,14 @@ float convert_u_to_Temp(float u, float nHcgs, float XH)
     // u MUST be in physical units !!!!!!
     float kB = 1.3807e-16; // cm2 g s-2 K-1
     float mH = 1.6726e-24; // gram
-    float gamma = 5.0 / 3.0;
+    float gamma = 5.0f / 3.0f;
 
-    float yHelium = (1.0 - XH) / (4. * XH);
+    float yHelium = (1.0f - XH) / (4.0f * XH);
 
-    float ne_guess = 1.0; // our initial guess is that elec_density = hydrogen density.
-    float mu = (1.0 + 4. * yHelium) / (1.0 + yHelium + ne_guess);
+    float ne_guess = 1.0f; // our initial guess is that elec_density = hydrogen density.
+    float mu = (1.0f + 4.0f * yHelium) / (1.0f + yHelium + ne_guess);
     // yHelium = nHe/nH and ne = ne/nH
-    float Temp = (gamma - 1.0) * mH / kB * mu * u;
+    float Temp = (gamma - 1.0f) * mH / kB * mu * u;
 
     int MAXITER = 10;
     float Temp_old = Temp / 2.0f;
@@ -503,7 +503,7 @@ float convert_u_to_Temp(float u, float nHcgs, float XH)
 
     hfv_type Abund_results;
 
-    while ((abs(Temp - Temp_old) > 0.0001 * Temp) && (niter < MAXITER))
+    while ((abs(Temp - Temp_old) > 0.0001f * Temp) && (niter < MAXITER))
     {
 
         Temp_old = Temp;
@@ -513,7 +513,7 @@ float convert_u_to_Temp(float u, float nHcgs, float XH)
         ne = Abund_results.v4;
 
         mu = (1.0f + 4.0f * yHelium) / (1.0f + yHelium + ne);
-        Temp = (gamma - 1.0) * mH / kB * mu * u;
+        Temp = (gamma - 1.0f) * mH / kB * mu * u;
 
         niter++;
     }
@@ -574,8 +574,8 @@ float convert_Temp_to_u(float Temp, float nHcgs, float XH)
         Abund_results = getAbundance(Temp_old, nHcgs, gJH0, gJHe0, gJHep);
         ne = Abund_results.v4;
 
-        mu = (1.0 + 4. * yHelium) / (1.0 + yHelium + ne);
-        u = kB / mH / (gamma - 1.0) / mu * Temp;
+        mu = (1.0f + 4.0f * yHelium) / (1.0f + yHelium + ne);
+        u = kB / mH / (gamma - 1.0f) / mu * Temp;
 
         niter++;
     }
@@ -644,16 +644,16 @@ float DoCooling(float rho, float u_old, float dt, float XH)
         while (u_upper - u_old - ratefact * coolingRateFromU(u_upper, nHcgs, XH) * dt < 0.0f)
         {
 
-            u_upper *= 1.1;
+            u_upper *= 1.1f;
         }
 
-        u_lower = u_upper / 1.1;
+        u_lower = u_upper / 1.1f;
         // u_upper = u_upper;
     }
 
     float du = u;
 
-    while ((abs(du / u) > 1e-4) && (niter < MAXITER))
+    while ((abs(du / u) > 0.0001f) && (niter < MAXITER))
     {
 
         u = 0.5f * (u_lower + u_upper);

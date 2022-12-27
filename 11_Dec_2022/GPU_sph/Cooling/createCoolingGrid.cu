@@ -34,12 +34,12 @@ __global__ void createCoolingGrid(float *rhoGrid, float *uGrid, float *res1,
 }
 
 
-const float XH = 0.76;
+const float XH = 0.76f;
 const float mH = 1.6726e-24; // gram
 const float dt  = 500.0f * 3600.0f * 24.0f * 365.24f; // 500 YEARS.
 
-const int N_rho = 10;
-const int N_u = 10;
+const int N_rho = 800;
+const int N_u = 800;
 const int N = N_rho * N_u;
 
 int main(){
@@ -68,8 +68,8 @@ int main(){
   }
 
   float *d_uGrid;
-  cudaMalloc(&d_uGrid, N*sizeof(float));
-  cudaMemcpy(d_uGrid, uGrid, N*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMalloc(&d_uGrid, N_u*sizeof(float));
+  cudaMemcpy(d_uGrid, uGrid, N_u*sizeof(float), cudaMemcpyHostToDevice);
   //-------- T to u conversion DONE !
 
   float nH_min = 1e-4;
@@ -87,8 +87,8 @@ int main(){
   }
 
   float *d_rhoGrid;
-  cudaMalloc(&d_rhoGrid, N*sizeof(float));
-  cudaMemcpy(d_rhoGrid, rhoGrid, N*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMalloc(&d_rhoGrid, N_rho*sizeof(float));
+  cudaMemcpy(d_rhoGrid, rhoGrid, N_rho*sizeof(float), cudaMemcpyHostToDevice);
 
   //---- Declaring the res arrays.
   float *res1 = new float[N];
@@ -118,7 +118,7 @@ int main(){
   // ---- End of res arrays declaration.
 
   int blockSize = 256; // number of threads in a block
-  int gridSize = (N + blockSize - 1) / blockSize; // Number of blocks in a grid
+  int gridSize = (N_rho + blockSize - 1) / blockSize; // Number of blocks in a grid
 
   createCoolingGrid<<<gridSize, blockSize>>>(d_rhoGrid, d_uGrid, d_res1,
                                              d_res2, d_res3, d_res4, dt,
