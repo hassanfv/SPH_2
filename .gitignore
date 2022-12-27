@@ -6,5 +6,6 @@ __pycache__/
 *.dat
 *.hdf5
 *.csv
+*.pem
 */restartfiles/*
 */.ipynb_checkpoints/*
