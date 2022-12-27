@@ -503,7 +503,7 @@ float convert_u_to_Temp(float u, float nHcgs, float XH)
 
     hfv_type Abund_results;
 
-    while ((abs(Temp - Temp_old) > 0.01 * Temp) && (niter < MAXITER))
+    while ((abs(Temp - Temp_old) > 0.0001 * Temp) && (niter < MAXITER))
     {
 
         Temp_old = Temp;
@@ -563,7 +563,7 @@ float convert_Temp_to_u(float Temp, float nHcgs, float XH)
 
     float Temp_old;
 
-    while ((abs(u - u_old) > 0.01f * u) && (niter < MAXITER))
+    while ((abs(u - u_old) > 0.0001f * u) && (niter < MAXITER))
     {
 
         u_old = u;
@@ -653,7 +653,7 @@ float DoCooling(float rho, float u_old, float dt, float XH)
 
     float du = u;
 
-    while ((abs(du / u) > 1e-6) && (niter < MAXITER))
+    while ((abs(du / u) > 1e-4) && (niter < MAXITER))
     {
 
         u = 0.5f * (u_lower + u_upper);
