@@ -1,5 +1,5 @@
-#ifndef MYPHOTOLIBS
-#define MYPHOTOLIBS
+#ifndef MYPHOTOLIBSGPU
+#define MYPHOTOLIBSGPU
 
 #include <iostream>
 #include <cmath>
@@ -18,6 +18,7 @@ struct hfv_type
 };
 
 /* lamb_to_neu */
+__host__ __device__
 float lamb_to_neu(float lamb)
 {
 
@@ -28,6 +29,7 @@ float lamb_to_neu(float lamb)
 }
 
 /* neu_to_lamb (lamb will be in Angstrom) */
+__host__ __device__
 float neu_to_lamb(float neu)
 {
 
@@ -37,6 +39,7 @@ float neu_to_lamb(float neu)
 }
 
 /* eV_to_neu */
+__host__ __device__
 float eV_to_neu(float eV)
 {
 
@@ -45,6 +48,7 @@ float eV_to_neu(float eV)
 }
 
 /* neu_to_eV */
+__host__ __device__
 float neu_to_eV(float neu)
 {
 
@@ -53,6 +57,7 @@ float neu_to_eV(float neu)
 }
 
 /* eV_to_lamb (lamb will be in Angstrom)*/
+__host__ __device__
 float eV_to_lamb(float eV)
 {
 
@@ -61,6 +66,7 @@ float eV_to_lamb(float eV)
 }
 
 /* lamb_to_eV */
+__host__ __device__
 float lamb_to_eV(float lamb)
 {
 
@@ -76,6 +82,7 @@ float ryd_to_eV(float ryd)
 }
 
 /* eV_to_ryd */
+__host__ __device__
 float eV_to_ryd(float eV)
 {
 
@@ -83,17 +90,19 @@ float eV_to_ryd(float eV)
 }
 
 /* fneu_to_flamb */
-long double fneu_to_flamb(float fneu, float neu)
+__host__ __device__
+double fneu_to_flamb(float fneu, float neu)
 {
 
     float lamb = neu_to_lamb(neu);
-    long double flamb = 2.99792458e18 / lamb / lamb * fneu;
+    double flamb = 2.99792458e18 / lamb / lamb * fneu;
 
     return flamb;
 }
 
 /* flamb_to_fneu */
-float flamb_to_fneu(long double flamb, float lamb)
+__host__ __device__
+float flamb_to_fneu(double flamb, float lamb)
 {
 
     float neu = lamb_to_neu(lamb);
@@ -103,6 +112,7 @@ float flamb_to_fneu(long double flamb, float lamb)
 }
 
 /* pc_to_cm */
+__host__ __device__
 float pc_to_cm(float pc)
 {
 
@@ -110,6 +120,7 @@ float pc_to_cm(float pc)
 }
 
 /* cm_to_pc */
+__host__ __device__
 float cm_to_pc(float cm)
 {
 
@@ -117,6 +128,7 @@ float cm_to_pc(float cm)
 }
 
 /* phCrossSection */
+__host__ __device__
 void phCrossSection(float *neu, float *sig, float E0, float sig0, float ya,
                     float P, float yw, float y0, float y1, int N)
 {
@@ -135,7 +147,9 @@ void phCrossSection(float *neu, float *sig, float E0, float sig0, float ya,
     }
 }
 
-void J_neu_func(float *neu, float *Jneu, float eV, float Jcoeff, float J912QSO, string RFiD, int N)
+/* J_neu_func */
+__host__ __device__
+void J_neu_func(float *neu, float *Jneu, float eV, float Jcoeff, float J912QSO, int N)
 {
 
     /* J_neu from Vedel et al. 1994 */
@@ -146,28 +160,22 @@ void J_neu_func(float *neu, float *Jneu, float eV, float Jcoeff, float J912QSO, 
     for (int i = 0; i < N; i++)
     {
 
-        if (RFiD == "QSO")
-        {
-            Jneu[i] = J912QSO;
-        }
-        else
-        {
-            Jneu[i] = J_minus_21 * 1e-21 / (neu[i] / neu0);
-        }
+        Jneu[i] = J_minus_21 * 1e-21 / (neu[i] / neu0);
     }
 }
 
 /* RadiationField */
+__host__ __device__
 hfv_type RadiationField()
 {
     hfv_type HeatResults;
 
-    string RFiD = "NotQSO"; /* if you want J912 of a quasar then set this to "QSO". */
+    //string RFiD = "NotQSO"; /* if you want J912 of a quasar then set this to "QSO". */
     float Jcoeff = 5.0f;
 
     /* A typical Eclisping DLA Quasar RF */
-    long double L_912_t = 3.25e42;
-    float L_912 = flamb_to_fneu(L_912_t, 912.0f);
+    double L_912_t = 3.25e42 / 1e20; // To avoid using long double! Below we multiply back 1e20!!
+    float L_912 = flamb_to_fneu(L_912_t, 912.0f) * 1e20;
     float dist = 500.0f; // pc
     float dist_cm = pc_to_cm(dist);
     float J912QSO = 1.0f / (4.0f * M_PI) * L_912 / (4.0f * M_PI * dist_cm * dist_cm);
@@ -215,9 +223,9 @@ hfv_type RadiationField()
     float *JneuH0 = new float[NN];
     float *JneuHe0 = new float[NN];
     float *JneuHep = new float[NN];
-    J_neu_func(neuH0, JneuH0, E_H0, Jcoeff, J912QSO, RFiD, NN);
-    J_neu_func(neuHe0, JneuHe0, E_He0, Jcoeff, J912QSO, RFiD, NN);
-    J_neu_func(neuHep, JneuHep, E_Hep, Jcoeff, J912QSO, RFiD, NN);
+    J_neu_func(neuH0, JneuH0, E_H0, Jcoeff, J912QSO, NN);
+    J_neu_func(neuHe0, JneuHe0, E_He0, Jcoeff, J912QSO, NN);
+    J_neu_func(neuHep, JneuHep, E_Hep, Jcoeff, J912QSO, NN);
 
     float *fxH0 = new float[NN];
     float *fxHe0 = new float[NN];
@@ -294,6 +302,7 @@ hfv_type RadiationField()
 }
 
 /* RandCIRates */
+__host__ __device__
 hfv_type RandCIRates(float T)
 {
     /****** Recombination and Collisional Ionization Rates ************/
@@ -326,6 +335,7 @@ hfv_type RandCIRates(float T)
 }
 
 /* getAbundance */
+__host__ __device__
 hfv_type getAbundance(float Temp, float nHcgs, float gJH0, float gJHe0, float gJHep)
 {
     float Tfact = 1.0f / (1.0f + sqrt(Temp / 1e5));
@@ -369,11 +379,13 @@ hfv_type getAbundance(float Temp, float nHcgs, float gJH0, float gJHe0, float gJ
         niter++;
     }
 
+    /*
     if (niter >= MAXITER)
     {
         cout << "Number of iterations reached maximum in the getAbundance function!!!";
         exit(1);
     }
+    */
 
     hfv_type Abund_results;
 
@@ -383,6 +395,7 @@ hfv_type getAbundance(float Temp, float nHcgs, float gJH0, float gJHe0, float gJ
 }
 
 /* coolinHeatingRates (For your desired Radiation Field, please modify the 'RadiationField' function.) */
+__host__ __device__
 float coolingHeatingRates(float Temp, float nHcgs)
 {
 
@@ -459,6 +472,7 @@ float coolingHeatingRates(float Temp, float nHcgs)
 }
 
 /* convert_u_to_Temp */
+__host__ __device__
 float convert_u_to_Temp(float u, float nHcgs, float XH)
 {
 
@@ -478,7 +492,7 @@ float convert_u_to_Temp(float u, float nHcgs, float XH)
     float Temp_old = Temp / 2.0f;
     int niter = 1;
 
-    float nH0, nHe0, nHp, ne, nHep, nHepp;
+    float ne;
     float gJH0, gJHe0, gJHep;
 
     hfv_type HeatResults = RadiationField();
@@ -504,16 +518,19 @@ float convert_u_to_Temp(float u, float nHcgs, float XH)
         niter++;
     }
 
+    /*
     if (niter >= MAXITER)
     {
         cout << "Number of iterations reached maximum in the convert_u_to_Temp function!!!";
         exit(1);
     }
+    */
 
     return Temp;
 }
 
 /* convert_Temp_to_u */
+__host__ __device__
 float convert_Temp_to_u(float Temp, float nHcgs, float XH)
 {
 
@@ -533,7 +550,7 @@ float convert_Temp_to_u(float Temp, float nHcgs, float XH)
     float u_old = u / 2.0f;
     int niter = 1;
 
-    float nH0, nHe0, nHp, ne, nHep, nHepp;
+    float ne;
     float gJH0, gJHe0, gJHep;
 
     hfv_type HeatResults = RadiationField();
@@ -567,6 +584,7 @@ float convert_Temp_to_u(float Temp, float nHcgs, float XH)
 }
 
 /* coolingRateFromU */
+__host__ __device__
 float coolingRateFromU(float u, float nHcgs, float XH)
 {
 
@@ -592,7 +610,9 @@ float coolingRateFromU(float u, float nHcgs, float XH)
     return Heating_minus_cooling;
 }
 
-float DoCooling_h(float rho, float u_old, float dt, float XH)
+/* DoCooling */
+__host__ __device__
+float DoCooling(float rho, float u_old, float dt, float XH)
 {
     int MAXITER = 100;
     int niter = 1;
@@ -654,11 +674,13 @@ float DoCooling_h(float rho, float u_old, float dt, float XH)
         niter++;
     }
 
+    /*
     if (niter >= MAXITER)
     {
         cout << "Number of iterations reached maximum in the DoCooling_h function!!!";
         exit(1);
     }
+    */
 
     return u;
 }
