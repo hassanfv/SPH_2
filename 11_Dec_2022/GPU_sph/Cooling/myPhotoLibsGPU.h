@@ -171,7 +171,7 @@ hfv_type RadiationField()
     hfv_type HeatResults;
 
     //string RFiD = "NotQSO"; /* if you want J912 of a quasar then set this to "QSO". */
-    float Jcoeff = 5.0f;
+    float Jcoeff = 50.0f;
 
     /* A typical Eclisping DLA Quasar RF */
     double L_912_t = 3.25e42 / 1e20; // To avoid using long double! Below we multiply back 1e20!!
@@ -251,9 +251,9 @@ hfv_type RadiationField()
     for (int i = 0; i < NN - 1; i++)
     {
 
-        gJH0 += delta_neu_H0 * (fxH0[i] - fxH0[i + 1]) / 2.0f;
-        gJHe0 += delta_neu_He0 * (fxHe0[i] - fxHe0[i + 1]) / 2.0f;
-        gJHep += delta_neu_Hep * (fxHep[i] - fxHep[i + 1]) / 2.0f;
+        gJH0 += delta_neu_H0 * (fxH0[i] + fxH0[i + 1]) / 2.0f;
+        gJHe0 += delta_neu_He0 * (fxHe0[i] + fxHe0[i + 1]) / 2.0f;
+        gJHep += delta_neu_Hep * (fxHep[i] + fxHep[i + 1]) / 2.0f;
     }
 
     /**********************************************************************/

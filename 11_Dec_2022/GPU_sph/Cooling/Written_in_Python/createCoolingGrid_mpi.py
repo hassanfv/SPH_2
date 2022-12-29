@@ -61,7 +61,7 @@ nHcgs = 1.0 # cm^-1. This value is not very important. We just want to have a gr
 uGrid = np.array([convert_Temp_to_u(T, nHcgs, XH) for T in Tgrid])
 
 nH_min = 1e-4
-nH_max = 1e3
+nH_max = 1e2
 rho_min = nH_min * mH
 rho_max = nH_max * mH
 rhoGrid = np.logspace(np.log10(rho_min), np.log10(rho_max), N_rho)

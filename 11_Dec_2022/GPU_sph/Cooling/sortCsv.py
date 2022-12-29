@@ -19,7 +19,7 @@ df['rho'] = df['rho'].apply(lambda x: '%.4E' % x)
 df['dt'] = df['dt'].apply(lambda x: '%.4E' % x)
 df['delta_u'] = df['delta_u'].apply(lambda x: '%.4E' % x)
 
-df.to_csv('sortedCoolingGrid_1k_1k.csv', index = False)
+df.to_csv('sortedCoolingGrid.csv', index = False)
 
 print(df.tail(50))
 
