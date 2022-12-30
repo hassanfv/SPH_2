@@ -54,6 +54,9 @@ print(f'Unit_time in Myrs = {round(unitTime_in_s/3600./24./365.25/1e6, 4)} Myrs'
 
 print(f'unitVelocity_in_cm_per_s = {round(unitVelocity_in_cm_per_s, 2)} cm/s')
 
+Unit_u_in_cgs = grav_const_in_cgs * unitMass_in_g / unitLength_in_cm
+print(f'Unit_u_in_cgs = {Unit_u_in_cgs:.4E}')
+
 # calling things to code units
 Rcld = Rcld_in_cm / unitLength_in_cm
 Mcld = Mcld_in_g / unitMass_in_g

@@ -3,9 +3,8 @@ import pandas as pd
 import numpy as np
 import time
 
-df = pd.read_csv('sortedCoolingGrid_1k_1k.csv')
-
-# ['u_ad', 'rho', 'dt', 'delta_u']
+df = pd.read_csv('sortedCoolingGrid_J_0.00001.csv')
+df.columns = ['u_ad', 'rho', 'dt', 'delta_u']
 
 uad = df['u_ad'].values
 rho = df['rho'].values
@@ -14,8 +13,8 @@ delta_u = df['delta_u'].values
 
 ux = uad - delta_u
 
-ut = 1.1888E+13
-rhot = 9.0333E-23
+ut = 2.5656E+12
+rhot = 1.5397E-24
 
 # SET STH TO HANDLE ut and rhot BIGGER THAN THE MIN and MAX values.
 
@@ -40,6 +39,8 @@ for i in range(len(rhoGrid)-1):
 		
 		nx_rho = i
 		break
+
+
 
 print('Elapsed time = ', time.time() - TA)
 

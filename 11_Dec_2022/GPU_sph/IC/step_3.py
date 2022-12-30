@@ -112,6 +112,9 @@ outF.close()
 print('m = ', np.sort(m))
 print()
 print('sum(m) (we have 2 clouds !!!) = ', np.sum(m))
+print()
+
+print('sort(u) = ', np.sort(u))
 
 print()
 print(r.shape)

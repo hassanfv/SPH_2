@@ -1,13 +1,17 @@
+
 #include <iostream>
 #include <fstream>
 #include <cmath>
 #include <string>
 #include <vector>
 #include <sstream>
-#include "myCppSPHLibs_v2.h"
+#include "myCppSPHLibs_v3.h"
+#include "myPhotoLibsGPU.h"
 using namespace std;
 
-// The difference with v1 is that here the output file also contains the velocity components.
+
+// In this version, we also include cooling.
+// In this version, the output file also contains the velocity components.
 
 
 float max_finder(float *arr, int N){
@@ -59,17 +63,30 @@ int main(){
     cout << "File Not Found !!!" << endl;
   }
 
-  float UnitRadius_in_cm = Rcld_in_cm;
-  float UnitRadius_in_cm_2 = UnitRadius_in_cm*UnitRadius_in_cm;
+  long double UnitRadius_in_cm = Rcld_in_cm;
+  long double UnitRadius_in_cm_2 = UnitRadius_in_cm*UnitRadius_in_cm;
 
-  float UnitMass_in_g = Mcld_in_g;
-  //--------------------- To avoid getting inf ! --------
-  float UnitDensity_in_cgs = UnitMass_in_g / UnitRadius_in_cm_2;
-  UnitDensity_in_cgs = UnitDensity_in_cgs / UnitRadius_in_cm;
+  long double UnitMass_in_g = Mcld_in_g;
   //-------------------------
-  float Unit_u_in_cgs = grav_const_in_cgs * UnitMass_in_g / UnitRadius_in_cm;
-  float Unit_P_in_cgs = UnitDensity_in_cgs * Unit_u_in_cgs;
-  float unitVelocity = sqrt(grav_const_in_cgs * UnitMass_in_g / UnitRadius_in_cm);
+  long double UnitDensity_in_cgsT = UnitMass_in_g / pow(UnitRadius_in_cm,3);
+  //-------------------------
+  long double Unit_u_in_cgsT = grav_const_in_cgs * UnitMass_in_g / UnitRadius_in_cm;
+  long double Unit_P_in_cgsT = UnitDensity_in_cgsT * Unit_u_in_cgsT;
+  long double unitVelocityT = sqrt(grav_const_in_cgs * UnitMass_in_g / UnitRadius_in_cm);
+  long double unitTime_in_sT = sqrt(pow(UnitRadius_in_cm,3) / grav_const_in_cgs/UnitMass_in_g);
+
+  float UnitDensity_in_cgs = (float) UnitDensity_in_cgsT;
+  float Unit_u_in_cgs = (float) Unit_u_in_cgsT;
+  float Unit_P_in_cgs = (float) Unit_P_in_cgsT;
+  float unitVelocity = (float) unitVelocityT;
+  float unitTime_in_s = (float) unitTime_in_sT;
+
+  cout << "UnitDensity_in_cgs = " << UnitDensity_in_cgs << endl;
+  cout << "Unit_u_in_cgs = " << Unit_u_in_cgs << endl;
+  cout << "Unit_P_in_cgs = " << Unit_P_in_cgs << endl;
+  cout << "unitVelocity = " << unitVelocity << endl;
+  cout << "unitTime_in_s = " << unitTime_in_s << endl;
+  cout << endl;
 
   // Reading Hydra file.
   string fname = "GPU_IC_DLA_180k.csv"; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -94,6 +111,96 @@ int main(){
   }
   else
   cout<<"Could not open the file\n";
+
+  //***************************************
+  //******* READING COOLING GRID **********
+  //***************************************
+  // Reading Cooling Grid file.
+
+  string fnamex = "sortedCoolingGrid_J_0.00001.csv";
+  const int N_u = 1000;
+  const int N_rho = 1000;
+  const int NGrid = N_u * N_rho;
+  float ref_dt_cgs = 200.0f * 365.24f * 24.0f * 3600.0f; // i.e 200 years.
+
+  vector<vector<string>> contentx;
+  vector<string> rowx;
+  string linex, wordx;
+
+  fstream filex(fnamex, ios::in);
+  if (filex.is_open())
+  {
+      while (getline(filex, linex))
+      {
+          rowx.clear();
+
+          stringstream str(linex);
+
+          while (getline(str, wordx, ','))
+              rowx.push_back(wordx);
+          contentx.push_back(rowx);
+      }
+  }
+  else
+      cout << "Could not open the cooling grid file\n";
+
+  float *uadT = new float[NGrid];
+  float *rhoT = new float[NGrid];
+  float *delta_u = new float[NGrid];
+
+  for (int i = 0; i < NGrid; i++)
+  {
+
+      uadT[i] = stof(contentx[i][0]);
+      rhoT[i] = stof(contentx[i][1]);
+      delta_u[i] = stof(contentx[i][3]); // Note that it is the fourth index (i.e. 3) !
+  }
+
+  float Tmin = 1e4;
+  float Tmax = 1e6;
+
+  float stp_T = (log10(Tmax) - log10(Tmin)) / N_u;
+  float *Tgrid = new float[N_u];
+
+  for (int i = 0; i < N_u; i++)
+  {
+      Tgrid[i] = pow(10, (log10(Tmin) + i * stp_T));
+  }
+
+  //-------- Converting T to u.
+  const float XH = 0.76;
+  const float mH = 1.6726e-24; // gram
+  float nHcgs = 1.0;             //  cm^-3
+  float *uGrid = new float[N_u];
+
+  for (int i = 0; i < N_u; i++)
+  {
+      uGrid[i] = convert_Temp_to_u(Tgrid[i], nHcgs, XH);
+  }
+
+  float MIN_uad = uGrid[0];
+  float MAX_uad = uGrid[N_u - 1];
+
+  delete[] Tgrid;
+
+  float nH_min = 1e-4;
+  float nH_max = 1e2;
+  float rho_min = nH_min * mH;
+  float rho_max = nH_max * mH;
+
+  float stp_rho = (log10(rho_max) - log10(rho_min)) / N_rho;
+  float *rhoGrid = new float[N_rho];
+
+  for (int i = 0; i < N_rho; i++)
+  {
+      rhoGrid[i] = pow(10, (log10(rho_min) + i * stp_rho));
+  }
+
+  float MIN_rho = rhoGrid[0];
+  float MAX_rho = rhoGrid[N_rho - 1];
+  //****** END OF READING THE COOLING GRID *********
+
+  float *d_uGrid, *d_rhoGrid, *d_uadT, *d_rhoT, *d_delta_u;
 
   // declaring the arrays.
   float *x, *d_x, *y, *d_y, *z, *d_z, *vx, *d_vx, *vy, *d_vy, *vz, *d_vz;
@@ -188,6 +295,12 @@ int main(){
   cudaMalloc(&d_uprevious, N*sizeof(float));
   cudaMalloc(&d_utprevious, N*sizeof(float));
 
+  cudaMalloc(&d_uGrid, N_u*sizeof(float));
+  cudaMalloc(&d_rhoGrid, N_rho*sizeof(float));
+  cudaMalloc(&d_uadT, NGrid*sizeof(float));
+  cudaMalloc(&d_rhoT, NGrid*sizeof(float));
+  cudaMalloc(&d_delta_u, NGrid*sizeof(float));
+
   // 0  1  2  3   4   5   6  7          8
   // x, y, z, vx, vy, vz, m, hprevious, eps
 
@@ -277,6 +390,12 @@ int main(){
   cudaMemcpy(d_uprevious, uprevious, N*sizeof(float), cudaMemcpyHostToDevice);
   cudaMemcpy(d_utprevious, utprevious, N*sizeof(float), cudaMemcpyHostToDevice);
 
+  cudaMemcpy(d_uGrid, uGrid, N_u*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_rhoGrid, rhoGrid, N_rho*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_uadT, uadT, NGrid*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_rhoT, rhoT, NGrid*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_delta_u, delta_u, NGrid*sizeof(float), cudaMemcpyHostToDevice);
+
   int blockSize = 256; // number of threads in a block
   int gridSize = (N + blockSize - 1) / blockSize; // Number of blocks in a grid
   
@@ -287,27 +406,24 @@ int main(){
 
   const float visc_alpha = 1.0f;
 
-  float mH = 1.6726e-24; // gram
   float kB = 1.3807e-16; // cm2 g s-2 K-1
   float mH2 = muu * mH;
 
   float kBmH2 = kB/mH2;
 
-  float T_cld = 377.0f;
-  float T_ps = 10.0f;
-  float T_0 = 10.0f;
-
   const float my_pi = 3.141592f;
 
+  // We set MAX_dt_code_unit to avoid negative u !
+  float MAX_dt_code_unit = ref_dt_cgs / unitTime_in_s;
+
   float t = 0.0f;
-  float dt = 2e-4;
+  float dt = MAX_dt_code_unit; //2e-4;
   float tEnd = 2.0f;
   float Nt = ceil(tEnd/dt) + 1;
 
   //-----------------------------------------------
   //-------------- Smoothing Length ---------------
   //-----------------------------------------------
-
   smoothing_h<<<gridSize, blockSize>>>(d_x, d_y, d_z, d_h, d_hprevious,
                                        N, Ndown, Nup, coeff);
   cudaDeviceSynchronize();
@@ -315,7 +431,6 @@ int main(){
   //-----------------------------------------------
   //----------------- getDensity ------------------
   //-----------------------------------------------
-  
   getDensity<<<gridSize, blockSize>>>(d_x, d_y, d_z, d_mass,
                                       d_rho, d_h, my_pi, N);
   cudaDeviceSynchronize();
@@ -323,7 +438,6 @@ int main(){
   //-----------------------------------------------
   //------------------ getAcc_g -------------------
   //-----------------------------------------------
-
   acc_g<<<gridSize, blockSize>>>(d_x, d_y, d_z, d_eps, d_accx, d_accy, d_accz,
                                  d_mass, G, N);
   cudaDeviceSynchronize();
@@ -331,21 +445,18 @@ int main(){
   //-----------------------------------------------
   //---------------- getPressure ------------------
   //-----------------------------------------------
-
   getPressure_Adiabatic<<<gridSize, blockSize>>>(d_P, d_rho, d_u, gammah, N);
   cudaDeviceSynchronize();
 
   //-----------------------------------------------
   //----------------- getCsound -------------------
   //-----------------------------------------------
-
   getCsound_Adiabatic<<<gridSize, blockSize>>>(d_csnd, d_u, gammah, N);
   cudaDeviceSynchronize();
 
   //-----------------------------------------------
   //----------------- div_curlV -------------------
   //-----------------------------------------------
-
   div_curlVel<<<gridSize, blockSize>>>(d_divV, d_curlV, d_x, d_y, d_z, d_vx, d_vy, d_vz,
                                        d_rho, d_mass, d_h, my_pi, N);
   cudaDeviceSynchronize();
@@ -353,7 +464,6 @@ int main(){
   //-----------------------------------------------
   //------------------ acc_sph --------------------
   //-----------------------------------------------
-
   acc_sph<<<gridSize, blockSize>>>(d_x, d_y, d_z, d_vx, d_vy, d_vz, d_h, d_csnd, d_rho,
                                    d_divV, d_curlV, d_mass, d_P, d_accx_sph, d_accy_sph,
                                    d_accz_sph, my_pi, visc_alpha, N);
@@ -362,7 +472,6 @@ int main(){
   //-----------------------------------------------
   //------------------ acc_tot --------------------
   //-----------------------------------------------
-  
   acc_g_sph<<<gridSize, blockSize>>>(d_accx_tot, d_accy_tot, d_accz_tot,
                                      d_accx, d_accy, d_accz,
                                      d_accx_sph, d_accy_sph, d_accz_sph,
@@ -372,7 +481,6 @@ int main(){
   //-----------------------------------------------
   //------------------- du_dt ---------------------
   //-----------------------------------------------
-
   get_dU<<<gridSize, blockSize>>>(d_x, d_y, d_z, d_vx, d_vy, d_vz, d_h, d_csnd, d_rho,
                                   d_divV, d_curlV, d_mass, d_P, d_dudt,
                                   my_pi, visc_alpha, N);
@@ -382,6 +490,19 @@ int main(){
   //---------------- u evolution ------------------
   //-----------------------------------------------
   u_updater1<<<gridSize, blockSize>>>(d_u, d_dudt, dt, N);
+  cudaDeviceSynchronize();
+
+  //-----------------------------------------------
+  //---------------- applyCooling -----------------
+  //-----------------------------------------------
+  float current_dt_cgs = dt * unitTime_in_s;
+
+  applyCooling<<<gridSize, blockSize>>>(d_uadT, d_rhoT, d_delta_u,
+                                        ref_dt_cgs, d_uGrid, d_rhoGrid,
+                                        MIN_uad, MAX_uad, MIN_rho,
+                                        MAX_rho, Unit_u_in_cgs,
+                                        UnitDensity_in_cgs, d_u, d_rho,
+                                        current_dt_cgs, N, N_u, N_rho, NGrid);
   cudaDeviceSynchronize();
 
   //-----------------------------------------------
@@ -476,17 +597,22 @@ int main(){
                                             d_utprevious, dt, N);
     cudaDeviceSynchronize();
 
+    //******************** applyCooling *********************
+    current_dt_cgs = dt * unitTime_in_s;
+    applyCooling<<<gridSize, blockSize>>>(d_uadT, d_rhoT, d_delta_u,
+                                          ref_dt_cgs, d_uGrid, d_rhoGrid,
+                                          MIN_uad, MAX_uad, MIN_rho,
+                                          MAX_rho, Unit_u_in_cgs,
+                                          UnitDensity_in_cgs, d_u, d_rho,
+                                          current_dt_cgs, N, N_u, N_rho, NGrid);
+    cudaDeviceSynchronize();
+
     //******* updating uprevious, utprevious ********
     u_ut_previous_updater<<<gridSize, blockSize>>>(d_u, d_dudt, d_uprevious,
                                                    d_utprevious, N);
     cudaDeviceSynchronize();
 
     counter ++;
-
-    if(!(counter % 100)){
-      cout << "t = " << t << endl;
-    }
-
 
     if(!(counter % 10)){
       cudaMemcpy(x, d_x, N*sizeof(float), cudaMemcpyDeviceToHost);
@@ -526,7 +652,6 @@ int main(){
     cudaMemcpy(h, d_h, N*sizeof(float), cudaMemcpyDeviceToHost);
     cudaMemcpy(divV, d_divV, N*sizeof(float), cudaMemcpyDeviceToHost);
 
-
     v_signal = max_finder(v_sig, N);
     min_h = min_finder(h, N);
     dt_cfl = C_CFL * min_h / v_signal;
@@ -543,7 +668,7 @@ int main(){
     dtz[0] = dt_f; dtz[1] = dt_kin; dtz[2] = dt_cfl; dtz[3] = dt_dens;
     dt = 0.25 * min_finder(dtz, 4);
 
-    if(!(counter % 10)){
+    if(!(counter % 5)){
       cout << "v_signal, min_h, C_CFL = " << v_signal<<" "<<min_h << " "<< C_CFL<<endl;
       cout << "dt_f = " << dt_f << endl;
       cout << "dt_kin = " << dt_kin << endl;
@@ -552,13 +677,11 @@ int main(){
       cout << endl;
     }
 
-    if(dt > 0.001){
-      dt = 0.001;
+    if(dt > MAX_dt_code_unit){
+      dt = MAX_dt_code_unit;
     }
 
-    if(dt < 0.00001){
-      dt = 0.00001;
-    }
+    t += dt;
 
     if(!(counter % 5)){
       cout << "Adopted dt = " << dt << endl;
@@ -567,10 +690,7 @@ int main(){
       cout << endl;
     }
 
-    t += dt;
-
   }
-
 
   delete[] x; delete[] y; delete[] z; delete[] vx; delete[] vy; delete[] vz;
   delete[] mass; delete[] h; delete[] hprevious; delete[] rho;
@@ -580,7 +700,8 @@ int main(){
   delete[] accx_tot; delete[] accy_tot; delete[] accz_tot;
   delete[] abs_acc_g; delete[] abs_acc_tot; delete[] v_sig;
   delete[] dh_dt; delete[] u; delete[] dudt; delete[] uprevious;
-  delete[] utprevious;
+  delete[] utprevious; delete[] uGrid; delete[] rhoGrid;
+  delete[] uadT; delete[] rhoT; delete[] delta_u;
 
   cudaFree(d_x); cudaFree(d_y); cudaFree(d_z);
   cudaFree(d_vx); cudaFree(d_vy); cudaFree(d_vz);
@@ -591,6 +712,7 @@ int main(){
   cudaFree(d_accx_tot); cudaFree(d_accy_tot); cudaFree(d_accz_tot);
   cudaFree(d_abs_acc_g); cudaFree(d_abs_acc_tot); cudaFree(d_v_sig);
   cudaFree(d_dh_dt); cudaFree(d_u); cudaFree(d_dudt); cudaFree(d_uprevious);
-  cudaFree(d_utprevious);
+  cudaFree(d_utprevious); cudaFree(d_uGrid); cudaFree(d_rhoGrid);
+  cudaFree(d_uadT); cudaFree(d_rhoT); cudaFree(d_delta_u);
 
 }

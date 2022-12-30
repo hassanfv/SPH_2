@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 
-df = pd.read_csv('CoolingGrid_UM_1k_1k.csv')
+df = pd.read_csv('CoolingGrid_UM.csv')
 
 cols = ['u_ad', 'rho', 'dt', 'delta_u'] # all in physical cgs unit. (delta_u = u_ad - u_after_cooling)
 					# Note again: u_after_colling = u_ad + delta_u !!!!!!!
@@ -19,7 +19,7 @@ df['rho'] = df['rho'].apply(lambda x: '%.4E' % x)
 df['dt'] = df['dt'].apply(lambda x: '%.4E' % x)
 df['delta_u'] = df['delta_u'].apply(lambda x: '%.4E' % x)
 
-df.to_csv('sortedCoolingGrid.csv', index = False)
+df.to_csv('sortedCoolingGrid.csv', index = False, header = False)
 
 print(df.tail(50))
 

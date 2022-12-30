@@ -36,10 +36,10 @@ __global__ void createCoolingGrid(float *rhoGrid, float *uGrid, float *res1,
 
 const float XH = 0.76f;
 const float mH = 1.6726e-24; // gram
-const float dt  = 500.0f * 3600.0f * 24.0f * 365.24f; // 500 YEARS.
+const float dt  = 200.0f * 3600.0f * 24.0f * 365.24f; // 500 YEARS.
 
-const int N_rho = 800;
-const int N_u = 800;
+const int N_rho = 500;
+const int N_u = 500;
 const int N = N_rho * N_u;
 
 int main(){
@@ -73,7 +73,7 @@ int main(){
   //-------- T to u conversion DONE !
 
   float nH_min = 1e-4;
-  float nH_max = 1e3;
+  float nH_max = 1e2;
   float rho_min = nH_min * mH;
   float rho_max = nH_max * mH;
 

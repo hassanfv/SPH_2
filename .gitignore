@@ -10,3 +10,4 @@ __pycache__
 *.pem
 */restartfiles/*
 */.ipynb_checkpoints/*
+.ipynb_checkpoints
