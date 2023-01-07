@@ -1,0 +1,10 @@
+
+N particles = 2 clouds, each 90,000 particles. So total N = 180,000
+Each cloud has radius of 10 pc.
+Mass of each cloud = 100 M_sun
+
+Mach = 20
+
+gas initial density ===> uniform and I think ~ 1 cm^-3.
+
+gas initial Temperature = 10000, reflected in c_s
