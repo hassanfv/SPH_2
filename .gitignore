@@ -10,6 +10,10 @@ __pycache__
 *.pem
 .env
 *.env
+*.out
+*.ovr
+*.het
+*.coo
 */restartfiles/*
 */.ipynb_checkpoints/*
 .ipynb_checkpoints
