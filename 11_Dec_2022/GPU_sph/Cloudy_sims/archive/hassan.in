@@ -1,0 +1,7 @@
+title typical input stream
+blackbody 1.2e5
+luminosity 37
+radius 17
+hden 4
+save overview ".ovr"
+save heating ".het"

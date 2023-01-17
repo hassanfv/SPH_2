@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include "myCppSPHLibs_v4.h"
+#include "myCppSPHLibs_v4d.h"
 #include "myPhotoLibsGPU_v2.h"
 using namespace std;
 
@@ -59,7 +59,7 @@ int main(){
     infile >> G;
     infile.close();
   }else{
-    cout << "params.GPU File Not Found !!!" << endl;
+    cout << "File Not Found !!!" << endl;
   }
 
   long double UnitRadius_in_cm = Rcld_in_cm;
@@ -109,7 +109,7 @@ int main(){
   }
   }
   else
-  cout<<"Could not open the IC file\n";
+  cout<<"Could not open the file\n";
 
   //***************************************
   //******* READING COOLING GRID **********
@@ -616,7 +616,7 @@ int main(){
 
     //******************** applyCooling *********************
         
-    /*
+    
     float *uBeforeCooling = new float[N];
     
     cudaMemcpy(u, d_u, N*sizeof(float), cudaMemcpyDeviceToHost);
@@ -625,7 +625,7 @@ int main(){
     {
       uBeforeCooling[k] = u[k];
     }
-    */
+    
     
     current_dt_cgs = dt * unitTime_in_s;
     applyCooling<<<gridSize, blockSize>>>(d_uadT, d_rhoT, d_delta_u,
@@ -637,7 +637,35 @@ int main(){
     cudaDeviceSynchronize();
 
     
+    
+    if(!(counter % 1)){
+      cudaMemcpy(x, d_x, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(y, d_y, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(z, d_z, N*sizeof(float), cudaMemcpyDeviceToHost);
+      
+      cudaMemcpy(vx, d_vx, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(vy, d_vy, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(vz, d_vz, N*sizeof(float), cudaMemcpyDeviceToHost);
+      
+      cudaMemcpy(rho, d_rho, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(h, d_h, N*sizeof(float), cudaMemcpyDeviceToHost);
+      
+      cudaMemcpy(u, d_u, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(uprevious, d_uprevious, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(dudt, d_dudt, N*sizeof(float), cudaMemcpyDeviceToHost);
 
+      ofstream outfile("./Outputs/G-"+ to_string(t*1000) + ".csv");
+      
+      outfile << "x" << "," << "y" << "," << "z" << ","
+              << "rho" << "," << "u" << "," << "uprevious" << "," << "uBeforeCooling" << "," << "dudt" << endl; // this will be the header !
+
+      for(int i = 0; i < N; i++){
+        outfile << x[i] << "," << y[i] << "," << z[i] << ","
+                << rho[i] << "," << u[i] << "," << uprevious[i] << "," << uBeforeCooling[i] << "," << dudt[i] << endl;
+      }
+    }
+
+    /*
     if(!(counter % 15)){
       cudaMemcpy(x, d_x, N*sizeof(float), cudaMemcpyDeviceToHost);
       cudaMemcpy(y, d_y, N*sizeof(float), cudaMemcpyDeviceToHost);
@@ -663,6 +691,7 @@ int main(){
                 << h[i] << "," << rho[i] << "," << u[i] << endl;
       }
     }
+    */
     
     
     //******* updating uprevious, utprevious ********

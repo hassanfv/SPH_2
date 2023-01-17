@@ -1,8 +1,6 @@
 
-# DO NOT USE version before v3. In this version(i.e. v3) we fixed "Abundance_hX", "convert_u_to_temp_h" and "convert_Temp_to_u" functions!!
-# The difference with photolibs.py is that here we include "convert_Temp_to_u" function.
-
 import numpy as np
+
 
 #===== lamb_to_neu
 def lamb_to_neu(lamb):
@@ -115,27 +113,6 @@ def phCrossSection(neu, E0, sig0, ya, P, yw, y0, y1):
 	return sig
 
 
-
-#===== phCrossSectionX (Verner et al - 1996) ===> Here we use a "for loop" instead of array operations!!
-def phCrossSectionX(neu, E0, sig0, ya, P, yw, y0, y1):
-
-	N = len(neu)
-	sig = np.zeros(N)
-
-	for i in range(N):
-		
-		E = neu_to_eV(neu[i])
-		
-		x = E/E0 - y0
-		y = np.sqrt(x**2 + y1**2)
-		Fy = (((x - 1)**2 + yw**2) * y**(0.5*P - 5.5)) * (1.0 + np.sqrt(y/ya))**(-P)
-		
-		sig[i] = sig0 * Fy * 1e-18
-	
-	return sig
-
-
-
 #===== RandCIRates (Recombination and Collisional Ionization Rates)
 def RandCIRates(T):
 
@@ -182,10 +159,8 @@ def Abundance_hX(T, nHcgs, gJH0, gJHe0, gJHep):
 	
 	MAXITER = 100
 	niter = 1
-	
-	dne = 1.0 # chosen just to be larger than 1e-4 so that we can go inside while loop !
 
-	while((dne > 1e-4) and (niter < MAXITER)):
+	while((np.abs(ne - ne_old) > 1e-2 * ne) and (niter < MAXITER)):
 
 		ne_old = ne
 
@@ -200,10 +175,6 @@ def Abundance_hX(T, nHcgs, gJH0, gJHe0, gJHep):
 		nHepp = nHep * (geHep + gJHep/(ne * nHcgs)) / aHepp
 
 		ne = nHp + nHep + 2.0 * nHepp
-		
-		ne_new = 0.5 * (ne + ne_old)
-		ne = ne_new
-		dne = np.abs(ne - ne_old)
 		
 		niter += 1
 		
@@ -230,7 +201,7 @@ def J_neu_func(neu, eV, Jcoeff, J912QSO, RFiD):
 def RadiationField():
 
 	RFiD = 'NotQSO' # if you want J912 of a quasar set this to 'QSO'.
-	Jcoeff = 0.00001
+	Jcoeff = 5.0
 
 	#------- A typical Eclipsing DLA Quasar -------
 	L_912 = 3.25e42 # erg/s/A
@@ -249,9 +220,9 @@ def RadiationField():
 	neuHep = np.arange(eV_to_neu(E_Hep)/1e16, 6.0, 0.02) * 1e16
 	neuHe0 = np.arange(eV_to_neu(E_He0)/1e16, 6.0, 0.02) * 1e16
 
-	sigH0  = phCrossSectionX(neuH0, 4.298E-1, 5.475E4, 3.288E1, 2.963, 0.0, 0.0, 0.0) # H0
-	sigHe0 = phCrossSectionX(neuHe0, 1.361E+1, 9.492E2, 1.469E0, 3.188, 2.039, 4.434E-1, 2.136) # He0
-	sigHep = phCrossSectionX(neuHep, 1.720E+0, 1.369E4, 3.288E1, 2.963, 0.0, 0.0, 0.0) # Hep
+	sigH0  = phCrossSection(neuH0, 4.298E-1, 5.475E4, 3.288E1, 2.963, 0.0, 0.0, 0.0) # H0
+	sigHe0 = phCrossSection(neuHe0, 1.361E+1, 9.492E2, 1.469E0, 3.188, 2.039, 4.434E-1, 2.136) # He0
+	sigHep = phCrossSection(neuHep, 1.720E+0, 1.369E4, 3.288E1, 2.963, 0.0, 0.0, 0.0) # Hep
 
 	#***********************************************************************************************************
 	#***************************************** Photoionization rate ********************************************
@@ -389,80 +360,24 @@ def convert_u_to_temp_h(u, nHcgs, XH):
 	mu = (1.0 + 4. * yHelium) / (1.0 + yHelium + ne_guess) # yHelium = nHe/nH and ne = ne/nH
 	temp = (gamma - 1.0) * mH / kB * mu * u
 	
-	MAXITER = 100
+	MAXITER = 10
 	temp_old = temp/2.
 	niter = 1
 	
-	gJH0, gJHe0, gJHep, HRate_H0, HRate_He0, HRate_Hep = RadiationField()
-	
-	dTemp = temp
-	
-	while ((dTemp/temp > 1e-4) and (niter < MAXITER)):
+	while ((np.abs(temp - temp_old) > 1e-2 * temp) and (niter < MAXITER)):
 
 		temp_old = temp
 
 		# updating ne
+		gJH0, gJHe0, gJHep, HRate_H0, HRate_He0, HRate_Hep = RadiationField()
 		nH0, nHe0, nHp, ne_guess, nHep, nHepp = Abundance_hX(temp_old, nHcgs, gJH0, gJHe0, gJHep)
 
 		mu = (1.0 + 4. * yHelium) / (1.0 + yHelium + ne_guess)
 		temp = (gamma - 1.0) * mH / kB * mu * u
 
-		new_temp = 0.5 * (temp + temp_old)
-		temp = new_temp
-		dTemp = np.abs(temp - temp_old)
-
 		niter += 1
-
-	if niter >= MAXITER:
-		print('convert_u_to_temp_h Failed to converge !')
 	
 	return temp
-
-
-
-
-#===== convert_u_to_temp_h
-def convert_Temp_to_u(temp, nHcgs, XH):
-	
-	kB = 1.3807e-16  # cm2 g s-2 K-1
-	mH = 1.6726e-24 # gram
-	gamma = 5.0/3.0
-	
-	yHelium = (1.0 - XH) / (4. * XH)
-
-	ne_guess = 1.0 # our initial guess is that elec_density = hydrogen density.
-	mu = (1.0 + 4. * yHelium) / (1.0 + yHelium + ne_guess) # yHelium = nHe/nH and ne = ne/nH
-
-	u = kB/mH/(gamma - 1.0)/mu * temp # Navarro & White 1993.
-	
-	MAXITER = 100
-	u_old = u/2.
-	niter = 1
-	
-	du = u
-	
-	while ((du/u > 1e-4) and (niter < MAXITER)):
-
-		u_old = u
-
-		# updating ne
-		gJH0, gJHe0, gJHep, HRate_H0, HRate_He0, HRate_Hep = RadiationField()
-		temp_old = convert_u_to_temp_h(u_old, nHcgs, XH)
-		nH0, nHe0, nHp, ne_guess, nHep, nHepp = Abundance_hX(temp_old, nHcgs, gJH0, gJHe0, gJHep)
-
-		mu = (1.0 + 4. * yHelium) / (1.0 + yHelium + ne_guess)
-		u = kB/mH/(gamma - 1.0)/mu * temp
-		
-		new_u = 0.5 * (u + u_old)
-		u = new_u
-		du = np.abs(u - u_old)
-
-		niter += 1
-	
-	if niter >= MAXITER:
-		print('convert_Temp_to_u Failed to converge !')
-	
-	return u
 
 
 
@@ -519,7 +434,7 @@ def DoCooling_h(rho, u_old, dt, XH):
 	niter = 1
 	du = u
 	
-	while ((np.abs(du/u) > 1e-4) & (niter < MAXITER)):
+	while ((np.abs(du/u) > 1e-6) & (niter < MAXITER)):
 	
 		u = 0.5 * (u_lower + u_upper)
 		
@@ -533,8 +448,6 @@ def DoCooling_h(rho, u_old, dt, XH):
 		du = np.abs(u_upper - u_lower)
 	
 		niter += 1
-
-	print(GammaLambdaNet, dt, ratefact)
 
 	if niter >= MAXITER:
 		print('Failed to converge !')

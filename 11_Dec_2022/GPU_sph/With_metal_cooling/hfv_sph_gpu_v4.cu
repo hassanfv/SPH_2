@@ -4,11 +4,11 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include "myCppSPHLibs_v4.h"
-#include "myPhotoLibsGPU_v2.h"
+#include "myCppSPHLibs_v5.h"
 using namespace std;
 
 
+// In this version we use CLOUDY cooling & heating!
 // In this version, we also include cooling.
 // In this version, the output file also contains the velocity components.
 
@@ -116,11 +116,11 @@ int main(){
   //***************************************
   // Reading Cooling Grid file.
 
-  string fnamex = "sortedCoolingGrid_J_0.00001.csv";
-  const int N_u = 1000;
-  const int N_rho = 1000;
-  const int NGrid = N_u * N_rho;
-  float ref_dt_cgs = 200.0f * 365.24f * 24.0f * 3600.0f; // i.e 200 years.
+  string fnamex = "sorted_CloudyCoolingGrid.csv";
+  const int N_u = 301;
+  const int N_nH = 351;
+  const int NGrid = N_u * N_nH;
+  float ref_dt_cgs = 100.0f * 365.24f * 24.0f * 3600.0f; // i.e 100 years.
 
   vector<vector<string>> contentx;
   vector<string> rowx;
@@ -143,81 +143,41 @@ int main(){
   else
       cout << "Could not open the cooling grid file\n";
 
-  float *uadT = new float[NGrid];
-  float *rhoT = new float[NGrid];
-  float *delta_u = new float[NGrid];
+  float *uZ = new float[NGrid];
+  float *nHZ = new float[NGrid];
+  float *heatZ = new float[NGrid];
+  float *coolZ = new float[NGrid];
 
   for (int i = 0; i < NGrid; i++)
   {
 
-      uadT[i] = stof(contentx[i][0]);
-      rhoT[i] = stof(contentx[i][1]);
-      delta_u[i] = stof(contentx[i][3]); // Note that it is the fourth index (i.e. 3) !
+      uZ[i] = stof(contentx[i][0]);
+      nHZ[i] = stof(contentx[i][1]);
+      heatZ[i] = stof(contentx[i][3]);
+      coolZ[i] = stof(contentx[i][4]);
   }
-
-  /*
-  float Tmin = 1e4;
-  float Tmax = 1e8;
-
-  float stp_T = (log10(Tmax) - log10(Tmin)) / N_u;
-  float *Tgrid = new float[N_u];
-
-  for (int i = 0; i < N_u; i++)
-  {
-      Tgrid[i] = pow(10, (log10(Tmin) + i * stp_T));
-  }
-
-  //-------- Converting T to u.
-  const float XH = 0.76;
-  const float mH = 1.6726e-24; // gram
-  float nHcgs = 1.0;             //  cm^-3
-  float *uGrid = new float[N_u];
-
-  for (int i = 0; i < N_u; i++)
-  {
-      uGrid[i] = convert_Temp_to_u(Tgrid[i], nHcgs, XH);
-  }
-  */
-
-  
-
-  //delete[] Tgrid;
-
-  /*
-  float nH_min = 1e-4;
-  float nH_max = 1e2;
-  float rho_min = nH_min * mH;
-  float rho_max = nH_max * mH;
-
-  float stp_rho = (log10(rho_max) - log10(rho_min)) / N_rho;
-  float *rhoGrid = new float[N_rho];
-
-  for (int i = 0; i < N_rho; i++)
-  {
-      rhoGrid[i] = pow(10, (log10(rho_min) + i * stp_rho));
-  }
-
-  */
 
   float *uGrid = new float[N_u];
-  float *rhoGrid = new float[N_rho];
+  float *nHGrid = new float[N_nH];
   
-  for (int i = 0; i < N_u; i++) // Note: N_u = N_rho = 1000 !
+  for (int i = 0; i < N_u; i++)
   {
-    uGrid[i] = uadT[i * 1000];
-    rhoGrid[i] = rhoT[i];
+    uGrid[i] = uZ[i * N_nH];
   }
-  
 
+  for (int i = 0; i < N_nH; i++)
+  {
+    nHGrid[i] = nHZ[i];
+  }
 
-  float MIN_uad = uGrid[0];
-  float MAX_uad = uGrid[N_u - 1];
+  float MIN_u = uGrid[0];
+  float MAX_u = uGrid[N_u - 1];
 
-  float MIN_rho = rhoGrid[0];
-  float MAX_rho = rhoGrid[N_rho - 1];
-  //****** END OF READING THE COOLING GRID *********
+  float MIN_nH = nHGrid[0];
+  float MAX_nH = nHGrid[N_nH - 1];
+  //****** END OF READING THE CLOUDY COOLING GRID *********
 
-  float *d_uGrid, *d_rhoGrid, *d_uadT, *d_rhoT, *d_delta_u;
+  float *d_uGrid, *d_nHGrid, *d_uZ, *d_nHZ, *d_heatZ, *d_coolZ;
 
   // declaring the arrays.
   float *x, *d_x, *y, *d_y, *z, *d_z, *vx, *d_vx, *vy, *d_vy, *vz, *d_vz;
@@ -313,10 +273,11 @@ int main(){
   cudaMalloc(&d_utprevious, N*sizeof(float));
 
   cudaMalloc(&d_uGrid, N_u*sizeof(float));
-  cudaMalloc(&d_rhoGrid, N_rho*sizeof(float));
-  cudaMalloc(&d_uadT, NGrid*sizeof(float));
-  cudaMalloc(&d_rhoT, NGrid*sizeof(float));
-  cudaMalloc(&d_delta_u, NGrid*sizeof(float));
+  cudaMalloc(&d_nHGrid, N_nH*sizeof(float));
+  cudaMalloc(&d_uZ, NGrid*sizeof(float));
+  cudaMalloc(&d_nHZ, NGrid*sizeof(float));
+  cudaMalloc(&d_heatZ, NGrid*sizeof(float));
+  cudaMalloc(&d_coolZ, NGrid*sizeof(float));
 
   // 0  1  2  3   4   5   6  7          8
   // x, y, z, vx, vy, vz, m, hprevious, eps
@@ -408,10 +369,11 @@ int main(){
   cudaMemcpy(d_utprevious, utprevious, N*sizeof(float), cudaMemcpyHostToDevice);
 
   cudaMemcpy(d_uGrid, uGrid, N_u*sizeof(float), cudaMemcpyHostToDevice);
-  cudaMemcpy(d_rhoGrid, rhoGrid, N_rho*sizeof(float), cudaMemcpyHostToDevice);
-  cudaMemcpy(d_uadT, uadT, NGrid*sizeof(float), cudaMemcpyHostToDevice);
-  cudaMemcpy(d_rhoT, rhoT, NGrid*sizeof(float), cudaMemcpyHostToDevice);
-  cudaMemcpy(d_delta_u, delta_u, NGrid*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_nHGrid, nHGrid, N_nH*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_uZ, uZ, NGrid*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_nHZ, nHZ, NGrid*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_heatZ, heatZ, NGrid*sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_coolZ, coolZ, NGrid*sizeof(float), cudaMemcpyHostToDevice);
 
   int blockSize = 256; // number of threads in a block
   int gridSize = (N + blockSize - 1) / blockSize; // Number of blocks in a grid
@@ -422,19 +384,16 @@ int main(){
   const float coeff = 0.001f; // used for smoothing length.
 
   const float visc_alpha = 1.0f;
-
-  //float kB = 1.3807e-16; // cm2 g s-2 K-1
-  //float mH2 = muu * mH;
-
-  //float kBmH2 = kB/mH2;
-
+  const float mH = 1.6726e-24; // gram
+  const float kB = 1.3807e-16; // cm2 g s-2 K-1
+  const float XH = 0.76;
   const float my_pi = 3.141592f;
 
   // We set MAX_dt_code_unit to avoid negative u !
   float MAX_dt_code_unit = ref_dt_cgs / unitTime_in_s;
 
   float t = 0.0f;
-  float dt = MAX_dt_code_unit; //2e-4;
+  float dt = MAX_dt_code_unit;
   float tEnd = 2.0f;
   float Nt = ceil(tEnd/dt) + 1;
 
@@ -510,16 +469,18 @@ int main(){
   cudaDeviceSynchronize();
 
   //-----------------------------------------------
-  //---------------- applyCooling -----------------
+  //------------- applyCloudyCooling --------------
   //-----------------------------------------------
   float current_dt_cgs = dt * unitTime_in_s;
 
-  applyCooling<<<gridSize, blockSize>>>(d_uadT, d_rhoT, d_delta_u,
-                                        ref_dt_cgs, d_uGrid, d_rhoGrid,
-                                        MIN_uad, MAX_uad, MIN_rho,
-                                        MAX_rho, Unit_u_in_cgs,
-                                        UnitDensity_in_cgs, d_u, d_rho,
-                                        current_dt_cgs, N, N_u, N_rho, NGrid);
+  applyCloudyCooling<<<gridSize, blockSize>>>(d_uZ, d_nHZ, d_heatZ, d_coolZ,
+                                              d_uGrid, d_nHGrid, XH,
+                                              MIN_u, MAX_u, MIN_nH,
+                                              MAX_nH, Unit_u_in_cgs,
+                                              UnitDensity_in_cgs, d_u, d_rho,
+                                              gammah, mH, kB, d_dudt,
+                                              current_dt_cgs, N, N_u, N_nH,
+                                              NGrid);
   cudaDeviceSynchronize();
 
   //-----------------------------------------------
@@ -614,9 +575,9 @@ int main(){
                                             d_utprevious, dt, N);
     cudaDeviceSynchronize();
 
-    //******************** applyCooling *********************
+    //******************** applyCloudyCooling *********************
         
-    /*
+    
     float *uBeforeCooling = new float[N];
     
     cudaMemcpy(u, d_u, N*sizeof(float), cudaMemcpyDeviceToHost);
@@ -625,19 +586,52 @@ int main(){
     {
       uBeforeCooling[k] = u[k];
     }
-    */
+    
     
     current_dt_cgs = dt * unitTime_in_s;
-    applyCooling<<<gridSize, blockSize>>>(d_uadT, d_rhoT, d_delta_u,
-                                          ref_dt_cgs, d_uGrid, d_rhoGrid,
-                                          MIN_uad, MAX_uad, MIN_rho,
-                                          MAX_rho, Unit_u_in_cgs,
-                                          UnitDensity_in_cgs, d_u, d_rho,
-                                          current_dt_cgs, N, N_u, N_rho, NGrid);
+
+    applyCloudyCooling<<<gridSize, blockSize>>>(d_uZ, d_nHZ, d_heatZ, d_coolZ,
+                                                d_uGrid, d_nHGrid, XH,
+                                                MIN_u, MAX_u, MIN_nH,
+                                                MAX_nH, Unit_u_in_cgs,
+                                                UnitDensity_in_cgs, d_u, d_rho,
+                                                gammah, mH, kB, d_dudt,
+                                                current_dt_cgs, N, N_u, N_nH,
+                                                NGrid);
     cudaDeviceSynchronize();
 
+
+
+    if(!(counter % 1)){
+      cudaMemcpy(x, d_x, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(y, d_y, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(z, d_z, N*sizeof(float), cudaMemcpyDeviceToHost);
+      
+      cudaMemcpy(vx, d_vx, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(vy, d_vy, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(vz, d_vz, N*sizeof(float), cudaMemcpyDeviceToHost);
+      
+      cudaMemcpy(rho, d_rho, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(h, d_h, N*sizeof(float), cudaMemcpyDeviceToHost);
+      
+      cudaMemcpy(u, d_u, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(uprevious, d_uprevious, N*sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(dudt, d_dudt, N*sizeof(float), cudaMemcpyDeviceToHost);
+
+      ofstream outfile("./Outputs/G-"+ to_string(t*1000) + ".csv");
+      
+      outfile << "x" << "," << "y" << "," << "z" << "," << "rho" << "," << "u" << "," << "uprevious" << "," << "dudt" << ","
+              << "uBeforeCooling" << endl; // this will be the header !
+
+      for(int i = 0; i < N; i++){
+        outfile << x[i] << "," << y[i] << "," << z[i] << "," << rho[i] << "," << u[i] << "," << uprevious[i] << "," << dudt[i] << ","
+                << uBeforeCooling[i] << endl;
+      }
+    }
     
 
+    
+    /*
     if(!(counter % 15)){
       cudaMemcpy(x, d_x, N*sizeof(float), cudaMemcpyDeviceToHost);
       cudaMemcpy(y, d_y, N*sizeof(float), cudaMemcpyDeviceToHost);
@@ -663,8 +657,10 @@ int main(){
                 << h[i] << "," << rho[i] << "," << u[i] << endl;
       }
     }
+    */
     
     
+
     //******* updating uprevious, utprevious ********
     u_ut_previous_updater<<<gridSize, blockSize>>>(d_u, d_dudt, d_uprevious,
                                                    d_utprevious, N);
@@ -733,8 +729,8 @@ int main(){
   delete[] accx_tot; delete[] accy_tot; delete[] accz_tot;
   delete[] abs_acc_g; delete[] abs_acc_tot; delete[] v_sig;
   delete[] dh_dt; delete[] u; delete[] dudt; delete[] uprevious;
-  delete[] utprevious; delete[] uGrid; delete[] rhoGrid;
-  delete[] uadT; delete[] rhoT; delete[] delta_u;
+  delete[] utprevious; delete[] uGrid;
+  delete[] uZ; delete[] nHZ; delete[] heatZ; delete[] coolZ;
 
   cudaFree(d_x); cudaFree(d_y); cudaFree(d_z);
   cudaFree(d_vx); cudaFree(d_vy); cudaFree(d_vz);
@@ -745,7 +741,7 @@ int main(){
   cudaFree(d_accx_tot); cudaFree(d_accy_tot); cudaFree(d_accz_tot);
   cudaFree(d_abs_acc_g); cudaFree(d_abs_acc_tot); cudaFree(d_v_sig);
   cudaFree(d_dh_dt); cudaFree(d_u); cudaFree(d_dudt); cudaFree(d_uprevious);
-  cudaFree(d_utprevious); cudaFree(d_uGrid); cudaFree(d_rhoGrid);
-  cudaFree(d_uadT); cudaFree(d_rhoT); cudaFree(d_delta_u);
+  cudaFree(d_utprevious); cudaFree(d_uGrid);
+  cudaFree(d_uZ); cudaFree(d_nHZ); cudaFree(d_heatZ); cudaFree(d_coolZ);
 
 }

@@ -433,7 +433,7 @@ def convert_Temp_to_u(temp, nHcgs, XH):
 	ne_guess = 1.0 # our initial guess is that elec_density = hydrogen density.
 	mu = (1.0 + 4. * yHelium) / (1.0 + yHelium + ne_guess) # yHelium = nHe/nH and ne = ne/nH
 
-	u = kB/mH/(gamma - 1.0)/mu * temp # Navarro & White 1993.
+	u = kB/mH/(gamma - 1.0)/mu * temp
 	
 	MAXITER = 100
 	u_old = u/2.
@@ -533,8 +533,6 @@ def DoCooling_h(rho, u_old, dt, XH):
 		du = np.abs(u_upper - u_lower)
 	
 		niter += 1
-
-	print(GammaLambdaNet, dt, ratefact)
 
 	if niter >= MAXITER:
 		print('Failed to converge !')

@@ -48,7 +48,7 @@ for j in range(0, len(filz), 2):
 		max_tmp = rho[nx[0]]
 		nn = nx[0]
 	
-	nt = 109602
+	nt = 77375
 	
 	res.append([t, u[nt], rho[nt]])
 
@@ -63,8 +63,9 @@ rho = res[:, 2]
 #with open('u_rho_with_cooling.pkl', 'wb') as f:
 #	pickle.dump({'t': t, 'u': u}, f)
 
-plt.scatter(t, u, s = 5, color = 'black', label = 'u')
-#plt.scatter(t, rho, s = 5, color = 'blue', label = 'rho')
+
+#plt.scatter(t, u, s = 5, color = 'black', label = 'u')
+plt.scatter(t, rho, s = 5, color = 'blue', label = 'rho')
 plt.xlabel('t')
 plt.ylabel('u_j')
 
