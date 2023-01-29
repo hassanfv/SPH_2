@@ -8,7 +8,7 @@ from photolibs3 import *
 
 np.random.seed = 42
 
-N_start = 180000 # Play with this to get the desired number of particles!
+N_start = 1000000 # Play with this to get the desired number of particles!
 
 grav_const_in_cgs = 6.6738e-8
 MSun = 1.98892e33
@@ -16,8 +16,8 @@ mH = 1.6726e-24
 kB = 1.3807e-16
 XH = 0.76
 
-Mcld_in_g = 54487.584 * MSun # !!!!!!!!!!!!!!!!!! calculated using the nH_M_R_estimator.py code here !
-Rcld_in_pc = 20.0            # !!!!!!!!!!!!!!!!!!
+Mcld_in_g = 367.791 * MSun # !!!!!!!!!!!!!!!!!! calculated using the nH_M_R_estimator.py code here !
+Rcld_in_pc = 30.0         # !!!!!!!!!!!!!!!!!!
 Rcld_in_cm = Rcld_in_pc * 3.086e18
 
 rho_0 = Mcld_in_g / (4./3.) / np.pi / Rcld_in_cm**3
@@ -127,15 +127,13 @@ paramz = [Npart, c_s, gamma, Rcld_in_pc, Rcld_in_cm, Mcld_in_g, muu, Mach, grav_
 
 Unit_u_in_cgs = grav_const_in_cgs * unitMass_in_g / unitLength_in_cm
 print(f'Unit_u_in_cgs = {Unit_u_in_cgs:.3f}')
-print()
 
-u = 9.0 + np.zeros(Npart) # in code unit # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! I used check4.py code here to find this value!
+u = 2000.0 + np.zeros(Npart) # in code unit # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! I used check4.py code here to find this value!
 u_in_cgs = u * Unit_u_in_cgs # in cgs
 
 T = convert_u_to_temp_h(u_in_cgs[0], nH_0, XH)
 
 print(f'T = {T:.2f} K which corresponds to u (code unit) = {u[0]} and to u (cgs) = {u_in_cgs[0]:.4E}')
-print()
 
 dictx = {'r': pos, 'm': masses, 'u': u, 'paramz': paramz}
 

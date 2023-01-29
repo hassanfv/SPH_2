@@ -1,11 +1,11 @@
 
 import numpy as np
-from photolibs3 import *
+from photolibs import *
 import matplotlib.pyplot as plt
 
 
 #---------- Units for Infall - Outfall ----------
-Mref = 3677.912 * 1.989e33 # gram # # calculated using the nH_M_R_estimator.py code here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Mref = 367.791 * 1.989e33 # gram # # calculated using the nH_M_R_estimator.py code here !
 Rref = 30.0*3.086e18 # cm (this is 10 pc)
 grav_const = 6.67259e-8 #  cm3 g-1 s-2
 
@@ -24,8 +24,8 @@ mH = 1.6726e-24 # gram
 
 dt = 1e-3
 
-rhot = 0.14 # in code unit
-ut = 200.0  # in code unit
+rhot = 0.014 # in code unit
+ut = 4000.0  # in code unit
 
 ut = ut*Unit_u_in_cgs
 rhot = rhot * UnitDensity_in_cgs
@@ -39,7 +39,7 @@ print()
 
 T = convert_u_to_temp_h(ut, nHcgs, XH)
 
-print('T = ', T) # Play with ut until you get your desired T ! PLEASE NOTE THIS !
+print('T = ', T)
 
 
 #cr = coolingRateFromU_h(ut, nHcgs, XH)

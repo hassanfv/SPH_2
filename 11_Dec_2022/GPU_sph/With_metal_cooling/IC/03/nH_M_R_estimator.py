@@ -3,13 +3,13 @@ import numpy as np
 
 MSun = 1.98892e33
 
-R = 20. # pc
+R = 100. # pc
 R = R * 3.086e18 # cm
 V = 4./3. * np.pi * R*R*R
 
 XH = 0.76
 mH = 1.6726e-24 # g
-nH = 5e1 # cm^-3
+nH = 1e0 # cm^-3
 rho = nH * mH / XH # g/cm^3
 
 M_in_g = rho * V

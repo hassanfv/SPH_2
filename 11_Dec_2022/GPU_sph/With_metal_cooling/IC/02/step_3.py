@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 np.random.seed(42)
 
-NSample = 50000  # The desired number of particles to be included in ONE cloud in the IC.
+NSample = 60000  # The desired number of particles to be included in ONE cloud in the IC.
 NSample = int(NSample)
 
 with open('Main_IC_Grid_81k.pkl', 'rb') as f:
@@ -118,10 +118,6 @@ print()
 print('m = ', np.sort(m))
 print()
 print('sum(m) (we have 2 clouds !!!) = ', np.sum(m))
-print()
-MSun = 1.98892e33
-Mcld_in_g = paramz[5]
-print(f'One SPH particle has a mass of {m[0] * Mcld_in_g/MSun:.3f} M_sun!')
 print()
 
 print('sort(u) = ', np.sort(u))

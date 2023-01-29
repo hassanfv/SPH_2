@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 np.random.seed(42)
 
-NSample = 50000  # The desired number of particles to be included in ONE cloud in the IC.
+NSample = 25000  # The desired number of particles to be included in ONE cloud in the IC.
 NSample = int(NSample)
 
 with open('Main_IC_Grid_81k.pkl', 'rb') as f:
