@@ -193,12 +193,6 @@ while t < tEnd:
 	v += acc * dt/2.0
 	#----------------------
 	
-	import pandas as pd
-	dictx = {'acc_g': v[:, 0]}
-	dff = pd.DataFrame(dictx)
-	dff.to_csv('Bug.csv')
-	s()
-	
 	t += dt
 	
 	if not (ii%50):

@@ -3,12 +3,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-df = pd.read_csv('./Outputs/G-0.117410.csv')
+df = pd.read_csv('G-0.275255RS.csv')
 
 rho = df['rho'].values
 #h = df['h'].values
 
-print('sort rho = ', np.sort(rho))
 
 x = [1, 0] # x-y plane
 
@@ -50,7 +49,7 @@ for i in range(len(x)):
 		
 			if np.abs(z[i]) < 0.05:
 			
-				pass #print(i)
+				print(i)
 
 
 plt.show()

@@ -69,9 +69,6 @@ plt.xlabel('t')
 
 #plt.xscale('log')
 
-plt.xlim(0, 0.23)
-plt.ylim(0, 42)
-
 plt.legend()
 
 plt.savefig('rho_j_vs_t.png')

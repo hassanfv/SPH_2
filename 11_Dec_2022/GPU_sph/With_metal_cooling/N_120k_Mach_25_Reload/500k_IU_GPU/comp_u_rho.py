@@ -43,7 +43,7 @@ for j in range(0, len(filz), 1):
 	
 	
 	
-	nt = 199137
+	nt = 26375
 	
 	res.append([t, u[nt], rho[nt]])
 
@@ -69,8 +69,8 @@ plt.xlabel('t')
 
 #plt.xscale('log')
 
-plt.xlim(0, 0.23)
-plt.ylim(0, 42)
+#plt.xlim(0, 0.23)
+#plt.ylim(0, 15.5)
 
 plt.legend()
 
