@@ -2,6 +2,7 @@
 import numpy as np
 from scipy.integrate import odeint, solve_ivp
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 #===== Mdot_in
@@ -171,7 +172,7 @@ def L_s(E_b, E_s_th, R_s, rho_0, R_0, alpha, Z, Z_sun, mH, XH):
 	Lsff = L_s_ff(E_b, E_s_th, R_s, rho_0, R_0, alpha)
 	Lsline = L_s_Line(E_b, E_s_th, R_s, rho_0, R_0, alpha, Z, Z_sun, mH, XH)
 	
-	print(Lsff, Lsline)
+	#print(Lsff, Lsline)
 	
 	return Lsff + Lsline
 
@@ -213,7 +214,7 @@ def dSdt(t, S):
 	E_dot_s_kin = Ms * v_s * v_dot_s + 2.0 * np.pi * R_s**2 * rhoGas * v_s**3
 	E_dot_s_th = E_dot_s_tot - E_dot_s_kin
 	
-	print('Ls = ', Ls)
+	#print('Ls = ', Ls)
 	
 	return [v_s,
 		v_dot_s,
@@ -252,59 +253,30 @@ Z_sun = 1.0
 
 R_s_0 = 0.1 * 3.086e+18 # cm
 v_s_0 = v_in
-E_b_0 = 1.0e-10
-E_th_0 = 1.0e-10
+E_b_0 = 1.0e+40
+E_th_0 = 1.0e+40
+
+
+R_s_0, v_s_0, E_b_0, E_th_0 = [1.0009173768250779e+21,51238237.281793766,2.641894425671886e+56,2.572997450977792e+55]
 
 S_0 = (R_s_0, v_s_0, E_b_0, E_th_0) # initial condition vector !
 
-oneMyrs = 1e6 * 365.25 * 24 * 3600
+yrs = 10e6 * 365.25 * 24 * 3600
 
-t = np.linspace(10, oneMyrs, 1000)
-tMyr = t / 1e6 / 365.25 / 24 / 3600
+t = np.linspace(11547252963262.598, yrs, int(1e6))
 
 res = odeint(dSdt, y0 = S_0, t = t, tfirst = True, rtol=1e-2, atol=1e-2)
-print(res)
 
-R_s = res[:, 0]
-v_s = res[:, 1]
-E_b = res[:, 2]
-E_s_th= res[:, 3]
+df = pd.DataFrame(res, columns = ['R_s','v_s','E_b','E_s_th'])
+df['t'] = t
 
-#--- ns -----
-Ms = 4.0 * np.pi * rho_0 * R_0**alpha * R_s**(3. - alpha) / (3. - alpha)
-Pb = E_b / 2.0 / np.pi / R_s**3
-ns = 3./2. * Pb * Ms * XH / mH / E_s_th
+df.to_csv('data.csv', index = False)
+
+print(df)
 
 
-Rs_kpc = R_s / 3.086e+18 / 1000
-vs_kms = v_s / 100 / 1000
-
-Ts = T_s(E_s_th, R_s, rho_0, R_0, alpha)
-nx = np.isfinite(Ts)
-Ts = Ts[nx]
-
-ns = ns[nx]
-
-Rs = R_s[nx]
-
-tMyr = tMyr[nx]
-
-tt = np.linspace(tMyr[-1], 1.0, 1000)
 
 
-#tMyr = np.concatenate([tMyr, tt])
-#Ts = np.concatenate([Ts, Tsx])
-
-#tMyr = tMyr[1:]
-#Ts = Ts[1:]
-
-if True:
-	plt.scatter(tMyr, ns, s = 1)
-	#plt.xscale('log')
-	#plt.yscale('log')
-	#plt.xlim(1e3, 1e10)
-	#plt.ylim(1e3, 1e10)
-	plt.show()
 
 
 

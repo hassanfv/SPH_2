@@ -53,21 +53,25 @@ Es_tot = Es_th + Es_kin
 
 E_tot = Es_tot + Eb
 
+E_th = Es_th + Eb # Note that Eb is thermal and not kinematic !!
+
 MdotIn = Mdot_in(Tou_in, L_AGN, clight, v_in)
 E_in = 0.5 * MdotIn * v_in * v_in * (tMyr * 1e6 * 365.25 * 24 * 3600)
 
 
-plt.plot(tMyr, E_tot/E_in, linewidth = 3, color = 'k')
+plt.plot(tMyr, E_th/E_tot, linewidth = 3, color = 'k')
 
 plt.ylim(0.1, 1.2)
 plt.xlim(0.0, 1.0)
 
 plt.xlabel('Time (Myr)')
-plt.ylabel('E_tot/E_in')
+plt.ylabel('E_th/E_tot')
 plt.title('See Fig.2 in Richings et al - 2018')
 
 plt.savefig('fig.png')
 plt.show()
+
+
 
 
 

@@ -15,6 +15,18 @@ def Mdot_in(Tou_in, L_AGN, clight, v_in):
 	return Tou_in * L_AGN / clight / v_in
 
 
+#===== P_0
+def P_0(R_s, rho_0, R_0, alpha, R_gas, T_ism):
+
+	return rho_0 * (R_s/R_0)**(-alpha) * R_gas * T_ism
+
+#===== P_b
+def P_b(E_b, R_s):
+	
+	return E_b / 2.0 / np.pi / R_s**3
+
+
+
 nH = 1.0e1
 XH = 0.9
 mH = 1.6726e-24
@@ -53,21 +65,57 @@ Es_tot = Es_th + Es_kin
 
 E_tot = Es_tot + Eb
 
+E_th = Es_th + Eb # Note that Eb is thermal and not kinematic !!
+
 MdotIn = Mdot_in(Tou_in, L_AGN, clight, v_in)
 E_in = 0.5 * MdotIn * v_in * v_in * (tMyr * 1e6 * 365.25 * 24 * 3600)
 
+Pb = P_b(Eb, Rs)
 
-plt.plot(tMyr, E_tot/E_in, linewidth = 3, color = 'k')
+ns = 3./2. * Pb * Ms * XH / mH / Es_th
 
-plt.ylim(0.1, 1.2)
-plt.xlim(0.0, 1.0)
+Rs_kpc = Rs / 3.086e18 / 1000
+vs_kms = vs / 100 / 1000
 
-plt.xlabel('Time (Myr)')
-plt.ylabel('E_tot/E_in')
-plt.title('See Fig.2 in Richings et al - 2018')
+#---- Calculating the momentum boost ---
+t_sec = tMyr * 1e6 * 365.25 * 24 * 3600
+
+res = []
+
+for i in range(1, len(tMyr)):
+
+	P1 = Ms[i - 1] * vs[i - 1]
+	P2 = Ms[i] * vs[i]
+	dP = P2 - P1
+	
+	dt = t_sec[i] - t_sec[i - 1]
+	
+	dP_dt = dP / dt
+	
+	res.append([vs[i], dP_dt])
+
+res = np.array(res)
+vsp = res[:, 0] / 100 / 1000
+P_dot_r = res[:, 1] / (L_AGN / clight)
+
+#----------------------------------------
+
+plt.plot(vsp, P_dot_r, linewidth = 3, color = 'k')
+
+plt.xlim(1e2, 1e4)
+plt.ylim(1, 100)
+
+plt.xscale('log')
+plt.yscale('log')
+
+plt.xlabel('v_s (km/s)')
+plt.ylabel('P_dot_r/LAGN/c')
+plt.title('See Fig.5 in Richings et al - 2018')
 
 plt.savefig('fig.png')
 plt.show()
+
+
 
 
 
