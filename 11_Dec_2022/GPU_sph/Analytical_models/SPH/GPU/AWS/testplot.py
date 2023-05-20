@@ -30,6 +30,7 @@ mH = 1.6726e-24 # gram
 
 print(rho.shape)
 
+
 colden = rho * UnitDensity_in_cgs * dx * UnitRadius_in_cm # column density in g/cm2
 colden2= colden / mH # column density in cm^-2
 
@@ -47,7 +48,7 @@ print('max(colden in M_sun/pc^2) = ', np.max(colden_Msun_pc2.flatten()))
 plt.figure(figsize = (12, 8))
 plt.imshow(colden_Msun_pc2.T, cmap = 'rainbow_r')
 
-plt.clim(0, 0.04)
+plt.clim(0, 0.28)
 
 plt.colorbar()
 
