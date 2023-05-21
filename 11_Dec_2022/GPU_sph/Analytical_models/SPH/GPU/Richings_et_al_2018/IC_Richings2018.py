@@ -22,7 +22,7 @@ mH = 1.6726219e-24  # Proton mass in grams
 clight = 29979245800. # cm/s
 cm_to_kpc = 3.086e21
 
-N_particles = 30000 # desired number of SPH particles in the simulation.
+N_particles = 10000 # desired number of SPH particles in the simulation.
 
 nH = 10.0 # cm^-3
 T_gas = 1e4 # K
