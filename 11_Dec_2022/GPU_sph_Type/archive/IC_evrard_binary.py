@@ -14,9 +14,6 @@ x = data['x'].reshape(-1, 1)
 y = data['y'].reshape(-1, 1)
 z = data['z'].reshape(-1, 1)
 
-print(x[:10])
-s()
-
 r = np.hstack((x, y, z))
 
 N = len(x)
@@ -52,6 +49,10 @@ vx = np.round(v[:, 0], 5)
 vy = np.round(v[:, 1], 5)
 vz = np.round(v[:, 2], 5)
 
+Typ = np.full(len(x), 0)
+
+Typ = Typ.astype(np.int32)
+
 x = x.astype(np.float32)
 y = y.astype(np.float32)
 z = z.astype(np.float32)
@@ -68,6 +69,7 @@ u = u.astype(np.float32)
 # Save the arrays to a binary file
 num = str(int(np.floor(N/1000)))
 with open('Evrard_GPU_IC_' + num + 'k.bin', "wb") as file:
+    file.write(Typ.tobytes())
     file.write(x.tobytes())
     file.write(y.tobytes())
     file.write(z.tobytes())
