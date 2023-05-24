@@ -1,6 +1,38 @@
 #ifndef HFVCPPLIBS_H
 #define HFVCPPLIBS_H
 
+#include <curand.h>
+#include <curand_kernel.h>
+
+// Added the reading of the params.txt file and updated the IC reading file section and function. (22 May 2023).
+
+//******************************************
+//********** Reading params.txt ************
+//******************************************
+
+void readParams(std::string &filename, int &N_tot, float &G, float &L_AGN_code_unit,
+                float &M_dot_in_code_unit, float &vin_in_code_unit,
+                float &u_for_10K_Temp, float &m_sph_high_res)
+{
+  std::ifstream file("params.txt");
+  if (file.is_open())
+  {
+    std::getline(file, filename); // Read filename string
+    file >> N_tot;                // Read N_tot
+    file >> G;                    // Read G
+    file >> L_AGN_code_unit;      // Read L_AGN_code_unit
+    file >> M_dot_in_code_unit;   // Read M_dot_in_code_unit
+    file >> vin_in_code_unit;     // Read vin_in_code_unit
+    file >> u_for_10K_Temp;       // Read u_for_10K_Temp
+    file >> m_sph_high_res;       // Read m_sph_high_res
+  }
+  else
+  {
+    std::cout << "Unable to open params.txt file";
+  }
+  file.close();
+}
+
 //***************************************
 //********** Reading IC file ************
 //***************************************
@@ -104,15 +136,18 @@ void saveArraysToBinary(const std::string &filename, float *x, float *y, float *
 //*******************************
 //********* max_finder **********
 //*******************************
-float max_finder(float *arr, int N)
+float max_finder(int *Typ, float *arr, int N)
 {
 
   float max_val = 0.0;
   for (int i = 0; i < N; i++)
   {
-    if (arr[i] >= max_val)
+    if (Typ[i] == 0)
     {
-      max_val = arr[i];
+      if (arr[i] >= max_val)
+      {
+        max_val = arr[i];
+      }
     }
   }
   return max_val;
@@ -195,7 +230,7 @@ __global__ void smoothing_h(int *Typ, float *x, float *y, float *z, float *h,
       }
 
       N_iter++;
-      if (N_iter > 100)
+      if (N_iter > 1000)
       {
         h_new = h_tmp;
         break;
@@ -779,6 +814,117 @@ __global__ void dt_array_indiv_dt(int *Typ, float *x, float *y, float *z,
     dt_particles[i] = dtxx;
 
     dh_dt[i] = 1.0f / 3.0f * h[i] * divV[i]; // See the line below eq.31 in Gadget 2 paper.
+  }
+}
+
+//==============================================================
+//========= Outflow injection (Richings et al - 2018)===========
+//==============================================================
+__global__ void outflow_injector(int *Typ, float *x, float *y, float *z,
+                                 float *vx, float *vy, float *vz,
+                                 float *h, float *eps, float *mass,
+                                 float Nngb_f, float *Nngb_previous,
+                                 float *u, float M_dot_in, float v_in,
+                                 float mass_sph_high_res, float u_for_10K_Temp,
+                                 float h_mean, float *leftover_mass, float dt, int N,
+                                 unsigned long long seed)
+{
+
+  int idx = threadIdx.x + blockIdx.x * blockDim.x;
+
+  if (idx == 0)
+  {
+    // Calculate the mass to inject in each time step
+    float mass_to_inject = M_dot_in * dt;
+    mass_to_inject += *leftover_mass;
+
+    // Calculate number of particle pairs to inject
+    int num_pairs = static_cast<int>(mass_to_inject / (2.0f * mass_sph_high_res));
+
+    float one_pc_in_code_unit = 0.001f; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    // Create a cuRAND generator and set the seed
+    // curandState state;
+    // unsigned long long seed = 123456789; // can be any integer!
+    // curand_init(seed, idx, 0, &state);
+
+    // Initialize cuRAND generator with the provided seed
+    curandState state;
+    curand_init(seed, idx, 0, &state);
+
+    // Finding the last index for which Typ is not equal to -1.
+    // Note that with the way I do in this for loop, jj will be the number of times Typ is not
+    // equal to -1. So to convert it to index, we need to subtract 1 from it !!!
+    int jj = 0;
+    for (int i = 0; i < N; i++)
+    {
+      if ((Typ[i] == 0) || (Typ[i] == 1))
+      {
+        jj += 1;
+      }
+    }
+    jj -= 1; // See the above explanation!!
+
+    // Spawn particle pairs
+    for (int j = 0; j < num_pairs; j++)
+    {
+      // Calculate random distance from 0 to 1 pc (in cm)
+      float rt = curand_uniform(&state) * one_pc_in_code_unit;
+      // Calculate random orientation (assuming spherical coordinates)
+      float theta = curand_uniform(&state) * 2.0f * M_PI;
+      float phi = curand_uniform(&state) * M_PI;
+      // Calculate Cartesian coordinates of the pair
+      float xt = rt * sin(phi) * cos(theta);
+      float yt = rt * sin(phi) * sin(theta);
+      float zt = rt * cos(phi);
+
+      float rr = sqrt(xt * xt + yt * yt + zt * zt);
+
+      float vxt = xt / rr * v_in;
+      float vyt = yt / rr * v_in;
+      float vzt = zt / rr * v_in;
+
+      //---- Injecting the first particle of the pair ----
+      Typ[jj + 1] = 0;
+
+      x[jj + 1] = xt;
+      y[jj + 1] = yt;
+      z[jj + 1] = zt;
+
+      vx[jj + 1] = vxt;
+      vy[jj + 1] = vyt;
+      vz[jj + 1] = vzt;
+
+      mass[jj + 1] = mass_sph_high_res;
+      h[jj + 1] = h_mean;
+      eps[jj + 1] = h_mean;
+      u[jj + 1] = u_for_10K_Temp;
+
+      Nngb_previous[jj + 1] = Nngb_f;
+
+      //---- Injecting the second particle of the pair ----
+      Typ[jj + 2] = 0;
+
+      x[jj + 2] = -xt;
+      y[jj + 2] = -yt;
+      z[jj + 2] = -zt;
+
+      vx[jj + 2] = -vxt;
+      vy[jj + 2] = -vyt;
+      vz[jj + 2] = -vzt;
+
+      mass[jj + 2] = mass_sph_high_res;
+      h[jj + 2] = h_mean;
+      eps[jj + 2] = h_mean;
+      u[jj + 2] = u_for_10K_Temp;
+
+      Nngb_previous[jj + 2] = Nngb_f;
+
+      jj += 2;
+
+      mass_to_inject -= 2.0f * mass_sph_high_res;
+    }
+    *leftover_mass = mass_to_inject;
   }
 }
 

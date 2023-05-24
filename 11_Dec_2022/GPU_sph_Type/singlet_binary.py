@@ -89,7 +89,7 @@ def read_arrays_from_binary(filename):
     return x, y, z, vx, vy, vz, rho, h, u, m, Typ, N
 
 # Specify the input file name
-filename = 'G-0.801369.bin'
+filename = 'G-0.834041.bin'
 
 # Read the arrays from the binary file
 rx, ry, rz, vx, vy, vz, rho, h, u, m, Typ, N = read_arrays_from_binary(filename)

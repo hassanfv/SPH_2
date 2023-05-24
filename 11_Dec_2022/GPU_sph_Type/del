@@ -1,0 +1,22 @@
+cudaMemcpy(x, d_x, N * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(vx, d_vx, N * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(Nngb_previous, d_Nngb_previous, N * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h, d_h, N * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(u, d_u, N * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(Typ, d_Typ, N * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(&leftover_mass, d_leftover_mass, sizeof(float), cudaMemcpyDeviceToHost);
+    cout << "NNN = " << N << endl;
+    cout << "leftover_mass = " << leftover_mass << endl;
+    cout << "m_sph_high_res = " << m_sph_high_res << endl;
+    for (int i = 99999; i < 100005; i++)
+    {
+      cout << "i, Typ, hhh, u, Nngb_prev, x, vx = " << i << ", " << Typ[i] << ", " 
+           << h[i]<<", "<< u[i] << ", " << Nngb_previous[i] << ", " 
+           << x[i] << ", " << vx[i] << endl;
+    }
+
+    
+    if (counter == 20)
+    {
+    exit(0);
+    }

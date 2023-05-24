@@ -1,6 +1,34 @@
 #ifndef HFVCPPLIBS_H
 #define HFVCPPLIBS_H
 
+
+// Added the reading of the params.txt file and updated the IC reading file section and function. (22 May 2023).
+
+//******************************************
+//********** Reading params.txt ************
+//******************************************
+
+void readParams(std::string &filename, int &N_tot, float &G, float &L_AGN_code_unit, 
+                float &M_dot_in_code_unit, float &vin_in_code_unit, 
+                float &u_for_10K_Temp, float &m_sph_high_res) {
+    std::ifstream file("params.txt");
+    if (file.is_open()) {
+        std::getline(file, filename); // Read filename string
+        file >> N_tot; // Read N_tot
+        file >> G; // Read G
+        file >> L_AGN_code_unit; // Read L_AGN_code_unit
+        file >> M_dot_in_code_unit; // Read M_dot_in_code_unit
+        file >> vin_in_code_unit; // Read vin_in_code_unit
+        file >> u_for_10K_Temp; // Read u_for_10K_Temp
+        file >> m_sph_high_res; // Read m_sph_high_res
+    }
+    else {
+        std::cout << "Unable to open params.txt file";
+    }
+    file.close();
+}
+
+
 //***************************************
 //********** Reading IC file ************
 //***************************************

@@ -8,24 +8,40 @@
 #include <chrono>
 #include <random>
 #include <tuple>
-#include "hfvCppLibs.h"
+#include "hfvCppLibs_v3.h"
+
+// Added the reading of the params.txt file and updated the IC reading file section and function. (22 May 2023).
 
 using namespace std;
 
 int main()
 {
 
-  float dt = 1e-4; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is only the first time step !!
+  float dt = 1e-7; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is only the first time step !!
 
   const int Nngb_f = 64.0f; // used in smoothing func.
   const int Nngb = 64;
   const int Ndown = Nngb - 5;
   const int Nup = Nngb + 5;
   const float coeff = 0.001f; // used for smoothing length.
-  const float G = 1.0f;
 
-  int N = 1472;
-  std::string filename = "Evrard_GPU_IC_1k.bin";
+  // Reading the params.txt file
+  std::string filename;
+  int N;
+  float G, L_AGN_code_unit, M_dot_in, v_in, u_for_10K_Temp, m_sph_high_res;
+
+  readParams(filename, N, G, L_AGN_code_unit, M_dot_in, v_in, u_for_10K_Temp, m_sph_high_res);
+
+  std::cout << "filename: " << filename << "\n";
+  std::cout << "N: " << N << "\n";
+  std::cout << "G: " << G << "\n";
+  std::cout << "L_AGN_code_unit: " << L_AGN_code_unit << "\n";
+  std::cout << "M_dot_in_code_unit: " << M_dot_in << "\n";
+  std::cout << "vin_in_code_unit: " << v_in << "\n";
+  std::cout << "u_for_10K_Temp: " << u_for_10K_Temp << "\n";
+  std::cout << "m_sph_high_res: " << m_sph_high_res << "\n";
+
+  // Reading the IC file
   auto data = readVectorsFromFile(N, filename);
 
   std::vector<int> &Typvec = std::get<0>(data);
@@ -337,6 +353,14 @@ int main()
 
   const float C_CFL = 0.25;
 
+  float h_min, h_max, h_mean;
+  
+  float leftover_mass = 0.0f;
+  float *d_leftover_mass;
+  cudaMalloc((void **)&d_leftover_mass, sizeof(float));
+  cudaMemcpy(d_leftover_mass, &leftover_mass, sizeof(float), cudaMemcpyHostToDevice);
+  
+
   // **************************************************************
   // *********************** MAIN LOOP ****************************
   // **************************************************************
@@ -450,7 +474,7 @@ int main()
     }
 
     //------------ SAVING SNAP-SHOTS ------------
-    if (!(counter % 20))
+    if (!(counter % 200))
     {
       cudaMemcpy(Typ, d_Typ, N * sizeof(float), cudaMemcpyDeviceToHost);
 
@@ -507,6 +531,33 @@ int main()
     t += dt;
 
     dt = min_finder(Typ, dt_particles, N);
+
+    //***********************************************************
+    //*************** Outflow particle injection ****************
+    //***********************************************************
+    
+    // Generate a seed using the high resolution clock
+    auto now = std::chrono::high_resolution_clock::now();
+    auto nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+    unsigned long long seed = static_cast<unsigned long long>(nanos);
+    //------------
+
+    cudaMemcpy(h, d_h, N * sizeof(float), cudaMemcpyDeviceToHost);
+    h_min = min_finder(Typ, h, N);
+    h_max = max_finder(Typ, h, N);
+    h_mean = 0.5f * (h_min + h_max);
+
+    outflow_injector<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z,
+                                              d_vx, d_vy, d_vz,
+                                              d_h, d_eps, d_mass,
+                                              Nngb_f, d_Nngb_previous,
+                                              d_u, M_dot_in, v_in,
+                                              m_sph_high_res, u_for_10K_Temp,
+                                              h_mean, d_leftover_mass, dt, N,
+                                              seed);
+    cudaDeviceSynchronize();
+  
+
 
     if (!(counter % 1))
     {

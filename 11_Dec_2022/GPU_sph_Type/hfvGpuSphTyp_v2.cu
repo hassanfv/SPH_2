@@ -8,7 +8,10 @@
 #include <chrono>
 #include <random>
 #include <tuple>
-#include "hfvCppLibs.h"
+#include "hfvCppLibs_v2.h"
+
+
+// Added the reading of the params.txt file and updated the IC reading file section and function. (22 May 2023).
 
 using namespace std;
 
@@ -22,10 +25,27 @@ int main()
   const int Ndown = Nngb - 5;
   const int Nup = Nngb + 5;
   const float coeff = 0.001f; // used for smoothing length.
-  const float G = 1.0f;
 
-  int N = 1472;
-  std::string filename = "Evrard_GPU_IC_1k.bin";
+
+  // Reading the params.txt file
+  std::string filename;
+  int N;
+  float G, L_AGN_code_unit, M_dot_in_code_unit, vin_in_code_unit, u_for_10K_Temp, m_sph_high_res;
+
+  readParams(filename, N, G, L_AGN_code_unit, M_dot_in_code_unit, vin_in_code_unit, u_for_10K_Temp, m_sph_high_res);
+
+  std::cout << "filename: " << filename << "\n";
+  std::cout << "N: " << N << "\n";
+  std::cout << "G: " << G << "\n";
+  std::cout << "L_AGN_code_unit: " << L_AGN_code_unit << "\n";
+  std::cout << "M_dot_in_code_unit: " << M_dot_in_code_unit << "\n";
+  std::cout << "vin_in_code_unit: " << vin_in_code_unit << "\n";
+  std::cout << "u_for_10K_Temp: " << u_for_10K_Temp << "\n";
+  std::cout << "m_sph_high_res: " << m_sph_high_res << "\n";
+
+  // int N = 1472;
+  //std::string filename = "Evrard_GPU_IC_1k.bin";
+  // Reading the IC file
   auto data = readVectorsFromFile(N, filename);
 
   std::vector<int> &Typvec = std::get<0>(data);

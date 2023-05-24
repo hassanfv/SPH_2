@@ -192,13 +192,7 @@ int main()
 
     dt_particles[i] = 0.0f;
 
-    if (Typ[i] == 0)
-    {
     Nngb_previous[i] = Nngb_f;
-    } else
-    {
-    Nngb_previous[i] = 0.0f;
-    }
   }
 
   // Copy from Host to Device.
