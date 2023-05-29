@@ -28,7 +28,7 @@ cm_to_kpc = 3.086e21
 sigma = 200. * 1000. * 100. # cm/s =====> 200 km/s - See eq.1 in Richings et al - 2018
 
 # In the current simulation all these particles are gas particle. We later add a collisionless BH.
-N_particles = 300000
+N_particles = 400000
 
 nH = 10.0  # cm^-3
 T_gas = 1e4  # K
@@ -257,7 +257,6 @@ if rank == 0:
     u_for_10K_Temp = (3/2) * kB * T_gas / mu / mH / Unit_u_in_cgs
     
     m_sph_high_res = mSPH_in_g / unitMass_in_g
-    m_sph_high_res /= 4.0 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     sigma_in_code_unit = sigma / unitVelocity_in_cm_per_s
 

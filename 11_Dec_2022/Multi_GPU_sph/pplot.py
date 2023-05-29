@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-filename = 'G-0.000400.bin'
+filename = 'G-0.000320.bin'
 
 def loadArraysFromBinary(filename):
     with open(filename, "rb") as file:
@@ -27,16 +27,15 @@ def loadArraysFromBinary(filename):
 # Usage
 N, Typ, x, y, z, vx, vy, vz, rho, h, u, mass = loadArraysFromBinary(filename)
 
-print(np.sum(Typ == -1))
 
-nz = np.where(np.abs(z) < 0.03)[0]
+nz = np.where(np.abs(z) < 0.04)[0]
 
 
 plt.figure(figsize = (6, 6))
-plt.scatter(x[nz], y[nz], s = 0.05, color = 'k')
+plt.scatter(x[nz], y[nz], s = 0.01, color = 'k')
 plt.scatter([0, 0], [0, 0], s = 20, color = 'r')
 
-xy = 0.32
+xy = 0.28
 
 plt.xlim(-xy, xy)
 plt.ylim(-xy, xy)
