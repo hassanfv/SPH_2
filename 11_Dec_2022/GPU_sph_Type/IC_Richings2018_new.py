@@ -28,7 +28,7 @@ cm_to_kpc = 3.086e21
 sigma = 200. * 1000. * 100. # cm/s =====> 200 km/s - See eq.1 in Richings et al - 2018
 
 # In the current simulation all these particles are gas particle. We later add a collisionless BH.
-N_particles = 300000
+N_particles = 1000000
 
 nH = 10.0  # cm^-3
 T_gas = 1e4  # K

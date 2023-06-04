@@ -8,42 +8,27 @@
 #include <chrono>
 #include <random>
 #include <tuple>
-#include "hfvCppLibs_v4.h"
-
-// Added the isothermal gravitational field acceleration. (24 May 2023).
-// Added the reading of the params.txt file and updated the IC reading file section and function. (22 May 2023).
+#include "hfvCppLibs_indiv_dt.h"
 
 using namespace std;
 
 int main()
 {
 
-  float dt = 1e-7; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is only the first time step !!
+  float dt = 1e-4; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is only the first time step !!
+
+  float dt_min_j;
 
   const int Nngb_f = 64.0f; // used in smoothing func.
   const int Nngb = 64;
   const int Ndown = Nngb - 5;
   const int Nup = Nngb + 5;
   const float coeff = 0.001f; // used for smoothing length.
+  const float G = 1.0f;
+  const float C_CFL = 0.25;
 
-  // Reading the params.txt file
-  std::string filename;
-  int N;
-  float G, L_AGN_code_unit, M_dot_in, v_in, u_for_10K_Temp, m_sph_high_res, sigma;
-
-  readParams(filename, N, G, L_AGN_code_unit, M_dot_in, v_in, u_for_10K_Temp, m_sph_high_res, sigma);
-
-  std::cout << "filename: " << filename << "\n";
-  std::cout << "N: " << N << "\n";
-  std::cout << "G: " << G << "\n";
-  std::cout << "L_AGN_code_unit: " << L_AGN_code_unit << "\n";
-  std::cout << "M_dot_in_code_unit: " << M_dot_in << "\n";
-  std::cout << "vin_in_code_unit: " << v_in << "\n";
-  std::cout << "u_for_10K_Temp: " << u_for_10K_Temp << "\n";
-  std::cout << "m_sph_high_res: " << m_sph_high_res << "\n";
-  std::cout << "sigma: " << sigma << "\n";
-
-  // Reading the IC file
+  int N = 65752;
+  std::string filename = "Evrard_GPU_IC_65k.bin";
   auto data = readVectorsFromFile(N, filename);
 
   std::vector<int> &Typvec = std::get<0>(data);
@@ -118,6 +103,18 @@ int main()
 
   Nngb_previous = new float[N];
 
+  float *t_last, *t_next, *d_t_last, *d_t_next;
+  int *activeId, *d_activeId;
+  float *accx_prev, *accy_prev, *accz_prev, *d_accx_prev, *d_accy_prev, *d_accz_prev;
+
+  t_last = new float[N];
+  t_next = new float[N];
+  activeId = new int[N];
+
+  accx_prev = new float[N];
+  accy_prev = new float[N];
+  accz_prev = new float[N];
+
   cudaMalloc(&d_Typ, N * sizeof(int));
 
   cudaMalloc(&d_x, N * sizeof(float));
@@ -161,6 +158,15 @@ int main()
   cudaMalloc(&d_utprevious, N * sizeof(float));
 
   cudaMalloc(&d_Nngb_previous, N * sizeof(float));
+
+  cudaMalloc(&d_t_last, N * sizeof(float));
+  cudaMalloc(&d_t_next, N * sizeof(float));
+
+  cudaMalloc(&d_activeId, N * sizeof(int));
+
+  cudaMalloc(&d_accx_prev, N * sizeof(float));
+  cudaMalloc(&d_accy_prev, N * sizeof(float));
+  cudaMalloc(&d_accz_prev, N * sizeof(float));
 
   // Initialize x, y, and z on the Host.
   for (int i = 0; i < N; i++)
@@ -210,14 +216,16 @@ int main()
 
     dt_particles[i] = 0.0f;
 
-    if (Typ[i] == 0)
-    {
-      Nngb_previous[i] = Nngb_f;
-    }
-    else
-    {
-      Nngb_previous[i] = 0.0f;
-    }
+    Nngb_previous[i] = Nngb_f;
+
+    t_last[i] = 0.0f;
+    t_next[i] = 0.0f;
+
+    activeId[i] = 1; // all particles are first assumed active but then will be correctly modified!
+
+    accx_prev[i] = 0.0f;
+    accy_prev[i] = 0.0f;
+    accz_prev[i] = 0.0f;
   }
 
   // Copy from Host to Device.
@@ -238,7 +246,6 @@ int main()
   cudaMemcpy(d_mass, mass, N * sizeof(float), cudaMemcpyHostToDevice);
   cudaMemcpy(d_h, h, N * sizeof(float), cudaMemcpyHostToDevice);
 
-  // cudaMemcpy(d_hprevious, hprevious, N * sizeof(float), cudaMemcpyHostToDevice);
   cudaMemcpy(d_rho, rho, N * sizeof(float), cudaMemcpyHostToDevice);
   cudaMemcpy(d_eps, eps, N * sizeof(float), cudaMemcpyHostToDevice);
   cudaMemcpy(d_P, P, N * sizeof(float), cudaMemcpyHostToDevice);
@@ -263,10 +270,18 @@ int main()
 
   cudaMemcpy(d_u, u, N * sizeof(float), cudaMemcpyHostToDevice);
   cudaMemcpy(d_dudt, dudt, N * sizeof(float), cudaMemcpyHostToDevice);
-  // cudaMemcpy(d_uprevious, uprevious, N * sizeof(float), cudaMemcpyHostToDevice);
   cudaMemcpy(d_utprevious, utprevious, N * sizeof(float), cudaMemcpyHostToDevice);
 
   cudaMemcpy(d_Nngb_previous, Nngb_previous, N * sizeof(float), cudaMemcpyHostToDevice);
+
+  cudaMemcpy(d_t_last, t_last, N * sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_t_next, t_next, N * sizeof(float), cudaMemcpyHostToDevice);
+
+  cudaMemcpy(d_activeId, activeId, N * sizeof(int), cudaMemcpyHostToDevice);
+
+  cudaMemcpy(d_accx_prev, accx_prev, N * sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_accy_prev, accy_prev, N * sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_accz_prev, accz_prev, N * sizeof(float), cudaMemcpyHostToDevice);
 
   int blockSize = 256;                            // number of threads in a block
   int gridSize = (N + blockSize - 1) / blockSize; // Number of blocks in a grid
@@ -279,6 +294,56 @@ int main()
 
   float tEnd = 5.0f;
   float Nt = ceil(tEnd / dt) + 1;
+
+  //******************************************************
+  //************* Getting Time-step dt ******************
+  //******************************************************
+
+  dt_array_indiv_dt<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z,
+                                             d_vx, d_vy, d_vz,
+                                             d_accx, d_accy, d_accz,
+                                             d_accx_tot, d_accy_tot, d_accz_tot,
+                                             d_h, d_csnd, d_dt_particles,
+                                             d_abs_acc_g, d_abs_acc_tot,
+                                             d_divV, d_dh_dt, C_CFL,
+                                             visc_alpha, d_eps, N);
+  cudaDeviceSynchronize();
+
+  create_dt_blocks<<<gridSize, blockSize>>>(d_Typ, d_dt_particles, N);
+  cudaDeviceSynchronize();
+
+  cudaMemcpy(dt_particles, d_dt_particles, N * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(Typ, d_Typ, N * sizeof(int), cudaMemcpyDeviceToHost);
+
+  // t_last[nxActive] = t;
+  // t_next[nxActive] = t_last[nxActive] + dt_i[nxActive];
+  // Only update for active particles! But in the first run we set all particles as active and then
+  // below it will update the active particle list correctly. Setting all to active in this step is
+  // not only safe but necessary !!
+  // update_t_last_next is only executed once in the begining of the run. In later time-steps, t_last
+  // and t_next will be updated inside the acc. computation function!!
+  update_t_last_next<<<gridSize, blockSize>>>(d_Typ, d_t_last, d_t_next, d_activeId, d_dt_particles, t, N);
+  cudaDeviceSynchronize();
+
+  // NOTE: t_last at the start of the run is 0.0 for all particles, and t_next
+  // is equal to the dt_particle of each particle after block creation.
+  cudaMemcpy(t_next, d_t_next, N * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(activeId, d_activeId, N * sizeof(int), cudaMemcpyDeviceToHost);
+   dt_min_j = dt_min_finder(Typ, activeId, t_next, t, N); // dt_min_finder is a HOST function here!
+
+  // active particles are those with t_next - t = dt_min_j (i.e. min(t_next - t))
+  // For the first run, we set all particles to active.
+  who_is_active<<<gridSize, blockSize>>>(d_Typ, d_activeId, d_t_next, dt_min_j, t, N);
+  cudaDeviceSynchronize();
+
+  cout << "dt_min_j = " << dt_min_j << endl;
+
+    cout << "t_next[0] = " << t_next[0] << endl;
+    cout << "dt_particles[0] = " << dt_particles[0] << endl;
+    cout << "activeId[0] = " << activeId[0] << endl;
+    cout << "t = " << t << endl;
+
+  dt = dt_min_j;
 
   //-----------------------------------------------
   //-------------- Smoothing Length ---------------
@@ -295,11 +360,12 @@ int main()
                                       d_rho, d_h, N);
   cudaDeviceSynchronize();
 
+
   //-----------------------------------------------
   //------------------ getAcc_g -------------------
   //-----------------------------------------------
-  acc_g<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_eps, d_accx, d_accy, d_accz,
-                                 d_mass, G, N);
+  acc_g_block<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_eps, d_accx, d_accy, d_accz,
+                                       d_mass, d_activeId, G, N);
   cudaDeviceSynchronize();
 
   //-----------------------------------------------
@@ -332,11 +398,15 @@ int main()
   //-----------------------------------------------
   //------------------ acc_tot --------------------
   //-----------------------------------------------
-  acc_g_sph<<<gridSize, blockSize>>>(d_Typ, d_accx_tot, d_accy_tot, d_accz_tot,
-                                     d_accx, d_accy, d_accz,
-                                     d_accx_sph, d_accy_sph, d_accz_sph,
-                                     N);
+  acc_g_sphB<<<gridSize, blockSize>>>(d_Typ, d_accx_tot, d_accy_tot, d_accz_tot,
+                                      d_accx, d_accy, d_accz,
+                                      d_accx_sph, d_accy_sph, d_accz_sph,
+                                      d_accx_prev, d_accy_prev, d_accz_prev,
+                                      d_activeId, N);
   cudaDeviceSynchronize();
+
+
+  
 
   //-----------------------------------------------
   //------------------- du_dt ---------------------
@@ -347,6 +417,11 @@ int main()
                                   visc_alpha, N);
   cudaDeviceSynchronize();
 
+
+
+  cudaDeviceSynchronize();
+
+
   //-----------------------------------------------
   //---------------- u evolution ------------------
   //-----------------------------------------------
@@ -354,15 +429,36 @@ int main()
   u_updater<<<gridSize, blockSize>>>(d_Typ, d_u, d_dudt, d_utprevious, dt, N);
   cudaDeviceSynchronize();
 
-  const float C_CFL = 0.25;
 
-  float h_min, h_max, h_mean;
+  //-----------------------------------------------
+  //------------- velocity evolution -------------- t_last should be used here for delta_t_j
+  //-----------------------------------------------
+  v_evolveB<<<gridSize, blockSize>>>(d_Typ, d_vx, d_vy, d_vz,
+                                     d_accx_tot, d_accy_tot, d_accz_tot,
+                                     d_accx_prev, d_accy_prev, d_accz_prev,
+                                     d_activeId, d_t_last, t, dt, N);
+  cudaDeviceSynchronize();
 
-  float leftover_mass = 0.0f;
-  float *d_leftover_mass;
-  cudaMalloc((void **)&d_leftover_mass, sizeof(float));
-  cudaMemcpy(d_leftover_mass, &leftover_mass, sizeof(float), cudaMemcpyHostToDevice);
+  //-----------------------------------------------
+  //------------- position evolution -------------- t_last should be used here for delta_t_j
+  //-----------------------------------------------
+  r_evolveB<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_vx, d_vy, d_vz,
+                                     d_accx_tot, d_accy_tot, d_accz_tot,
+                                     d_accx_prev, d_accy_prev, d_accz_prev,
+                                     d_activeId, d_t_last, t, dt, N);
+  cudaDeviceSynchronize();
 
+  t += dt;
+
+
+  
+
+
+
+
+  //
+  //
+  //
   // **************************************************************
   // *********************** MAIN LOOP ****************************
   // **************************************************************
@@ -371,18 +467,65 @@ int main()
 
   while (t < tEnd)
   {
-
     auto begin = std::chrono::high_resolution_clock::now();
 
-    //****************** velocity evolution *******************
-    v_evolve<<<gridSize, blockSize>>>(d_Typ, d_vx, d_vy, d_vz, d_accx_tot, d_accy_tot,
-                                      d_accz_tot, dt, N);
+    //******************************************************
+    //************* Updating Time-step dt ******************
+    //******************************************************
+
+    dt_array_indiv_dt<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z,
+                                               d_vx, d_vy, d_vz,
+                                               d_accx, d_accy, d_accz,
+                                               d_accx_tot, d_accy_tot, d_accz_tot,
+                                               d_h, d_csnd, d_dt_particles,
+                                               d_abs_acc_g, d_abs_acc_tot,
+                                               d_divV, d_dh_dt, C_CFL,
+                                               visc_alpha, d_eps, N);
     cudaDeviceSynchronize();
 
-    //****************** position evolution (BH fixed at [0, 0, 0]) *******************
-
-    r_evolve<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_vx, d_vy, d_vz, dt, N);
+    create_dt_blocks<<<gridSize, blockSize>>>(d_Typ, d_dt_particles, N);
     cudaDeviceSynchronize();
+
+    cudaMemcpy(dt_particles, d_dt_particles, N * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(Typ, d_Typ, N * sizeof(int), cudaMemcpyDeviceToHost);
+
+    update_t_last_next<<<gridSize, blockSize>>>(d_Typ, d_t_last, d_t_next, d_activeId, d_dt_particles, t, N);
+    cudaDeviceSynchronize();
+
+    cudaMemcpy(t_next, d_t_next, N * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(t_last, d_t_last, N * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(activeId, d_activeId, N * sizeof(int), cudaMemcpyDeviceToHost);
+    dt_min_j = dt_min_finder(Typ, activeId, t_next, t, N); // dt_min_finder is a HOST function here!
+
+    who_is_active<<<gridSize, blockSize>>>(d_Typ, d_activeId, d_t_next, dt_min_j, t, N);
+    cudaDeviceSynchronize();
+
+    float min_dt_particles = min_finder(Typ, dt_particles, N);
+    float max_dt_particles = max_finder(Typ, dt_particles, N);
+
+    int ss = 0;
+    for (int j = 0; j < N; j++)
+    {
+      if (activeId[j] == 1)
+        ss += 1;
+    }
+
+    cout << "dt_min_j = " << dt_min_j << endl;
+
+    cout << "Typ[0] = " << Typ[0] << endl;
+    cout << "t_last[0] = " << t_last[0] << endl;
+    cout << "t_next[0] = " << t_next[0] << endl;
+    cout << "dt_particles[0] = " << dt_particles[0] << endl;
+    cout << "min_dt_particles = " << min_dt_particles << endl;
+    cout << "max_dt_particles = " << max_dt_particles << endl;
+    cout << "activeId[0] = " << activeId[0] << endl;
+    cout << "N of activeId = " << ss << endl;
+    cout << "N = " << N << endl;
+
+
+    cout << "t = " << t << endl;
+
+    dt = dt_min_j;
 
     //****************** Smoothing Length *********************
 
@@ -403,8 +546,8 @@ int main()
 
     //****************** getAcc_gX *************************
     auto T_acc_g = std::chrono::high_resolution_clock::now();
-    acc_g<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_eps, d_accx, d_accy, d_accz,
-                                   d_mass, G, N);
+    acc_g_block<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_eps, d_accx, d_accy, d_accz,
+                                         d_mass, d_activeId, G, N);
     cudaDeviceSynchronize();
     auto end_acc_g = std::chrono::high_resolution_clock::now();
     auto elapsed_acc_g = std::chrono::duration_cast<std::chrono::nanoseconds>(end_acc_g - T_acc_g);
@@ -439,24 +582,15 @@ int main()
 
     //****************** acc_tot **************************
     auto T_acc_tot = std::chrono::high_resolution_clock::now();
-    acc_g_sph<<<gridSize, blockSize>>>(d_Typ, d_accx_tot, d_accy_tot, d_accz_tot,
-                                       d_accx, d_accy, d_accz,
-                                       d_accx_sph, d_accy_sph, d_accz_sph,
-                                       N);
+    acc_g_sphB<<<gridSize, blockSize>>>(d_Typ, d_accx_tot, d_accy_tot, d_accz_tot,
+                                        d_accx, d_accy, d_accz,
+                                        d_accx_sph, d_accy_sph, d_accz_sph,
+                                        d_accx_prev, d_accy_prev, d_accz_prev,
+                                        d_activeId, N);
     cudaDeviceSynchronize();
     auto end_acc_tot = std::chrono::high_resolution_clock::now();
     auto elapsed_acc_tot = std::chrono::duration_cast<std::chrono::nanoseconds>(end_acc_tot - T_acc_tot);
     cout << "T_acc_tot = " << elapsed_acc_tot.count() * 1e-9 << endl;
-
-    //******* Isothermal Gravity (Richings et al - 2018) ********
-    galaxy_isothermal_potential<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_accx_tot,
-                                                         d_accy_tot, d_accz_tot, sigma, G, N);
-    cudaDeviceSynchronize();
-
-    //****************** velocity evolution *******************
-    v_evolve<<<gridSize, blockSize>>>(d_Typ, d_vx, d_vy, d_vz, d_accx_tot, d_accy_tot,
-                                      d_accz_tot, dt, N);
-    cudaDeviceSynchronize();
 
     //******************** get_dUX (du_dt) *********************
     auto T_dU = std::chrono::high_resolution_clock::now();
@@ -472,18 +606,42 @@ int main()
     u_updater<<<gridSize, blockSize>>>(d_Typ, d_u, d_dudt, d_utprevious, dt, N);
     cudaDeviceSynchronize();
 
+    //****************** velocity evolution *******************
+    v_evolveB<<<gridSize, blockSize>>>(d_Typ, d_vx, d_vy, d_vz,
+                                       d_accx_tot, d_accy_tot, d_accz_tot,
+                                       d_accx_prev, d_accy_prev, d_accz_prev,
+                                       d_activeId, d_t_last, t, dt, N);
+    cudaDeviceSynchronize();
+
+    //****************** position evolution *******************
+    r_evolveB<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_vx, d_vy, d_vz,
+                                       d_accx_tot, d_accy_tot, d_accz_tot,
+                                       d_accx_prev, d_accy_prev, d_accz_prev,
+                                       d_activeId, d_t_last, t, dt, N);
+    cudaDeviceSynchronize();
+
     //-------------------------------------------------
 
+    t += dt;
+
+    // t_last[nxActive] = t;
+    // t_next[nxActive] = t_last[nxActive] + dt_i[nxActive];
+    // Only update for active particles!!
+    // update_t_last_next<<<gridSize, blockSize>>>(d_Typ, d_t_last, d_t_next, d_activeId, d_dt_particles, t, N);
+    // cudaDeviceSynchronize();
+
     cudaMemcpy(rho, d_rho, N * sizeof(float), cudaMemcpyDeviceToHost);
+    /*
     for (int i = 0; i < 5; i++)
     {
       cout << "AAA = " << rho[i] << endl;
     }
+    */
 
     //------------ SAVING SNAP-SHOTS ------------
     if (!(counter % 200))
     {
-      cudaMemcpy(Typ, d_Typ, N * sizeof(int), cudaMemcpyDeviceToHost);
+      cudaMemcpy(Typ, d_Typ, N * sizeof(float), cudaMemcpyDeviceToHost);
 
       cudaMemcpy(x, d_x, N * sizeof(float), cudaMemcpyDeviceToHost);
       cudaMemcpy(y, d_y, N * sizeof(float), cudaMemcpyDeviceToHost);
@@ -518,52 +676,6 @@ int main()
     cout << "Elapsed time = " << elapsed.count() * 1e-9 << endl;
     cout << endl;
 
-    //******************************************************
-    //************* Updating Time-step dt ******************
-    //******************************************************
-
-    dt_array_indiv_dt<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z,
-                                               d_vx, d_vy, d_vz,
-                                               d_accx, d_accy, d_accz,
-                                               d_accx_tot, d_accy_tot, d_accz_tot,
-                                               d_h, d_csnd, d_dt_particles,
-                                               d_abs_acc_g, d_abs_acc_tot,
-                                               d_divV, d_dh_dt, C_CFL,
-                                               visc_alpha, d_eps, N);
-    cudaDeviceSynchronize();
-
-    cudaMemcpy(dt_particles, d_dt_particles, N * sizeof(float), cudaMemcpyDeviceToHost);
-    cudaMemcpy(Typ, d_Typ, N * sizeof(int), cudaMemcpyDeviceToHost);
-
-    t += dt;
-
-    // dt = min_finder(Typ, dt_particles, N);
-
-    //***********************************************************
-    //*************** Outflow particle injection ****************
-    //***********************************************************
-
-    // Generate a seed using the high resolution clock
-    auto now = std::chrono::high_resolution_clock::now();
-    auto nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
-    unsigned long long seed = static_cast<unsigned long long>(nanos);
-    //------------
-
-    cudaMemcpy(h, d_h, N * sizeof(float), cudaMemcpyDeviceToHost);
-    h_min = min_finder(Typ, h, N);
-    h_max = max_finder(Typ, h, N);
-    h_mean = 0.5f * (h_min + h_max);
-
-    outflow_injector<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z,
-                                              d_vx, d_vy, d_vz,
-                                              d_h, d_eps, d_mass,
-                                              Nngb_f, d_Nngb_previous,
-                                              d_u, M_dot_in, v_in,
-                                              m_sph_high_res, u_for_10K_Temp,
-                                              h_mean, d_leftover_mass, dt, N,
-                                              seed);
-    cudaDeviceSynchronize();
-
     if (!(counter % 1))
     {
       cout << "Adopted dt = " << dt << endl;
@@ -571,6 +683,13 @@ int main()
       cout << "*****************************" << endl;
       cout << endl;
     }
+
+
+
+    //if (counter == 3)
+     // exit(0);
+
+
 
     counter++;
   }
@@ -638,3 +757,4 @@ int main()
   cudaFree(d_dudt);
   cudaFree(d_utprevious);
 }
+
