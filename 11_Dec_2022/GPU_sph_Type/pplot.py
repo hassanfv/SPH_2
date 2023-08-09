@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 filename = 'G-0.000400.bin'
 
+filename = './Outputs_300k_particles/G-0.000680.bin'
+
 def loadArraysFromBinary(filename):
     with open(filename, "rb") as file:
         # Read N

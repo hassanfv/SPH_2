@@ -367,7 +367,7 @@ int main()
   // The main GPU now has the full results in d_accx[0], d_accy[0], d_accz[0]
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_h[i], i, d_h[0], 0, N * sizeof(float));
   }
@@ -410,7 +410,7 @@ int main()
   // The main GPU now has the full results in d_rho[0]
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_rho[i], i, d_rho[0], 0, N * sizeof(float));
   }
@@ -455,7 +455,7 @@ int main()
   // The main GPU now has the full results in d_accx[0], d_accy[0], d_accz[0]
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_accx[i], i, d_accx[0], 0, N * sizeof(float));
     cudaMemcpyPeer(d_accy[i], i, d_accy[0], 0, N * sizeof(float));
@@ -495,7 +495,7 @@ int main()
   }
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_P[i], i, d_P[0], 0, N * sizeof(float));
   }
@@ -532,7 +532,7 @@ int main()
   }
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_csnd[i], i, d_csnd[0], 0, N * sizeof(float));
   }
@@ -573,7 +573,7 @@ int main()
   }
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_divV[i], i, d_divV[0], 0, N * sizeof(float));
     cudaMemcpyPeer(d_curlV[i], i, d_curlV[0], 0, N * sizeof(float));
@@ -616,7 +616,7 @@ int main()
   }
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_accx_sph[i], i, d_accx_sph[0], 0, N * sizeof(float));
     cudaMemcpyPeer(d_accy_sph[i], i, d_accy_sph[0], 0, N * sizeof(float));
@@ -660,7 +660,7 @@ int main()
   }
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_accx_tot[i], i, d_accx_tot[0], 0, N * sizeof(float));
     cudaMemcpyPeer(d_accy_tot[i], i, d_accy_tot[0], 0, N * sizeof(float));
@@ -702,7 +702,7 @@ int main()
   }
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_dudt[i], i, d_dudt[0], 0, N * sizeof(float));
   }
@@ -741,7 +741,7 @@ int main()
   }
 
   // Copy results back to each device for next iteration
-  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+  for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
   {
     cudaMemcpyPeer(d_u[i], i, d_u[0], 0, N * sizeof(float));
     cudaMemcpyPeer(d_utprevious[i], i, d_utprevious[0], 0, N * sizeof(float));
@@ -800,7 +800,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_vx[i], i, d_vx[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_vy[i], i, d_vy[0], 0, N * sizeof(float));
@@ -842,7 +842,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_x[i], i, d_x[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_y[i], i, d_y[0], 0, N * sizeof(float));
@@ -886,7 +886,7 @@ int main()
     // The main GPU now has the full results in d_accx[0], d_accy[0], d_accz[0]
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_h[i], i, d_h[0], 0, N * sizeof(float));
     }
@@ -927,7 +927,7 @@ int main()
     // The main GPU now has the full results in d_accx[0], d_accy[0], d_accz[0]
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_eps[i], i, d_eps[0], 0, N * sizeof(float));
     }
@@ -969,7 +969,7 @@ int main()
     // The main GPU now has the full results in d_rho[0]
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_rho[i], i, d_rho[0], 0, N * sizeof(float));
     }
@@ -1014,7 +1014,7 @@ int main()
     // The main GPU now has the full results in d_accx[0], d_accy[0], d_accz[0]
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_accx[i], i, d_accx[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_accy[i], i, d_accy[0], 0, N * sizeof(float));
@@ -1054,7 +1054,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_P[i], i, d_P[0], 0, N * sizeof(float));
     }
@@ -1091,7 +1091,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_csnd[i], i, d_csnd[0], 0, N * sizeof(float));
     }
@@ -1132,7 +1132,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_divV[i], i, d_divV[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_curlV[i], i, d_curlV[0], 0, N * sizeof(float));
@@ -1175,7 +1175,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_accx_sph[i], i, d_accx_sph[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_accy_sph[i], i, d_accy_sph[0], 0, N * sizeof(float));
@@ -1219,7 +1219,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_accx_tot[i], i, d_accx_tot[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_accy_tot[i], i, d_accy_tot[0], 0, N * sizeof(float));
@@ -1262,7 +1262,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_accx_tot[i], i, d_accx_tot[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_accy_tot[i], i, d_accy_tot[0], 0, N * sizeof(float));
@@ -1304,7 +1304,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_vx[i], i, d_vx[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_vy[i], i, d_vy[0], 0, N * sizeof(float));
@@ -1346,7 +1346,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_dudt[i], i, d_dudt[0], 0, N * sizeof(float));
     }
@@ -1385,7 +1385,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_u[i], i, d_u[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_utprevious[i], i, d_utprevious[0], 0, N * sizeof(float));
@@ -1458,7 +1458,7 @@ int main()
     }
 
     // Copy results back to each device for next iteration
-    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already hass the data!
+    for (int i = 1; i < nGPUs; i++) // Note that GPU 0 already has the data!
     {
       cudaMemcpyPeer(d_dt_particles[i], i, d_dt_particles[0], 0, N * sizeof(float));
       cudaMemcpyPeer(d_dh_dt[i], i, d_dh_dt[0], 0, N * sizeof(float));

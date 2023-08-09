@@ -325,7 +325,7 @@ __global__ void acc_g(int *Typ, float *x, float *y, float *z, float *eps, float 
     float accxt = 0.0f, accyt = 0.0f, acczt = 0.0f;
     for (int j = 0; j < N; j++)
     {
-      if ((Typ[i] == 0) || (Typ[i] == 1))
+      if ((Typ[j] == 0) || (Typ[j] == 1))
       {
         dx = x[j] - x[i];
         dy = y[j] - y[i];

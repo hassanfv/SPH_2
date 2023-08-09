@@ -1,0 +1,15 @@
+With nH = 10.0, and N_particles = 300000, we get L_box = 0.54 kpc.
+
+Unit Length = 3.086e+21 cm
+Unit mass = 4.7736e+40 grams
+Unit_time_in_s = 3.037E+15 seconds
+Unit_time in kyrs = 96241.87 kyrs
+Unit_time in Myrs = 96.2419 Myrs
+unitVelocity_in_cm_per_s = 1016080.02 cm/s
+unitVelocity_in_km/s = 10.16 km/s
+Unit_u_in_cgs = 1.0324E+12
+UnitDensity_in_cgs = 1.624E-24
+
+
+
+

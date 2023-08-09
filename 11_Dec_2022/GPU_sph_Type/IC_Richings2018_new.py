@@ -28,9 +28,9 @@ cm_to_kpc = 3.086e21
 sigma = 200. * 1000. * 100. # cm/s =====> 200 km/s - See eq.1 in Richings et al - 2018
 
 # In the current simulation all these particles are gas particle. We later add a collisionless BH.
-N_particles = 1000000
+N_particles = 300000  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-nH = 10.0  # cm^-3
+nH = 1.0  # cm^-3
 T_gas = 1e4  # K
 
 mu = 0.61  # fully ionized gas with solar metallicity!
@@ -242,7 +242,7 @@ if rank == 0:
     G = 1.0
 
     Tou_in = 1.0
-    L_AGN = 1e45  # erg/s
+    L_AGN = 1e45  # erg/s !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # Note that we multiply u by mass because u is in per unit mass!!
     L_AGN_code_unit = L_AGN / (Unit_u_in_cgs * unitMass_in_g / unitTime_in_s)
     # So L_AGN is now in energy per unit mass per unit time.
