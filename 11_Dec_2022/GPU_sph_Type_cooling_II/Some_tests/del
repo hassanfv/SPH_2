@@ -1,0 +1,6 @@
+auto T_acc_sph = std::chrono::high_resolution_clock::now();
+
+
+auto end_acc_sph = std::chrono::high_resolution_clock::now();
+auto elapsed_acc_sph = std::chrono::duration_cast<std::chrono::nanoseconds>(end_acc_sph - T_acc_sph);
+cout << "T_acc_sph = " << elapsed_acc_sph.count() * 1e-9 << endl;

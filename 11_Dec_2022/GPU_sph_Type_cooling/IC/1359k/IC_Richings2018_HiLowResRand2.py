@@ -1,12 +1,13 @@
 
 import numpy as np
-# import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import time
 from libsx import *
 # import pandas as pd
 import pickle
 from mpi4py import MPI
 import struct
+import random
 
 np.random.seed(42)
 
@@ -19,44 +20,80 @@ if rank == 0:
 
 # Constants
 Msun = 1.989e33  # Solar mass in grams
-G = 6.67430e-8  # Gravitational constant in cm^3 g^-1 s^-2
+grav_const_in_cgs = G = 6.67430e-8  # Gravitational constant in cm^3 g^-1 s^-2
 kB = 1.380649e-16  # Boltzmann constant in erg K^-1
 mH = 1.6726219e-24  # Proton mass in grams
 clight = 29979245800.  # cm/s
 cm_to_kpc = 3.086e21
 
+mu = 0.61
+
 sigma = 200. * 1000. * 100. # cm/s =====> 200 km/s - See eq.1 in Richings et al - 2018
 
-# In the current simulation all these particles are gas particle. We later add a collisionless BH.
-N_particles = 100000  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-nH = 1.0  # cm^-3
-T_gas = 1e4  # K
+L_box = 0.97
 
-mu = 0.61  # fully ionized gas with solar metallicity!
-rho = mu * mH * nH
+mSPH_high = 60 # Msun
+N_high = 680000 # This is the number of particles for only the high res octant!
 
-mSPH = 80.0  # M_sun
-mSPH_in_g = 80.0 * Msun  # grams
-M_tot = N_particles * mSPH
-M_tot_in_g = M_tot * Msun  # Total mass in grams.
+mSPH_low = 400.0 # Msun
+N_low = 100000 # This is the number of particles for each low-res octant. In total, it will be 7 * N_low for all 7 low-res octants!
 
-L_box_in_cm = (M_tot_in_g / rho)**(1./3.)  # box size in cm.
 
-L_box_in_kpc = L_box_in_cm / cm_to_kpc
+stp_high = L_box / 2.0 / int(N_high**(1./3.))
+
+stp_low = L_box / 2.0 / int(N_low**(1./3.))
+
+r = []
+m_in_Msun = []
+
+for x in np.arange(0, L_box/2, stp_high):
+  for y in np.arange(0, L_box/2, stp_high):
+    for z in np.arange(0, L_box/2, stp_high):
+    
+      xx = random.uniform(x, x + stp_high)
+      yy = random.uniform(y, y + stp_high)
+      zz = random.uniform(z, z + stp_high)
+    
+      r.append([xx, yy, zz])
+      m_in_Msun.append(mSPH_high)
+
+
+# Fill the rest of the box with low-res particles
+for x in [0, L_box/2]:
+  for y in [0, L_box/2]:
+    for z in [0, L_box/2]:
+      if x == y == z == 0:
+        # Skip the high-res octant
+        continue
+      for xi in np.arange(x, x + L_box/2, stp_low):
+        for yi in np.arange(y, y + L_box/2, stp_low):
+          for zi in np.arange(z, z + L_box/2, stp_low):
+          
+            xx = random.uniform(xi, xi + stp_low)
+            yy = random.uniform(yi, yi + stp_low)
+            zz = random.uniform(zi, zi + stp_low)
+          
+            r.append((xx, yy, zz))
+            m_in_Msun.append(mSPH_low)
+
+r = np.array(r) # # The unit of length is 1 kpc!
+mass_in_Msun = np.array(m_in_Msun) # mass of the particles in Msun. Will be used to define UnitMass!
+
+M_tot_in_Msun = np.sum(mass_in_Msun)
 
 if rank == 0:
-    print(
-        f'With nH = {nH}, and N_particles = {N_particles}, we get L_box = {round(L_box_in_kpc, 2)} kpc.')
+  print(f'total mass of the system = {M_tot_in_Msun:.5E} Msun')
 
-# ------ Setting the units of the simulation ---------
-grav_const_in_cgs = 6.67430e-8
-unitMass_in_g = M_tot_in_g
+#===============================================================
+#============ Setting the units of the simulation ==============
+#===============================================================
+unitMass_in_g = M_tot_in_Msun * Msun
 unitLength_in_cm = cm_to_kpc  # This is 1 kpc in cm so our unit length is 1 kpc!
-unitTime_in_s = (unitLength_in_cm**3/grav_const_in_cgs/unitMass_in_g)**0.5
-unitVelocity_in_cm_per_s = unitLength_in_cm / unitTime_in_s
 Unit_u_in_cgs = grav_const_in_cgs * unitMass_in_g / unitLength_in_cm
 UnitDensity_in_cgs = unitMass_in_g / unitLength_in_cm**3
+unitTime_in_s = (unitLength_in_cm**3/grav_const_in_cgs/unitMass_in_g)**0.5
+unitVelocity_in_cm_per_s = unitLength_in_cm / unitTime_in_s
 
 if rank == 0:
     print()
@@ -72,18 +109,14 @@ if rank == 0:
     print()
 # ------------------------------------------------------
 
-# Create a 3D grid of particles
-r = np.random.uniform(0, L_box_in_kpc, (N_particles, 3)
-                      )  # The unit of length is 1 kpc!
+L_box_in_kpc = L_box
 
 # Since unit_length is 1 kpc therefore this r is already in unit length!
-r = r - L_box_in_kpc / 2.0
-# Subtracted by L_box_in_kpc so that it is symmetric around 0.0.
+r = r - L_box_in_kpc / 2.0 # Subtracted by L_box_in_kpc/2 so that it is symmetric around 0.0.
 
 x = r[:, 0]
 y = r[:, 1]
 z = r[:, 2]
-
 
 if rank == 0:
     print('r.shape = ', r.shape)
@@ -94,20 +127,60 @@ vx = v[:, 0]
 vy = v[:, 1]
 vz = v[:, 2]
 
-mass = np.full(N_particles, mSPH_in_g / M_tot_in_g)
+mass = mass_in_Msun / M_tot_in_Msun
 if rank == 0:
     print('mass = ', mass)
 
+N_tot = len(mass)
+
+T_gas = 10000.
 u = (3/2) * kB * T_gas / mu / mH
-u = np.full(N_particles, u) / Unit_u_in_cgs
+u = np.full(N_tot, u) / Unit_u_in_cgs
+
 if rank == 0:
     print('u.shape = ', u.shape)
     print('u = ', u)
 
-# plt.scatter(r[:, 0], r[:, 1], s = 0.01, color = 'k')
-# plt.show()
 
-N = N_particles  # All are gas particles, so it is fine to use MPI to get h!
+
+#plt.scatter(x, y, s = 0.01, color = 'k')
+#plt.show()
+
+#===== Used for Outflow injection =====
+G = 1.0
+
+Tou_in = 1.0
+L_AGN = 1e46  # erg/s !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Note that we multiply u by mass because u is in per unit mass!!
+L_AGN_code_unit = L_AGN / (Unit_u_in_cgs * unitMass_in_g / unitTime_in_s)
+# So L_AGN is now in energy per unit mass per unit time.
+
+clight_code_unit = clight / unitVelocity_in_cm_per_s
+
+vin = 30000. * 1000. * 100.
+vin_in_code_unit = vin / unitVelocity_in_cm_per_s
+
+M_dot_in_code_unit = Tou_in * L_AGN_code_unit / clight_code_unit / vin_in_code_unit
+
+u_for_10K_Temp = (3/2) * kB * T_gas / mu / mH / Unit_u_in_cgs
+#=======================================
+
+dt = 8e-7 #----> used to estimate the multiplier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+multiplier = 1.0
+m_sph_high_res = np.min(mass) * multiplier  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+if rank == 0:
+  print()
+  print('M_dot_in_code_unit = ', M_dot_in_code_unit)
+  print('M_dot * dt / np.min(mass) = ', M_dot_in_code_unit * dt / np.min(mass))
+  print('M_dot * dt / np.max(mass) = ', M_dot_in_code_unit * dt / np.max(mass))
+  print('M_dot * dt / m_sph_high_res = ', M_dot_in_code_unit * dt / m_sph_high_res)
+  print()
+
+
+
+N = N_tot  # All are gas particles, so it is fine to use MPI to get h!
 
 # ------- used in MPI --------
 count = N // nCPUs
@@ -144,6 +217,7 @@ if rank == 0:
 if rank == 0:
     print('h = ', h)
 
+
 if rank == 0:
     epsilon = h.copy()
 
@@ -157,7 +231,7 @@ if rank == 0:
     # injected without any issue. If we think it may exceed this value, we have to adjust this
     # value!
 
-    N_blank = 50000
+    N_blank = 20000  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! May need to change !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     blank = np.zeros(N_blank)
     # Type of blank is set to -1 so that they are distinct from gas (Typ = 0) and collisionless (Typ = 1) particles!
     blank_Typ = np.full(N_blank, -1)
@@ -219,7 +293,7 @@ if rank == 0:
     epsilon = epsilon.astype(np.float32)
 
     # Save the arrays to a binary file:
-    N_tot = N_particles + N_blank
+    N_tot = N + N_blank
     num = str(int(np.floor(N_tot/1000)))
     filename = 'IC_R_' + num + 'k.bin'
     with open(filename, "wb") as file:
@@ -239,27 +313,13 @@ if rank == 0:
         file.write(u.tobytes())
 
     # Saving the parameters and constants!
-    G = 1.0
-
-    Tou_in = 1.0
-    L_AGN = 1e45  # erg/s !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # Note that we multiply u by mass because u is in per unit mass!!
-    L_AGN_code_unit = L_AGN / (Unit_u_in_cgs * unitMass_in_g / unitTime_in_s)
-    # So L_AGN is now in energy per unit mass per unit time.
-    
-    clight_code_unit = clight / unitVelocity_in_cm_per_s
-    
-    vin = 30000. * 1000. * 100.
-    vin_in_code_unit = vin / unitVelocity_in_cm_per_s
-
-    M_dot_in_code_unit = Tou_in * L_AGN_code_unit / clight_code_unit / vin_in_code_unit
-    
-    u_for_10K_Temp = (3/2) * kB * T_gas / mu / mH / Unit_u_in_cgs
-    
-    m_sph_high_res = mSPH_in_g / unitMass_in_g
-    m_sph_high_res /= 4.0 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    
+   
     sigma_in_code_unit = sigma / unitVelocity_in_cm_per_s
+    
+    print()
+    print('M_dot_in_code_unit = ', M_dot_in_code_unit)
+    print()
+    
 
     with open('params.txt', 'w') as f:
         # Write each variable on its own line
@@ -277,8 +337,9 @@ if rank == 0:
         f.write(f'{UnitDensity_in_cgs}\n')
         f.write(f'{Unit_u_in_cgs}\n')
         f.write(f'{unitTime_in_s}\n')
+        f.write(f'{unitLength_in_cm}\n')
 
-    print(f'Total gas particle is {N_particles} with N_blank = {N_blank}. So N_tot = {N_tot}')
+    print(f'Total gas particle is {N} with N_blank = {N_blank}. So N_tot = {N_tot}')
 
     print()
     print(f'Total elapse time in seconds = {time.time() - TT}')

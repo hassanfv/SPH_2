@@ -28,16 +28,18 @@ cm_to_kpc = 3.086e21
 sigma = 200. * 1000. * 100. # cm/s =====> 200 km/s - See eq.1 in Richings et al - 2018
 
 # In the current simulation all these particles are gas particle. We later add a collisionless BH.
-N_particles = 100000  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+N_particles = 8 * 100000  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-nH = 1.0  # cm^-3
+nH = 10  # cm^-3  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 T_gas = 1e4  # K
 
 mu = 0.61  # fully ionized gas with solar metallicity!
-rho = mu * mH * nH
+#rho = mu * mH * nH
+XH = 0.7
+rho = mH * nH / XH
 
-mSPH = 80.0  # M_sun
-mSPH_in_g = 80.0 * Msun  # grams
+mSPH = 400.0  # M_sun # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+mSPH_in_g = mSPH * Msun  # grams
 M_tot = N_particles * mSPH
 M_tot_in_g = M_tot * Msun  # Total mass in grams.
 
@@ -71,6 +73,8 @@ if rank == 0:
     print(f'UnitDensity_in_cgs = {UnitDensity_in_cgs:.3E}')
     print()
 # ------------------------------------------------------
+
+s()
 
 # Create a 3D grid of particles
 r = np.random.uniform(0, L_box_in_kpc, (N_particles, 3)
@@ -157,7 +161,7 @@ if rank == 0:
     # injected without any issue. If we think it may exceed this value, we have to adjust this
     # value!
 
-    N_blank = 50000
+    N_blank = 20000  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! May need to change !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     blank = np.zeros(N_blank)
     # Type of blank is set to -1 so that they are distinct from gas (Typ = 0) and collisionless (Typ = 1) particles!
     blank_Typ = np.full(N_blank, -1)
@@ -242,7 +246,7 @@ if rank == 0:
     G = 1.0
 
     Tou_in = 1.0
-    L_AGN = 1e45  # erg/s !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    L_AGN = 1e46  # erg/s !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # Note that we multiply u by mass because u is in per unit mass!!
     L_AGN_code_unit = L_AGN / (Unit_u_in_cgs * unitMass_in_g / unitTime_in_s)
     # So L_AGN is now in energy per unit mass per unit time.
@@ -256,10 +260,17 @@ if rank == 0:
     
     u_for_10K_Temp = (3/2) * kB * T_gas / mu / mH / Unit_u_in_cgs
     
-    m_sph_high_res = mSPH_in_g / unitMass_in_g
-    m_sph_high_res /= 4.0 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #m_sph_high_res = mSPH_in_g / unitMass_in_g
+    #m_sph_high_res /= 1.0 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    multiplier = 10.0 #!!!!!!!!!!!!!!!!!!!!!!! Estimate the multiplier using "get_outflow_mass.py" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    m_sph_high_res = multiplier * mass[0]
     
     sigma_in_code_unit = sigma / unitVelocity_in_cm_per_s
+    
+    print()
+    print('M_dot_in_code_unit = ', M_dot_in_code_unit)
+    print()
+    
 
     with open('params.txt', 'w') as f:
         # Write each variable on its own line
@@ -277,6 +288,7 @@ if rank == 0:
         f.write(f'{UnitDensity_in_cgs}\n')
         f.write(f'{Unit_u_in_cgs}\n')
         f.write(f'{unitTime_in_s}\n')
+        f.write(f'{unitLength_in_cm}\n')
 
     print(f'Total gas particle is {N_particles} with N_blank = {N_blank}. So N_tot = {N_tot}')
 

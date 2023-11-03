@@ -1,0 +1,5 @@
+auto T_copy = std::chrono::high_resolution_clock::now();
+
+auto end_copy = std::chrono::high_resolution_clock::now();
+auto elapsed_copy = std::chrono::duration_cast<std::chrono::nanoseconds>(end_copy - T_copy);
+cout << "T_copy = " << elapsed_copy.count() * 1e-9 << endl;
