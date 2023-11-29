@@ -1,0 +1,1392 @@
+
+Sync-Point 0, Time: 0, Systemstep: 0, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 1, Time: 0.00585938, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:          6
+
+Sync-Point 2, Time: 0.0117188, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 3, Time: 0.0175781, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:          4
+
+Sync-Point 4, Time: 0.0234375, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 5, Time: 0.0351562, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 6, Time: 0.046875, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 7, Time: 0.0585938, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 8, Time: 0.0703125, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 9, Time: 0.0820312, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 10, Time: 0.09375, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 11, Time: 0.105469, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 12, Time: 0.117188, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 13, Time: 0.128906, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 14, Time: 0.140625, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 15, Time: 0.152344, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 16, Time: 0.164062, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 17, Time: 0.175781, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 18, Time: 0.1875, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 19, Time: 0.199219, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 20, Time: 0.210938, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 21, Time: 0.222656, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 22, Time: 0.234375, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 23, Time: 0.246094, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 24, Time: 0.257812, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 25, Time: 0.269531, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 26, Time: 0.28125, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 27, Time: 0.292969, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 28, Time: 0.304688, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 29, Time: 0.316406, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 30, Time: 0.328125, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 31, Time: 0.339844, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 32, Time: 0.351562, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 33, Time: 0.363281, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 34, Time: 0.375, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 35, Time: 0.386719, Systemstep: 0.0117188, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 36, Time: 0.392578, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:         17
+
+Sync-Point 37, Time: 0.398438, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 38, Time: 0.404297, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:         96
+
+Sync-Point 39, Time: 0.410156, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 40, Time: 0.416016, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:        246
+
+Sync-Point 41, Time: 0.421875, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 42, Time: 0.427734, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:        402
+
+Sync-Point 43, Time: 0.433594, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 44, Time: 0.439453, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:        606
+
+Sync-Point 45, Time: 0.445312, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 46, Time: 0.451172, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:        850
+
+Sync-Point 47, Time: 0.457031, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 48, Time: 0.462891, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:       1094
+
+Sync-Point 49, Time: 0.46875, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 50, Time: 0.474609, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:       1404
+
+Sync-Point 51, Time: 0.480469, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 52, Time: 0.486328, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:       1775
+
+Sync-Point 53, Time: 0.492188, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 54, Time: 0.498047, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:       2185
+
+Sync-Point 55, Time: 0.503906, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 56, Time: 0.509766, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:       2594
+
+Sync-Point 57, Time: 0.515625, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 58, Time: 0.521484, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:       3068
+
+Sync-Point 59, Time: 0.527344, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 60, Time: 0.533203, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:       3549
+
+Sync-Point 61, Time: 0.539062, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 62, Time: 0.544922, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:       4067
+
+Sync-Point 63, Time: 0.550781, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 64, Time: 0.556641, Systemstep: 0.00585938, Nsync-grv:          0, Nsync-hyd:       4591
+
+Sync-Point 65, Time: 0.5625, Systemstep: 0.00585938, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 66, Time: 0.56543, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:          2
+
+Sync-Point 67, Time: 0.568359, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       5163
+
+Sync-Point 68, Time: 0.571289, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:         11
+
+Sync-Point 69, Time: 0.574219, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 70, Time: 0.577148, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:         28
+
+Sync-Point 71, Time: 0.580078, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       5748
+
+Sync-Point 72, Time: 0.583008, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:         92
+
+Sync-Point 73, Time: 0.585938, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 74, Time: 0.588867, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:        185
+
+Sync-Point 75, Time: 0.591797, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       6343
+
+Sync-Point 76, Time: 0.594727, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:        362
+
+Sync-Point 77, Time: 0.597656, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 78, Time: 0.600586, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:        523
+
+Sync-Point 79, Time: 0.603516, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       7000
+
+Sync-Point 80, Time: 0.606445, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:        708
+
+Sync-Point 81, Time: 0.609375, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 82, Time: 0.612305, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:        908
+
+Sync-Point 83, Time: 0.615234, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       7635
+
+Sync-Point 84, Time: 0.618164, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       1107
+
+Sync-Point 85, Time: 0.621094, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 86, Time: 0.624023, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       1304
+
+Sync-Point 87, Time: 0.626953, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       8311
+
+Sync-Point 88, Time: 0.629883, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       1588
+
+Sync-Point 89, Time: 0.632812, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 90, Time: 0.635742, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       1865
+
+Sync-Point 91, Time: 0.638672, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       9006
+
+Sync-Point 92, Time: 0.641602, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       2193
+
+Sync-Point 93, Time: 0.644531, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 94, Time: 0.647461, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       2465
+
+Sync-Point 95, Time: 0.650391, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       9734
+
+Sync-Point 96, Time: 0.65332, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       2794
+
+Sync-Point 97, Time: 0.65625, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 98, Time: 0.65918, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       3116
+
+Sync-Point 99, Time: 0.662109, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      10524
+
+Sync-Point 100, Time: 0.665039, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       3485
+
+Sync-Point 101, Time: 0.667969, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 102, Time: 0.670898, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       3861
+
+Sync-Point 103, Time: 0.673828, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      11335
+
+Sync-Point 104, Time: 0.676758, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       4301
+
+Sync-Point 105, Time: 0.679688, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 106, Time: 0.682617, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       4703
+
+Sync-Point 107, Time: 0.685547, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      12115
+
+Sync-Point 108, Time: 0.688477, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       5133
+
+Sync-Point 109, Time: 0.691406, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 110, Time: 0.694336, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       5584
+
+Sync-Point 111, Time: 0.697266, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      13017
+
+Sync-Point 112, Time: 0.700195, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       6035
+
+Sync-Point 113, Time: 0.703125, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 114, Time: 0.706055, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       6498
+
+Sync-Point 115, Time: 0.708984, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      13910
+
+Sync-Point 116, Time: 0.711914, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       7020
+
+Sync-Point 117, Time: 0.714844, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 118, Time: 0.717773, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       7493
+
+Sync-Point 119, Time: 0.720703, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      14859
+
+Sync-Point 120, Time: 0.723633, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       8007
+
+Sync-Point 121, Time: 0.726562, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 122, Time: 0.729492, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       8497
+
+Sync-Point 123, Time: 0.732422, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      15774
+
+Sync-Point 124, Time: 0.735352, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       9092
+
+Sync-Point 125, Time: 0.738281, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 126, Time: 0.741211, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:       9599
+
+Sync-Point 127, Time: 0.744141, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      16810
+
+Sync-Point 128, Time: 0.74707, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      10187
+
+Sync-Point 129, Time: 0.75, Systemstep: 0.00292969, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 130, Time: 0.75293, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      10762
+
+Sync-Point 131, Time: 0.755859, Systemstep: 0.00292969, Nsync-grv:          0, Nsync-hyd:      17845
+
+Sync-Point 132, Time: 0.757324, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:          3
+
+Sync-Point 133, Time: 0.758789, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      11338
+
+Sync-Point 134, Time: 0.760254, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:          6
+
+Sync-Point 135, Time: 0.761719, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 136, Time: 0.763184, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:         11
+
+Sync-Point 137, Time: 0.764648, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      11922
+
+Sync-Point 138, Time: 0.766113, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:         24
+
+Sync-Point 139, Time: 0.767578, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      18962
+
+Sync-Point 140, Time: 0.769043, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:         42
+
+Sync-Point 141, Time: 0.770508, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      12541
+
+Sync-Point 142, Time: 0.771973, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:         61
+
+Sync-Point 143, Time: 0.773438, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 144, Time: 0.774902, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:         91
+
+Sync-Point 145, Time: 0.776367, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      13173
+
+Sync-Point 146, Time: 0.777832, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        167
+
+Sync-Point 147, Time: 0.779297, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20053
+
+Sync-Point 148, Time: 0.780762, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        242
+
+Sync-Point 149, Time: 0.782227, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      13789
+
+Sync-Point 150, Time: 0.783691, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        344
+
+Sync-Point 151, Time: 0.785156, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 152, Time: 0.786621, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        456
+
+Sync-Point 153, Time: 0.788086, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      14444
+
+Sync-Point 154, Time: 0.789551, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        639
+
+Sync-Point 155, Time: 0.791016, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21197
+
+Sync-Point 156, Time: 0.79248, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        842
+
+Sync-Point 157, Time: 0.793945, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      15029
+
+Sync-Point 158, Time: 0.79541, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1038
+
+Sync-Point 159, Time: 0.796875, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 160, Time: 0.79834, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1194
+
+Sync-Point 161, Time: 0.799805, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      15696
+
+Sync-Point 162, Time: 0.80127, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1402
+
+Sync-Point 163, Time: 0.802734, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22404
+
+Sync-Point 164, Time: 0.804199, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1611
+
+Sync-Point 165, Time: 0.805664, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      16383
+
+Sync-Point 166, Time: 0.807129, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1852
+
+Sync-Point 167, Time: 0.808594, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 168, Time: 0.810059, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2051
+
+Sync-Point 169, Time: 0.811523, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      17011
+
+Sync-Point 170, Time: 0.812988, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2294
+
+Sync-Point 171, Time: 0.814453, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23617
+
+Sync-Point 172, Time: 0.815918, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2557
+
+Sync-Point 173, Time: 0.817383, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      17735
+
+Sync-Point 174, Time: 0.818848, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2768
+
+Sync-Point 175, Time: 0.820312, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 176, Time: 0.821777, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2966
+
+Sync-Point 177, Time: 0.823242, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      18431
+
+Sync-Point 178, Time: 0.824707, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3265
+
+Sync-Point 179, Time: 0.826172, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      24901
+
+Sync-Point 180, Time: 0.827637, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3526
+
+Sync-Point 181, Time: 0.829102, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      19091
+
+Sync-Point 182, Time: 0.830566, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3818
+
+Sync-Point 183, Time: 0.832031, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 184, Time: 0.833496, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4041
+
+Sync-Point 185, Time: 0.834961, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      19803
+
+Sync-Point 186, Time: 0.836426, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4392
+
+Sync-Point 187, Time: 0.837891, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      26116
+
+Sync-Point 188, Time: 0.839355, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4725
+
+Sync-Point 189, Time: 0.84082, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20515
+
+Sync-Point 190, Time: 0.842285, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5000
+
+Sync-Point 191, Time: 0.84375, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 192, Time: 0.845215, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5308
+
+Sync-Point 193, Time: 0.84668, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21226
+
+Sync-Point 194, Time: 0.848145, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5678
+
+Sync-Point 195, Time: 0.849609, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      27430
+
+Sync-Point 196, Time: 0.851074, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5993
+
+Sync-Point 197, Time: 0.852539, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21948
+
+Sync-Point 198, Time: 0.854004, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6343
+
+Sync-Point 199, Time: 0.855469, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 200, Time: 0.856934, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6627
+
+Sync-Point 201, Time: 0.858398, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22708
+
+Sync-Point 202, Time: 0.859863, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       7016
+
+Sync-Point 203, Time: 0.861328, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      28787
+
+Sync-Point 204, Time: 0.862793, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       7384
+
+Sync-Point 205, Time: 0.864258, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23393
+
+Sync-Point 206, Time: 0.865723, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       7717
+
+Sync-Point 207, Time: 0.867188, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 208, Time: 0.868652, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       8053
+
+Sync-Point 209, Time: 0.870117, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      24159
+
+Sync-Point 210, Time: 0.871582, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       8491
+
+Sync-Point 211, Time: 0.873047, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      30115
+
+Sync-Point 212, Time: 0.874512, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       8903
+
+Sync-Point 213, Time: 0.875977, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      24865
+
+Sync-Point 214, Time: 0.877441, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       9272
+
+Sync-Point 215, Time: 0.878906, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 216, Time: 0.880371, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       9654
+
+Sync-Point 217, Time: 0.881836, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      25651
+
+Sync-Point 218, Time: 0.883301, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      10080
+
+Sync-Point 219, Time: 0.884766, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      31533
+
+Sync-Point 220, Time: 0.88623, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      10495
+
+Sync-Point 221, Time: 0.887695, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      26367
+
+Sync-Point 222, Time: 0.88916, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      10910
+
+Sync-Point 223, Time: 0.890625, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 224, Time: 0.89209, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      11303
+
+Sync-Point 225, Time: 0.893555, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      27114
+
+Sync-Point 226, Time: 0.89502, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      11714
+
+Sync-Point 227, Time: 0.896484, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      32963
+
+Sync-Point 228, Time: 0.897949, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      12161
+
+Sync-Point 229, Time: 0.899414, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      27881
+
+Sync-Point 230, Time: 0.900879, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      12561
+
+Sync-Point 231, Time: 0.902344, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 232, Time: 0.903809, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      12914
+
+Sync-Point 233, Time: 0.905273, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      28603
+
+Sync-Point 234, Time: 0.906738, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      13340
+
+Sync-Point 235, Time: 0.908203, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      34372
+
+Sync-Point 236, Time: 0.909668, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      13749
+
+Sync-Point 237, Time: 0.911133, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      29361
+
+Sync-Point 238, Time: 0.912598, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      14155
+
+Sync-Point 239, Time: 0.914062, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 240, Time: 0.915527, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      14485
+
+Sync-Point 241, Time: 0.916992, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      30105
+
+Sync-Point 242, Time: 0.918457, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      14914
+
+Sync-Point 243, Time: 0.919922, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      35850
+
+Sync-Point 244, Time: 0.921387, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      15338
+
+Sync-Point 245, Time: 0.922852, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      30839
+
+Sync-Point 246, Time: 0.924316, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      15689
+
+Sync-Point 247, Time: 0.925781, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 248, Time: 0.927246, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      16017
+
+Sync-Point 249, Time: 0.928711, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      31599
+
+Sync-Point 250, Time: 0.930176, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      16434
+
+Sync-Point 251, Time: 0.931641, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      37301
+
+Sync-Point 252, Time: 0.933105, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      16857
+
+Sync-Point 253, Time: 0.93457, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      32339
+
+Sync-Point 254, Time: 0.936035, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      17194
+
+Sync-Point 255, Time: 0.9375, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 256, Time: 0.938965, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      17498
+
+Sync-Point 257, Time: 0.94043, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      33084
+
+Sync-Point 258, Time: 0.941895, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      17858
+
+Sync-Point 259, Time: 0.943359, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      38695
+
+Sync-Point 260, Time: 0.944824, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      18221
+
+Sync-Point 261, Time: 0.946289, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      33784
+
+Sync-Point 262, Time: 0.947754, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      18527
+
+Sync-Point 263, Time: 0.949219, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 264, Time: 0.950684, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      18780
+
+Sync-Point 265, Time: 0.952148, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      34534
+
+Sync-Point 266, Time: 0.953613, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      19143
+
+Sync-Point 267, Time: 0.955078, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      40078
+
+Sync-Point 268, Time: 0.956543, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      19484
+
+Sync-Point 269, Time: 0.958008, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      35266
+
+Sync-Point 270, Time: 0.959473, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      19787
+
+Sync-Point 271, Time: 0.960938, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 272, Time: 0.962402, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20051
+
+Sync-Point 273, Time: 0.963867, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      35984
+
+Sync-Point 274, Time: 0.965332, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20351
+
+Sync-Point 275, Time: 0.966797, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      41459
+
+Sync-Point 276, Time: 0.968262, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20624
+
+Sync-Point 277, Time: 0.969727, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      36703
+
+Sync-Point 278, Time: 0.971191, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20889
+
+Sync-Point 279, Time: 0.972656, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 280, Time: 0.974121, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21092
+
+Sync-Point 281, Time: 0.975586, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      37378
+
+Sync-Point 282, Time: 0.977051, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21344
+
+Sync-Point 283, Time: 0.978516, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      42749
+
+Sync-Point 284, Time: 0.97998, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21598
+
+Sync-Point 285, Time: 0.981445, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      38108
+
+Sync-Point 286, Time: 0.98291, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21824
+
+Sync-Point 287, Time: 0.984375, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 288, Time: 0.98584, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21954
+
+Sync-Point 289, Time: 0.987305, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      38783
+
+Sync-Point 290, Time: 0.98877, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22176
+
+Sync-Point 291, Time: 0.990234, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      44046
+
+Sync-Point 292, Time: 0.991699, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22387
+
+Sync-Point 293, Time: 0.993164, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      39490
+
+Sync-Point 294, Time: 0.994629, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22541
+
+Sync-Point 295, Time: 0.996094, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 296, Time: 0.997559, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22656
+
+Sync-Point 297, Time: 0.999023, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      40154
+
+Sync-Point 298, Time: 1.00049, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22826
+
+Sync-Point 299, Time: 1.00195, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      45282
+
+Sync-Point 300, Time: 1.00342, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22979
+
+Sync-Point 301, Time: 1.00488, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      40826
+
+Sync-Point 302, Time: 1.00635, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23081
+
+Sync-Point 303, Time: 1.00781, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 304, Time: 1.00928, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23148
+
+Sync-Point 305, Time: 1.01074, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      41476
+
+Sync-Point 306, Time: 1.01221, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23270
+
+Sync-Point 307, Time: 1.01367, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      46396
+
+Sync-Point 308, Time: 1.01514, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23379
+
+Sync-Point 309, Time: 1.0166, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      42144
+
+Sync-Point 310, Time: 1.01807, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23454
+
+Sync-Point 311, Time: 1.01953, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 312, Time: 1.021, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23499
+
+Sync-Point 313, Time: 1.02246, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      42762
+
+Sync-Point 314, Time: 1.02393, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23597
+
+Sync-Point 315, Time: 1.02539, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      47565
+
+Sync-Point 316, Time: 1.02686, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23671
+
+Sync-Point 317, Time: 1.02832, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      43393
+
+Sync-Point 318, Time: 1.02979, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23697
+
+Sync-Point 319, Time: 1.03125, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 320, Time: 1.03271, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23672
+
+Sync-Point 321, Time: 1.03418, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      44008
+
+Sync-Point 322, Time: 1.03564, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23727
+
+Sync-Point 323, Time: 1.03711, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      48539
+
+Sync-Point 324, Time: 1.03857, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23724
+
+Sync-Point 325, Time: 1.04004, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      44590
+
+Sync-Point 326, Time: 1.0415, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23708
+
+Sync-Point 327, Time: 1.04297, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 328, Time: 1.04443, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23637
+
+Sync-Point 329, Time: 1.0459, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      45227
+
+Sync-Point 330, Time: 1.04736, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23632
+
+Sync-Point 331, Time: 1.04883, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      49524
+
+Sync-Point 332, Time: 1.05029, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23576
+
+Sync-Point 333, Time: 1.05176, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      45822
+
+Sync-Point 334, Time: 1.05322, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23494
+
+Sync-Point 335, Time: 1.05469, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 336, Time: 1.05615, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23378
+
+Sync-Point 337, Time: 1.05762, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      46341
+
+Sync-Point 338, Time: 1.05908, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23326
+
+Sync-Point 339, Time: 1.06055, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      50380
+
+Sync-Point 340, Time: 1.06201, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23239
+
+Sync-Point 341, Time: 1.06348, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      46899
+
+Sync-Point 342, Time: 1.06494, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23122
+
+Sync-Point 343, Time: 1.06641, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 344, Time: 1.06787, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22949
+
+Sync-Point 345, Time: 1.06934, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      47472
+
+Sync-Point 346, Time: 1.0708, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22865
+
+Sync-Point 347, Time: 1.07227, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      51191
+
+Sync-Point 348, Time: 1.07373, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22741
+
+Sync-Point 349, Time: 1.0752, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      47971
+
+Sync-Point 350, Time: 1.07666, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22587
+
+Sync-Point 351, Time: 1.07812, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 352, Time: 1.07959, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22399
+
+Sync-Point 353, Time: 1.08105, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      48464
+
+Sync-Point 354, Time: 1.08252, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22252
+
+Sync-Point 355, Time: 1.08398, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      52090
+
+Sync-Point 356, Time: 1.08545, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22101
+
+Sync-Point 357, Time: 1.08691, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      48970
+
+Sync-Point 358, Time: 1.08838, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21918
+
+Sync-Point 359, Time: 1.08984, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 360, Time: 1.09131, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21651
+
+Sync-Point 361, Time: 1.09277, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      49446
+
+Sync-Point 362, Time: 1.09424, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21479
+
+Sync-Point 363, Time: 1.0957, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      53014
+
+Sync-Point 364, Time: 1.09717, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21287
+
+Sync-Point 365, Time: 1.09863, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      49919
+
+Sync-Point 366, Time: 1.1001, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21075
+
+Sync-Point 367, Time: 1.10156, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 368, Time: 1.10303, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20826
+
+Sync-Point 369, Time: 1.10449, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      50308
+
+Sync-Point 370, Time: 1.10596, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20654
+
+Sync-Point 371, Time: 1.10742, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      53901
+
+Sync-Point 372, Time: 1.10889, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20435
+
+Sync-Point 373, Time: 1.11035, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      50730
+
+Sync-Point 374, Time: 1.11182, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20201
+
+Sync-Point 375, Time: 1.11328, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 376, Time: 1.11475, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      19929
+
+Sync-Point 377, Time: 1.11621, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      51185
+
+Sync-Point 378, Time: 1.11768, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      19719
+
+Sync-Point 379, Time: 1.11914, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      54688
+
+Sync-Point 380, Time: 1.12061, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      19473
+
+Sync-Point 381, Time: 1.12207, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      51524
+
+Sync-Point 382, Time: 1.12354, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      19202
+
+Sync-Point 383, Time: 1.125, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 384, Time: 1.12646, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      18905
+
+Sync-Point 385, Time: 1.12793, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      51862
+
+Sync-Point 386, Time: 1.12939, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      18693
+
+Sync-Point 387, Time: 1.13086, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      55384
+
+Sync-Point 388, Time: 1.13232, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      18464
+
+Sync-Point 389, Time: 1.13379, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      52176
+
+Sync-Point 390, Time: 1.13525, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      18206
+
+Sync-Point 391, Time: 1.13672, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 392, Time: 1.13818, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      17902
+
+Sync-Point 393, Time: 1.13965, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      52448
+
+Sync-Point 394, Time: 1.14111, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      17694
+
+Sync-Point 395, Time: 1.14258, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      56079
+
+Sync-Point 396, Time: 1.14404, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      17491
+
+Sync-Point 397, Time: 1.14551, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      52695
+
+Sync-Point 398, Time: 1.14697, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      17237
+
+Sync-Point 399, Time: 1.14844, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 400, Time: 1.1499, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      16911
+
+Sync-Point 401, Time: 1.15137, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      52848
+
+Sync-Point 402, Time: 1.15283, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      16691
+
+Sync-Point 403, Time: 1.1543, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      56804
+
+Sync-Point 404, Time: 1.15576, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      16451
+
+Sync-Point 405, Time: 1.15723, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      52878
+
+Sync-Point 406, Time: 1.15869, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      16180
+
+Sync-Point 407, Time: 1.16016, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 408, Time: 1.16162, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      15879
+
+Sync-Point 409, Time: 1.16309, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      52583
+
+Sync-Point 410, Time: 1.16455, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      15668
+
+Sync-Point 411, Time: 1.16602, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      57443
+
+Sync-Point 412, Time: 1.16748, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      15447
+
+Sync-Point 413, Time: 1.16895, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      52130
+
+Sync-Point 414, Time: 1.17041, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      15176
+
+Sync-Point 415, Time: 1.17188, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 416, Time: 1.17334, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      14854
+
+Sync-Point 417, Time: 1.1748, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      51752
+
+Sync-Point 418, Time: 1.17627, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      14644
+
+Sync-Point 419, Time: 1.17773, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      58014
+
+Sync-Point 420, Time: 1.1792, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      14427
+
+Sync-Point 421, Time: 1.18066, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      51353
+
+Sync-Point 422, Time: 1.18213, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      14207
+
+Sync-Point 423, Time: 1.18359, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 424, Time: 1.18506, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      13946
+
+Sync-Point 425, Time: 1.18652, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      50845
+
+Sync-Point 426, Time: 1.18799, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      13765
+
+Sync-Point 427, Time: 1.18945, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      58572
+
+Sync-Point 428, Time: 1.19092, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      13563
+
+Sync-Point 429, Time: 1.19238, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      50029
+
+Sync-Point 430, Time: 1.19385, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      13326
+
+Sync-Point 431, Time: 1.19531, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 432, Time: 1.19678, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      13049
+
+Sync-Point 433, Time: 1.19824, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      48864
+
+Sync-Point 434, Time: 1.19971, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      12869
+
+Sync-Point 435, Time: 1.20117, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      59141
+
+Sync-Point 436, Time: 1.20264, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      12650
+
+Sync-Point 437, Time: 1.2041, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      47511
+
+Sync-Point 438, Time: 1.20557, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      12399
+
+Sync-Point 439, Time: 1.20703, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 440, Time: 1.2085, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      12131
+
+Sync-Point 441, Time: 1.20996, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      46444
+
+Sync-Point 442, Time: 1.21143, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      11953
+
+Sync-Point 443, Time: 1.21289, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      59627
+
+Sync-Point 444, Time: 1.21436, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      11759
+
+Sync-Point 445, Time: 1.21582, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      45463
+
+Sync-Point 446, Time: 1.21729, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      11521
+
+Sync-Point 447, Time: 1.21875, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 448, Time: 1.22021, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      11286
+
+Sync-Point 449, Time: 1.22168, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      44408
+
+Sync-Point 450, Time: 1.22314, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      11116
+
+Sync-Point 451, Time: 1.22461, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      60083
+
+Sync-Point 452, Time: 1.22607, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      10915
+
+Sync-Point 453, Time: 1.22754, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      43289
+
+Sync-Point 454, Time: 1.229, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      10733
+
+Sync-Point 455, Time: 1.23047, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 456, Time: 1.23193, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      10526
+
+Sync-Point 457, Time: 1.2334, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      42189
+
+Sync-Point 458, Time: 1.23486, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      10344
+
+Sync-Point 459, Time: 1.23633, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      60459
+
+Sync-Point 460, Time: 1.23779, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      10161
+
+Sync-Point 461, Time: 1.23926, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      41345
+
+Sync-Point 462, Time: 1.24072, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       9965
+
+Sync-Point 463, Time: 1.24219, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 464, Time: 1.24365, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       9720
+
+Sync-Point 465, Time: 1.24512, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      40618
+
+Sync-Point 466, Time: 1.24658, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       9554
+
+Sync-Point 467, Time: 1.24805, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      60822
+
+Sync-Point 468, Time: 1.24951, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       9395
+
+Sync-Point 469, Time: 1.25098, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      39906
+
+Sync-Point 470, Time: 1.25244, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       9168
+
+Sync-Point 471, Time: 1.25391, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 472, Time: 1.25537, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       8956
+
+Sync-Point 473, Time: 1.25684, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      39157
+
+Sync-Point 474, Time: 1.2583, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       8825
+
+Sync-Point 475, Time: 1.25977, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      61176
+
+Sync-Point 476, Time: 1.26123, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       8657
+
+Sync-Point 477, Time: 1.2627, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      38413
+
+Sync-Point 478, Time: 1.26416, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       8458
+
+Sync-Point 479, Time: 1.26562, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 480, Time: 1.26709, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       8239
+
+Sync-Point 481, Time: 1.26855, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      37742
+
+Sync-Point 482, Time: 1.27002, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       8109
+
+Sync-Point 483, Time: 1.27148, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      61394
+
+Sync-Point 484, Time: 1.27295, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       7958
+
+Sync-Point 485, Time: 1.27441, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      37176
+
+Sync-Point 486, Time: 1.27588, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       7766
+
+Sync-Point 487, Time: 1.27734, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 488, Time: 1.27881, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       7585
+
+Sync-Point 489, Time: 1.28027, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      36554
+
+Sync-Point 490, Time: 1.28174, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       7471
+
+Sync-Point 491, Time: 1.2832, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      61602
+
+Sync-Point 492, Time: 1.28467, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       7326
+
+Sync-Point 493, Time: 1.28613, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      35972
+
+Sync-Point 494, Time: 1.2876, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       7155
+
+Sync-Point 495, Time: 1.28906, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 496, Time: 1.29053, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6964
+
+Sync-Point 497, Time: 1.29199, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      35369
+
+Sync-Point 498, Time: 1.29346, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6839
+
+Sync-Point 499, Time: 1.29492, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      61735
+
+Sync-Point 500, Time: 1.29639, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6699
+
+Sync-Point 501, Time: 1.29785, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      34802
+
+Sync-Point 502, Time: 1.29932, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6543
+
+Sync-Point 503, Time: 1.30078, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 504, Time: 1.30225, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6379
+
+Sync-Point 505, Time: 1.30371, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      34219
+
+Sync-Point 506, Time: 1.30518, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6275
+
+Sync-Point 507, Time: 1.30664, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      61871
+
+Sync-Point 508, Time: 1.30811, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6155
+
+Sync-Point 509, Time: 1.30957, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      33699
+
+Sync-Point 510, Time: 1.31104, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       6029
+
+Sync-Point 511, Time: 1.3125, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 512, Time: 1.31396, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5870
+
+Sync-Point 513, Time: 1.31543, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      33247
+
+Sync-Point 514, Time: 1.31689, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5780
+
+Sync-Point 515, Time: 1.31836, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      61900
+
+Sync-Point 516, Time: 1.31982, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5676
+
+Sync-Point 517, Time: 1.32129, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      32732
+
+Sync-Point 518, Time: 1.32275, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5562
+
+Sync-Point 519, Time: 1.32422, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 520, Time: 1.32568, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5401
+
+Sync-Point 521, Time: 1.32715, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      32199
+
+Sync-Point 522, Time: 1.32861, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5308
+
+Sync-Point 523, Time: 1.33008, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      61767
+
+Sync-Point 524, Time: 1.33154, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5179
+
+Sync-Point 525, Time: 1.33301, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      31721
+
+Sync-Point 526, Time: 1.33447, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       5041
+
+Sync-Point 527, Time: 1.33594, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 528, Time: 1.3374, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4875
+
+Sync-Point 529, Time: 1.33887, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      31217
+
+Sync-Point 530, Time: 1.34033, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4776
+
+Sync-Point 531, Time: 1.3418, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      61396
+
+Sync-Point 532, Time: 1.34326, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4656
+
+Sync-Point 533, Time: 1.34473, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      30789
+
+Sync-Point 534, Time: 1.34619, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4551
+
+Sync-Point 535, Time: 1.34766, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 536, Time: 1.34912, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4405
+
+Sync-Point 537, Time: 1.35059, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      30328
+
+Sync-Point 538, Time: 1.35205, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4341
+
+Sync-Point 539, Time: 1.35352, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      60434
+
+Sync-Point 540, Time: 1.35498, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4242
+
+Sync-Point 541, Time: 1.35645, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      29912
+
+Sync-Point 542, Time: 1.35791, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4143
+
+Sync-Point 543, Time: 1.35938, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 544, Time: 1.36084, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       4011
+
+Sync-Point 545, Time: 1.3623, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      29517
+
+Sync-Point 546, Time: 1.36377, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3931
+
+Sync-Point 547, Time: 1.36523, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      58766
+
+Sync-Point 548, Time: 1.3667, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3827
+
+Sync-Point 549, Time: 1.36816, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      29129
+
+Sync-Point 550, Time: 1.36963, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3728
+
+Sync-Point 551, Time: 1.37109, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 552, Time: 1.37256, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3605
+
+Sync-Point 553, Time: 1.37402, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      28727
+
+Sync-Point 554, Time: 1.37549, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3540
+
+Sync-Point 555, Time: 1.37695, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      56619
+
+Sync-Point 556, Time: 1.37842, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3472
+
+Sync-Point 557, Time: 1.37988, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      28321
+
+Sync-Point 558, Time: 1.38135, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3386
+
+Sync-Point 559, Time: 1.38281, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 560, Time: 1.38428, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3272
+
+Sync-Point 561, Time: 1.38574, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      27894
+
+Sync-Point 562, Time: 1.38721, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3206
+
+Sync-Point 563, Time: 1.38867, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      54447
+
+Sync-Point 564, Time: 1.39014, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3140
+
+Sync-Point 565, Time: 1.3916, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      27543
+
+Sync-Point 566, Time: 1.39307, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       3054
+
+Sync-Point 567, Time: 1.39453, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 568, Time: 1.396, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2957
+
+Sync-Point 569, Time: 1.39746, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      27200
+
+Sync-Point 570, Time: 1.39893, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2918
+
+Sync-Point 571, Time: 1.40039, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      52583
+
+Sync-Point 572, Time: 1.40186, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2852
+
+Sync-Point 573, Time: 1.40332, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      26886
+
+Sync-Point 574, Time: 1.40479, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2772
+
+Sync-Point 575, Time: 1.40625, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 576, Time: 1.40771, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2682
+
+Sync-Point 577, Time: 1.40918, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      26528
+
+Sync-Point 578, Time: 1.41064, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2649
+
+Sync-Point 579, Time: 1.41211, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      51071
+
+Sync-Point 580, Time: 1.41357, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2593
+
+Sync-Point 581, Time: 1.41504, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      26188
+
+Sync-Point 582, Time: 1.4165, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2522
+
+Sync-Point 583, Time: 1.41797, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 584, Time: 1.41943, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2426
+
+Sync-Point 585, Time: 1.4209, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      25836
+
+Sync-Point 586, Time: 1.42236, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2393
+
+Sync-Point 587, Time: 1.42383, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      49699
+
+Sync-Point 588, Time: 1.42529, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2346
+
+Sync-Point 589, Time: 1.42676, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      25547
+
+Sync-Point 590, Time: 1.42822, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2273
+
+Sync-Point 591, Time: 1.42969, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 592, Time: 1.43115, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2182
+
+Sync-Point 593, Time: 1.43262, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      25238
+
+Sync-Point 594, Time: 1.43408, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2144
+
+Sync-Point 595, Time: 1.43555, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      48620
+
+Sync-Point 596, Time: 1.43701, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2107
+
+Sync-Point 597, Time: 1.43848, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      24949
+
+Sync-Point 598, Time: 1.43994, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       2049
+
+Sync-Point 599, Time: 1.44141, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 600, Time: 1.44287, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1945
+
+Sync-Point 601, Time: 1.44434, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      24661
+
+Sync-Point 602, Time: 1.4458, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1922
+
+Sync-Point 603, Time: 1.44727, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      47638
+
+Sync-Point 604, Time: 1.44873, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1879
+
+Sync-Point 605, Time: 1.4502, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      24398
+
+Sync-Point 606, Time: 1.45166, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1801
+
+Sync-Point 607, Time: 1.45312, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 608, Time: 1.45459, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1731
+
+Sync-Point 609, Time: 1.45605, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      24123
+
+Sync-Point 610, Time: 1.45752, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1709
+
+Sync-Point 611, Time: 1.45898, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      46689
+
+Sync-Point 612, Time: 1.46045, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1663
+
+Sync-Point 613, Time: 1.46191, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23889
+
+Sync-Point 614, Time: 1.46338, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1599
+
+Sync-Point 615, Time: 1.46484, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 616, Time: 1.46631, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1518
+
+Sync-Point 617, Time: 1.46777, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23667
+
+Sync-Point 618, Time: 1.46924, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1506
+
+Sync-Point 619, Time: 1.4707, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      45808
+
+Sync-Point 620, Time: 1.47217, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1464
+
+Sync-Point 621, Time: 1.47363, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23436
+
+Sync-Point 622, Time: 1.4751, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1405
+
+Sync-Point 623, Time: 1.47656, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 624, Time: 1.47803, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1348
+
+Sync-Point 625, Time: 1.47949, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      23180
+
+Sync-Point 626, Time: 1.48096, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1336
+
+Sync-Point 627, Time: 1.48242, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      45004
+
+Sync-Point 628, Time: 1.48389, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1310
+
+Sync-Point 629, Time: 1.48535, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22949
+
+Sync-Point 630, Time: 1.48682, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1264
+
+Sync-Point 631, Time: 1.48828, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 632, Time: 1.48975, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1193
+
+Sync-Point 633, Time: 1.49121, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22717
+
+Sync-Point 634, Time: 1.49268, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1194
+
+Sync-Point 635, Time: 1.49414, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      44214
+
+Sync-Point 636, Time: 1.49561, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1171
+
+Sync-Point 637, Time: 1.49707, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22505
+
+Sync-Point 638, Time: 1.49854, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1129
+
+Sync-Point 639, Time: 1.5, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 640, Time: 1.50146, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1062
+
+Sync-Point 641, Time: 1.50293, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22296
+
+Sync-Point 642, Time: 1.50439, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1063
+
+Sync-Point 643, Time: 1.50586, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      43531
+
+Sync-Point 644, Time: 1.50732, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:       1036
+
+Sync-Point 645, Time: 1.50879, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      22115
+
+Sync-Point 646, Time: 1.51025, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        995
+
+Sync-Point 647, Time: 1.51172, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 648, Time: 1.51318, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        932
+
+Sync-Point 649, Time: 1.51465, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21905
+
+Sync-Point 650, Time: 1.51611, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        932
+
+Sync-Point 651, Time: 1.51758, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      42893
+
+Sync-Point 652, Time: 1.51904, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        905
+
+Sync-Point 653, Time: 1.52051, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21748
+
+Sync-Point 654, Time: 1.52197, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        858
+
+Sync-Point 655, Time: 1.52344, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 656, Time: 1.5249, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        804
+
+Sync-Point 657, Time: 1.52637, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21549
+
+Sync-Point 658, Time: 1.52783, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        803
+
+Sync-Point 659, Time: 1.5293, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      42236
+
+Sync-Point 660, Time: 1.53076, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        779
+
+Sync-Point 661, Time: 1.53223, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21411
+
+Sync-Point 662, Time: 1.53369, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        732
+
+Sync-Point 663, Time: 1.53516, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 664, Time: 1.53662, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        670
+
+Sync-Point 665, Time: 1.53809, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21245
+
+Sync-Point 666, Time: 1.53955, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        672
+
+Sync-Point 667, Time: 1.54102, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      41675
+
+Sync-Point 668, Time: 1.54248, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        660
+
+Sync-Point 669, Time: 1.54395, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      21115
+
+Sync-Point 670, Time: 1.54541, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        613
+
+Sync-Point 671, Time: 1.54688, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 672, Time: 1.54834, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        548
+
+Sync-Point 673, Time: 1.5498, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20951
+
+Sync-Point 674, Time: 1.55127, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        551
+
+Sync-Point 675, Time: 1.55273, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      41152
+
+Sync-Point 676, Time: 1.5542, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        538
+
+Sync-Point 677, Time: 1.55566, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20829
+
+Sync-Point 678, Time: 1.55713, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        501
+
+Sync-Point 679, Time: 1.55859, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 680, Time: 1.56006, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        450
+
+Sync-Point 681, Time: 1.56152, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20705
+
+Sync-Point 682, Time: 1.56299, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        447
+
+Sync-Point 683, Time: 1.56445, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      40686
+
+Sync-Point 684, Time: 1.56592, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        432
+
+Sync-Point 685, Time: 1.56738, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20590
+
+Sync-Point 686, Time: 1.56885, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        400
+
+Sync-Point 687, Time: 1.57031, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752
+
+Sync-Point 688, Time: 1.57178, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        337
+
+Sync-Point 689, Time: 1.57324, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20436
+
+Sync-Point 690, Time: 1.57471, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        343
+
+Sync-Point 691, Time: 1.57617, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      40214
+
+Sync-Point 692, Time: 1.57764, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        330
+
+Sync-Point 693, Time: 1.5791, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:      20327
+
+Sync-Point 694, Time: 1.58057, Systemstep: 0.00146484, Nsync-grv:          0, Nsync-hyd:        284
+
+Sync-Point 695, Time: 1.58203, Systemstep: 0.00146484, Nsync-grv:      65752, Nsync-hyd:      65752

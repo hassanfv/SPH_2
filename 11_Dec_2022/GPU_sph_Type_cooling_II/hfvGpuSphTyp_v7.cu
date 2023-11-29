@@ -21,7 +21,7 @@ int main()
 
   float dt = 4e-7; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is only the first time step !!
 
-  const int Nngb_f = 64.0f; // used in smoothing func.
+  const float Nngb_f = 64.0f; // used in smoothing func.
   const int Nngb = 64;
   const int Ndown = Nngb - 5;
   const int Nup = Nngb + 5;
