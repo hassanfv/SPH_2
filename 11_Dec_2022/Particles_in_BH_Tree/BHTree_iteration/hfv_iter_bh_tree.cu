@@ -141,8 +141,6 @@ __global__ void build_tree_kernel(float *x, float *y, float *mass, int *count, i
 	int stride = blockDim.x*gridDim.x;
 	int offset = 0;
 	bool newBody = true;
-	
-	//printf("Index XXX = %d\n", index);
 
 	// build quadtree
 	float l; 
@@ -185,17 +183,6 @@ __global__ void build_tree_kernel(float *x, float *y, float *mass, int *count, i
 			}
 		}
 		int childIndex = child[temp*4 + childPath];
-		
-		//if (bodyIndex == 10)
-	  //{
-  	  //printf("bodyIndex + offset, n, index = %d, %d %d\n", bodyIndex + offset, n, *index);
-  	  //printf("left, right, bottom, top = %f, %f, %f, %f\n", *left, *right, *bottom, *top);
-  	  //printf("l, r, b, t = %f, %f, %f, %f\n", l, r, b, t);
-  	  //printf("x, y = %f, %f\n", x[bodyIndex + offset], y[bodyIndex + offset]);
-  	//}
-  	
-  	//if (*index > 4000)
-  	  //printf("bodyIndex + offset, n, index, m = %d, %d %d, %d\n", bodyIndex + offset, n, *index, m);
 
 		// traverse tree until we hit leaf node
 		while(childIndex >= n)
@@ -262,7 +249,6 @@ __global__ void build_tree_kernel(float *x, float *y, float *mass, int *count, i
 				 			childPath += 2;
 				 		}
 
-            
 				 		//if(DEBUG)
 				 		if(true)
 				 		{
@@ -282,7 +268,6 @@ __global__ void build_tree_kernel(float *x, float *y, float *mass, int *count, i
 				 		child[4*cell + childPath] = childIndex;
 
 				 		start[cell] = -1;
-
 
             // insert new particle
 				 		temp = cell;
@@ -309,10 +294,7 @@ __global__ void build_tree_kernel(float *x, float *y, float *mass, int *count, i
 				 		mass[cell] += mass[bodyIndex + offset];
 				 		count[cell] += count[bodyIndex + offset];
 				 		childIndex = child[4*temp + childPath];
-				 		
-				 		printf("cell, count[4095] = %d, %d\n", cell, count[4095]);
-				 		
-				 		
+
 				 	}
 				
 				 	child[4*temp + childPath] = bodyIndex + offset;

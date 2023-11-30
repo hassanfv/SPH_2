@@ -10,8 +10,8 @@
 using namespace std;
 
 
-#define gridSize 8
-#define blockSize 8
+#define gridSize 4
+#define blockSize 4
 
 // ==========================================================================================
 // CUDA ERROR CHECKING CODE
@@ -380,7 +380,7 @@ __global__ void sort_kernel(int *count, int *start, int *sorted, int *child, int
 	
 		if(s >= 0)
 		{
-			for(int i=0; i<4; i++)
+			for(int i = 0; i < 4; i++)
 			{
 				int node = child[4*(cell+offset) + i];
 
@@ -456,10 +456,10 @@ int main()
   //parameters = p;
 	//step = 0;
 	
-	int n = pow(2, 6);
+	int n = pow(2, 4);
 	
 	numParticles = n;
-	numNodes = 4 * n + 500;
+	numNodes = 4 * n + 100;
 	
 	int m = numNodes;
 
@@ -536,7 +536,7 @@ int main()
     h_x[i] = distribution(engine);
     h_y[i] = distribution(engine);
     
-    //cout << h_x[i] << "," << h_y[i] << "," << i << endl;
+    cout << h_x[i] << "," << h_y[i] << "," << i << endl;
     
     h_mass[i] = 0.5f;
   }
@@ -583,6 +583,14 @@ int main()
   auto elapsed_Filling = std::chrono::duration_cast<std::chrono::nanoseconds>(end_Filling - T_Filling);
   cout << "Elapsed time = " << elapsed_Filling.count() * 1e-9 << endl;
   
+  
+  auto T_sorting = std::chrono::high_resolution_clock::now();
+  sort_kernel<<< 1, 4 >>>(d_count, d_start, d_sorted, d_child, d_index, n);
+  cudaDeviceSynchronize();
+  auto end_sorting = std::chrono::high_resolution_clock::now();
+  auto elapsed_sorting = std::chrono::duration_cast<std::chrono::nanoseconds>(end_sorting - T_sorting);
+  cout << "T_sorting = " << elapsed_sorting.count() * 1e-9 << endl;
+  
 
   cudaMemcpy(h_index, d_index, sizeof(int), cudaMemcpyDeviceToHost);
   printf("\n");
@@ -590,23 +598,35 @@ int main()
   printf("\n");
   
   
-  cudaMemcpy(h_x, d_x, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
-  cudaMemcpy(h_y, d_y, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_sorted, d_sorted, numNodes * sizeof(int), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_start, d_start, numNodes * sizeof(int), cudaMemcpyDeviceToHost);
+  
   
   for (int i = 0; i < numNodes; i++)
   {
-    cout << "i, CM = " << i << ", " << h_x[i] << ", " << h_y[i] << endl;
+    cout << "start[" << i << "] = " << h_start[i] << endl;
   }
   
-  /*
+  cout << endl;
+  
+  for (int i = 0; i < numNodes; i++)
+  {
+    cout << "sorted[" << i << "] = " << h_sorted[i] << endl;
+  }
+  
+  cout << endl;
+  
+  //cudaMemcpy(h_x, d_x, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  //cudaMemcpy(h_y, d_y, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+
   cudaMemcpy(h_count, d_count, numNodes * sizeof(int), cudaMemcpyDeviceToHost);
   for (int i = 0; i < numNodes; i++)
   {
     cout << "count[" << i << "] = " << h_count[i] << endl;
   }
-  */
-
   
+  cout << endl;
+
   /*
   cudaMemcpy(h_child, d_child, 4 * numNodes * sizeof(int), cudaMemcpyDeviceToHost);
   for (int i = 0; i < numNodes; i++)

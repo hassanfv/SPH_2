@@ -9,9 +9,14 @@
 
 using namespace std;
 
+//__device__ const int blockSize = 256;
+__device__ const int warp = 32;
+__device__ const int stackSize = 64;
+__device__ const float eps2 = 0.025;
+__device__ const float theta = 0.5;
 
-#define gridSize 8
-#define blockSize 8
+#define gridSize 16384
+#define blockSize 256
 
 // ==========================================================================================
 // CUDA ERROR CHECKING CODE
@@ -380,7 +385,7 @@ __global__ void sort_kernel(int *count, int *start, int *sorted, int *child, int
 	
 		if(s >= 0)
 		{
-			for(int i=0; i<4; i++)
+			for(int i = 0; i < 4; i++)
 			{
 				int node = child[4*(cell+offset) + i];
 
@@ -402,6 +407,112 @@ __global__ void sort_kernel(int *count, int *start, int *sorted, int *child, int
 	}
 }
 
+
+//===== compute_forces_kernel
+__global__ void compute_forces_kernel(float *x, float *y, float *ax, float *ay, float *mass,
+                                      int *sorted, int *child, float *left, float *right,
+                                      int n)
+{
+	int bodyIndex = threadIdx.x + blockIdx.x*blockDim.x;
+	int stride = blockDim.x*gridDim.x;
+	int offset = 0;
+
+	__shared__ float depth[stackSize*blockSize/warp]; 
+	__shared__ int stack[stackSize*blockSize/warp];  // stack controled by one thread per warp 
+
+	float radius = 0.5*(*right - (*left));
+
+	// need this in case some of the first four entries of child are -1 (otherwise jj = 3)
+	int jj = -1;                 
+	for(int i=0;i<4;i++)
+	{       
+		if(child[i] != -1)
+		{     
+			jj++;               
+		}                       
+	}
+
+	int counter = threadIdx.x % warp;
+	int stackStartIndex = stackSize*(threadIdx.x / warp);
+	while(bodyIndex + offset < n)
+	{
+		int sortedIndex = sorted[bodyIndex + offset];
+
+		float pos_x = x[sortedIndex];      
+		float pos_y = y[sortedIndex];      
+		float acc_x = 0;
+		float acc_y = 0;
+
+		// initialize stack
+		int top = jj + stackStartIndex;
+		if(counter == 0)
+		{
+			int temp = 0;
+			for(int i=0;i<4;i++)
+			{
+				if(child[i] != -1)
+				{
+					stack[stackStartIndex + temp] = child[i];
+					depth[stackStartIndex + temp] = radius*radius/theta;
+					temp++;
+				}
+			}
+		}
+
+		__syncthreads();
+
+		// while stack is not empty
+		while(top >= stackStartIndex)
+		{
+			int node = stack[top];
+			float dp = 0.25*depth[top];
+			// float dp = depth[top];
+			for(int i=0;i<4;i++)
+			{
+				int ch = child[4*node + i];
+
+				//__threadfence();
+			
+				if(ch >= 0)
+				{
+					float dx = x[ch] - pos_x;
+  				float dy = y[ch] - pos_y;
+    			float r = dx*dx + dy*dy + eps2;
+    			
+    			if(ch < n /*is leaf node*/ || __all_sync(0xffffffff, dp <= r)/*meets criterion*/)
+    			//if(ch < n /*is leaf node*/)
+    			{    			  
+    			  r = rsqrt(r);
+            float f = mass[ch] * r * r * r;
+
+   					acc_x += f*dx;
+   					acc_y += f*dy;
+					}
+					else
+					{
+						if(counter == 0)
+						{
+							stack[top] = ch;
+							depth[top] = dp;
+							// depth[top] = 0.25*dp;
+						}
+						top++;
+						//__threadfence();
+					}
+				}
+			}
+
+			top--;
+		}
+
+		ax[sortedIndex] = acc_x;     
+   	ay[sortedIndex] = acc_y;     
+
+   	offset += stride;
+
+   	__syncthreads();
+   	}
+}
 
 
 
@@ -456,10 +567,10 @@ int main()
   //parameters = p;
 	//step = 0;
 	
-	int n = pow(2, 6);
+	int n = pow(2, 22);
 	
 	numParticles = n;
-	numNodes = 4 * n + 500;
+	numNodes = 4 * n + 50000000;
 	
 	int m = numNodes;
 
@@ -539,6 +650,8 @@ int main()
     //cout << h_x[i] << "," << h_y[i] << "," << i << endl;
     
     h_mass[i] = 0.5f;
+    
+    //cout << h_x[i] << "," << h_y[i] << "," << h_mass[i] << endl;
   }
   
   
@@ -576,12 +689,36 @@ int main()
   auto T_Filling = std::chrono::high_resolution_clock::now();
   //gridSize, blockSize
   
-  build_tree_kernel<<< 1, 1 >>>(d_x, d_y, d_mass, d_count, d_start, d_child, d_index, d_left, d_right, d_bottom, d_top, n, m);
+  build_tree_kernel<<< 1, 256 >>>(d_x, d_y, d_mass, d_count, d_start, d_child, d_index, d_left, d_right, d_bottom, d_top, n, m);
   cudaDeviceSynchronize();
   
   auto end_Filling = std::chrono::high_resolution_clock::now();
   auto elapsed_Filling = std::chrono::duration_cast<std::chrono::nanoseconds>(end_Filling - T_Filling);
   cout << "Elapsed time = " << elapsed_Filling.count() * 1e-9 << endl;
+  
+  
+  auto T_CM = std::chrono::high_resolution_clock::now();
+  centre_of_mass_kernel<<<gridSize, blockSize>>>(d_x, d_y, d_mass, d_index, n);
+  cudaDeviceSynchronize();
+  auto end_CM = std::chrono::high_resolution_clock::now();
+  auto elapsed_CM = std::chrono::duration_cast<std::chrono::nanoseconds>(end_CM - T_CM);
+  cout << "T_CM = " << elapsed_CM.count() * 1e-9 << endl;
+  
+  
+  auto T_sorting = std::chrono::high_resolution_clock::now();
+  sort_kernel<<< 1, 256 >>>(d_count, d_start, d_sorted, d_child, d_index, n);
+  cudaDeviceSynchronize();
+  auto end_sorting = std::chrono::high_resolution_clock::now();
+  auto elapsed_sorting = std::chrono::duration_cast<std::chrono::nanoseconds>(end_sorting - T_sorting);
+  cout << "T_sorting = " << elapsed_sorting.count() * 1e-9 << endl;
+  
+  
+  auto T_Force = std::chrono::high_resolution_clock::now();
+  compute_forces_kernel<<< gridSize, blockSize >>>(d_x, d_y, d_ax, d_ay, d_mass, d_sorted, d_child, d_left, d_right, n);
+  cudaDeviceSynchronize();
+  auto end_Force = std::chrono::high_resolution_clock::now();
+  auto elapsed_Force = std::chrono::duration_cast<std::chrono::nanoseconds>(end_Force - T_Force);
+  cout << "T_Force = " << elapsed_Force.count() * 1e-9 << endl;
   
 
   cudaMemcpy(h_index, d_index, sizeof(int), cudaMemcpyDeviceToHost);
@@ -590,14 +727,48 @@ int main()
   printf("\n");
   
   
-  cudaMemcpy(h_x, d_x, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
-  cudaMemcpy(h_y, d_y, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  
+  /*
+  cudaMemcpy(h_ax, d_ax, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_ay, d_ay, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  for (int i = 0; i < numParticles; i++)
+  {
+    //cout << "ax[" << i << "] = " << h_ax[i] << endl;
+    cout << h_ax[i] << endl;
+  }
+  */
+  
+  
+  
+  /*
+  cudaMemcpy(h_sorted, d_sorted, numNodes * sizeof(int), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_start, d_start, numNodes * sizeof(int), cudaMemcpyDeviceToHost);  
   
   for (int i = 0; i < numNodes; i++)
   {
-    cout << "i, CM = " << i << ", " << h_x[i] << ", " << h_y[i] << endl;
+    cout << "start[" << i << "] = " << h_start[i] << endl;
   }
   
+  cout << endl;
+  
+  for (int i = 0; i < numNodes; i++)
+  {
+    cout << "sorted[" << i << "] = " << h_sorted[i] << endl;
+  }
+  */
+  
+  cout << endl;
+  
+  /*
+  cudaMemcpy(h_x, d_x, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_y, d_y, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_mass, d_mass, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  for (int i = 0; i < numNodes; i++)
+  {
+    cout << "x[" << i << "] = " << h_x[i] << "   mass[" << i << "] = " << h_mass[i] << endl;
+  }
+  */
+
   /*
   cudaMemcpy(h_count, d_count, numNodes * sizeof(int), cudaMemcpyDeviceToHost);
   for (int i = 0; i < numNodes; i++)
@@ -605,8 +776,9 @@ int main()
     cout << "count[" << i << "] = " << h_count[i] << endl;
   }
   */
-
   
+  cout << endl;
+
   /*
   cudaMemcpy(h_child, d_child, 4 * numNodes * sizeof(int), cudaMemcpyDeviceToHost);
   for (int i = 0; i < numNodes; i++)

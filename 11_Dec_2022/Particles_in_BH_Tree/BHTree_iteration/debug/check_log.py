@@ -14,6 +14,6 @@ print(ndx)
 
 nt = np.where(ndx != -1)[0]
 
-print(nt)
-print(len(nt))
+print(nt)  # !!! Note that ordering of this array is not important!!! Its length is VERY IMPORTANT and must be the same every time we run!!!!
+print(len(nt)) #!!!! MUST be independent of the run for the same particle distribution!!!!!
 
