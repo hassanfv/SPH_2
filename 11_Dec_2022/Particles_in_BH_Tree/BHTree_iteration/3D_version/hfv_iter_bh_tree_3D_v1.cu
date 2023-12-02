@@ -1,0 +1,892 @@
+%%writefile test.cu
+
+#include <iostream>
+#include <cmath>
+#include <cuda_runtime.h>
+#include <random>
+#include <chrono>
+
+
+using namespace std;
+
+//__device__ const int blockSize = 256;
+__device__ const int warp = 32;
+__device__ const int stackSize = 64;
+__device__ const float eps2 = 0.025;
+__device__ const float theta = 0.5;
+
+#define gridSize 4
+#define blockSize 256
+
+// ==========================================================================================
+// CUDA ERROR CHECKING CODE
+#define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
+inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
+{
+   if (code != cudaSuccess)
+   {
+      fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
+      if (abort) getchar();
+   }
+}
+// ==========================================================================================
+
+
+//===== reset_arrays_kernel
+__global__ void reset_arrays_kernel(int *mutex, float *x, float *y, float *z, float *mass, int *count, int *start, int *sorted, int *child,
+                                    int *index, float *left, float *right, float *bottom, float *top, float *front, float *back, int n, int m)
+{
+    int bodyIndex = threadIdx.x + blockDim.x * blockIdx.x;
+    int stride = blockDim.x * gridDim.x;
+    int offset = 0;
+
+    // reset octree arrays
+    while(bodyIndex + offset < m)
+    {  
+        #pragma unroll 8
+        for(int i = 0; i < 8; i++)
+        {
+            child[(bodyIndex + offset) * 8 + i] = -1; // iterates over the 8 child nodes! -1 indicates the node initially has no children!
+        }
+        if(bodyIndex + offset < n) // if the node is a leaf node.
+        {
+            count[bodyIndex + offset] = 1;
+        }
+        else // indicating an empty internal node.
+        {
+            x[bodyIndex + offset] = 0;
+            y[bodyIndex + offset] = 0;
+            z[bodyIndex + offset] = 0;
+            mass[bodyIndex + offset] = 0;
+            count[bodyIndex + offset] = 0;
+        }
+        start[bodyIndex + offset] = -1;
+        sorted[bodyIndex + offset] = 0;
+        offset += stride;
+    }
+
+    if(bodyIndex == 0)
+    {
+        *mutex = 0;
+        *index = n;
+        *left = 0;
+        *right = 0;
+        *bottom = 0;
+        *top = 0;
+        *front = 0;
+        *back = 0;
+    }
+}
+
+
+//===== compute_bounding_box_kernel
+__global__ void compute_bounding_box_kernel(int *mutex, float *x, float *y, float *z, 
+                                            float *left, float *right, float *bottom, 
+                                            float *top, float *front, float *back, int n)
+{
+    int index = threadIdx.x + blockDim.x * blockIdx.x;
+    int stride = blockDim.x * gridDim.x;
+
+    float x_min = x[index];
+    float x_max = x[index];
+    float y_min = y[index];
+    float y_max = y[index];
+    float z_min = z[index];
+    float z_max = z[index];
+
+    __shared__ float left_cache[blockSize];
+    __shared__ float right_cache[blockSize];
+    __shared__ float bottom_cache[blockSize];
+    __shared__ float top_cache[blockSize];
+    __shared__ float front_cache[blockSize];
+    __shared__ float back_cache[blockSize];
+
+    int offset = stride;
+    while(index + offset < n)
+    {
+        x_min = fminf(x_min, x[index + offset]);
+        x_max = fmaxf(x_max, x[index + offset]);
+        y_min = fminf(y_min, y[index + offset]);
+        y_max = fmaxf(y_max, y[index + offset]);
+        z_min = fminf(z_min, z[index + offset]);
+        z_max = fmaxf(z_max, z[index + offset]);
+        offset += stride;
+    }
+
+    left_cache[threadIdx.x] = x_min;
+    right_cache[threadIdx.x] = x_max;
+    bottom_cache[threadIdx.x] = y_min;
+    top_cache[threadIdx.x] = y_max;
+    front_cache[threadIdx.x] = z_min;
+    back_cache[threadIdx.x] = z_max;
+
+    __syncthreads();
+
+    int i = blockDim.x/2;
+    while(i != 0)
+    {
+        if(threadIdx.x < i)
+        {
+            left_cache[threadIdx.x] = fminf(left_cache[threadIdx.x], left_cache[threadIdx.x + i]);
+            right_cache[threadIdx.x] = fmaxf(right_cache[threadIdx.x], right_cache[threadIdx.x + i]);
+            bottom_cache[threadIdx.x] = fminf(bottom_cache[threadIdx.x], bottom_cache[threadIdx.x + i]);
+            top_cache[threadIdx.x] = fmaxf(top_cache[threadIdx.x], top_cache[threadIdx.x + i]);
+            front_cache[threadIdx.x] = fminf(front_cache[threadIdx.x], front_cache[threadIdx.x + i]);
+            back_cache[threadIdx.x] = fmaxf(back_cache[threadIdx.x], back_cache[threadIdx.x + i]);
+        }
+        __syncthreads();
+        i /= 2;
+    }
+
+    if(threadIdx.x == 0)
+    {
+        while (atomicCAS(mutex, 0 ,1) != 0); // lock
+        *left = fminf(*left, left_cache[0]);
+        *right = fmaxf(*right, right_cache[0]);
+        *bottom = fminf(*bottom, bottom_cache[0]);
+        *top = fmaxf(*top, top_cache[0]);
+        *front = fminf(*front, front_cache[0]);
+        *back = fmaxf(*back, back_cache[0]);
+        atomicExch(mutex, 0); // unlock
+    }
+}
+
+
+//===== build_tree_kernel
+__global__ void build_tree_kernel(float *x, float *y, float *z, float *mass, int *count, int *start, int *child, int *index,
+                                  float *left, float *right, float *bottom, float *top, float *front, float *back, int n, int m)
+{
+	int bodyIndex = threadIdx.x + blockIdx.x*blockDim.x;
+	int stride = blockDim.x*gridDim.x;
+	int offset = 0;
+	bool newBody = true;
+
+	// build quadtree
+	float l; 
+	float r; 
+	float b; 
+	float t;
+	float f; 
+	float ba;
+	
+	int childPath;
+	int temp;
+	offset = 0;
+	while((bodyIndex + offset) < n)
+	{
+	
+		if(newBody)
+		{
+			newBody = false;
+
+			l = *left;
+			r = *right;
+			b = *bottom;
+			t = *top;
+			f = *front;
+      ba = *back;			
+
+			temp = 0;
+			childPath = 0;
+			if(x[bodyIndex + offset] < 0.5*(l+r))
+			{
+				childPath += 1;
+				r = 0.5*(l+r);
+			}
+			else{
+				l = 0.5*(l+r);
+			}
+			if(y[bodyIndex + offset] < 0.5*(b+t))
+			{
+				childPath += 2;
+				t = 0.5*(t+b);
+			}
+			else
+			{
+				b = 0.5*(t+b);
+			}
+			if(z[bodyIndex + offset] < 0.5f*(f+ba))
+      {
+          childPath += 4;
+          ba = 0.5f*(f+ba);
+      }
+      else
+      {
+          f = 0.5f*(f+ba);
+      }
+
+		}
+		int childIndex = child[temp * 8 + childPath];
+
+		// traverse tree until we hit leaf node
+		while(childIndex >= n)
+		{
+  		temp = childIndex;
+			childPath = 0;
+			if(x[bodyIndex + offset] < 0.5*(l+r))
+			{
+				childPath += 1;
+				r = 0.5*(l+r);
+			}
+			else
+			{
+				l = 0.5*(l+r);
+			}
+			if(y[bodyIndex + offset] < 0.5*(b+t))
+			{
+				childPath += 2;
+				t = 0.5*(t+b);
+			}
+			else
+			{
+				b = 0.5*(t+b);
+			}
+			if(z[bodyIndex + offset] < 0.5f*(f+ba))
+      {
+          childPath += 4;
+          ba = 0.5f*(f+ba);
+      }
+      else
+      {
+          f = 0.5f*(f+ba);
+      }
+
+			atomicAdd(&x[temp], mass[bodyIndex + offset]*x[bodyIndex + offset]);
+			atomicAdd(&y[temp], mass[bodyIndex + offset]*y[bodyIndex + offset]);
+			atomicAdd(&z[temp], mass[bodyIndex + offset]*z[bodyIndex + offset]);
+			atomicAdd(&mass[temp], mass[bodyIndex + offset]);
+			atomicAdd(&count[temp], 1);
+			childIndex = child[8 * temp + childPath];
+		}
+
+		if(childIndex != -2)
+		{
+			int locked = temp * 8 + childPath;
+			if(atomicCAS(&child[locked], childIndex, -2) == childIndex)
+			{
+				if(childIndex == -1)
+				{
+					child[locked] = bodyIndex + offset;
+				}
+				else
+				{
+					int patch = 8 * n;
+					while(childIndex >= 0 && childIndex < n)
+					{
+				 		int cell = atomicAdd(index, 1);
+				 		patch = min(patch, cell);
+				 		if(patch != cell)
+				 		{
+				 			child[8 * temp + childPath] = cell;
+				 		}
+
+            // insert old particle
+				 		childPath = 0;
+				 		if(x[childIndex] < 0.5*(l+r))
+				 		{
+				 			childPath += 1;
+            }
+				 		if(y[childIndex] < 0.5*(b+t))
+				 		{
+				 			childPath += 2;
+				 		}
+				 		if(z[bodyIndex + offset] < 0.5f*(f+ba))
+            {
+              childPath += 4;
+            }
+            else
+            {
+              f = 0.5f*(f+ba);
+            }
+
+				 		//if(DEBUG)
+				 		if(true)
+				 		{
+				 			if(cell >= m)
+				 			{
+				 				printf("%s\n", "error cell index is too large!!");
+				 				printf("cell: %d\n", cell);
+				 			}
+				 		}
+
+				 		x[cell] += mass[childIndex]*x[childIndex];
+				 		y[cell] += mass[childIndex]*y[childIndex];
+				 		z[cell] += mass[childIndex]*z[childIndex];
+				 		mass[cell] += mass[childIndex];
+				 		count[cell] += count[childIndex];
+				 		child[8 * cell + childPath] = childIndex;
+
+				 		start[cell] = -1;
+
+            // insert new particle
+				 		temp = cell;
+				 		childPath = 0;
+				 		if(x[bodyIndex + offset] < 0.5*(l+r))
+				 		{
+				 			childPath += 1;
+				 			r = 0.5*(l+r);
+				 		}
+				 		else{
+				 			l = 0.5*(l+r);
+				 		}
+				 		if(y[bodyIndex + offset] < 0.5*(b+t))
+				 		{
+				 			childPath += 2;
+				 			t = 0.5*(t+b);
+				 		}
+				 		else
+				 		{
+				 			b = 0.5*(t+b);
+				 		}
+				 		if(z[bodyIndex + offset] < 0.5f*(f+ba))
+            {
+                childPath += 4;
+                ba = 0.5f*(f+ba);
+            }
+            else
+            {
+                f = 0.5f*(f+ba);
+            }
+				 		x[cell] += mass[bodyIndex + offset]*x[bodyIndex + offset];
+				 		y[cell] += mass[bodyIndex + offset]*y[bodyIndex + offset];
+				 		z[cell] += mass[bodyIndex + offset]*z[bodyIndex + offset];
+				 		mass[cell] += mass[bodyIndex + offset];
+				 		count[cell] += count[bodyIndex + offset];
+				 		childIndex = child[8 * temp + childPath];				 		
+				 	}
+				
+				 	child[8 * temp + childPath] = bodyIndex + offset;
+
+				 	__threadfence();  // we have been writing to global memory arrays (child, x, y, mass) thus need to fence
+
+				 	child[locked] = patch;
+
+				}
+
+				//__threadfence(); // we have been writing to global memory arrays (child, x, y, mass) thus need to fence
+
+				offset += stride;
+				newBody = true;
+			}
+		}
+		__syncthreads(); // not strictly needed 
+	}
+}
+
+
+
+
+
+//===== centre_of_mass_kernel
+__global__ void centre_of_mass_kernel(float *x, float *y, float *z, float *mass, int *index, int n)
+{
+	int bodyIndex = threadIdx.x + blockIdx.x*blockDim.x;
+	int stride = blockDim.x*gridDim.x;
+	int offset = 0;
+
+	bodyIndex += n;
+	while(bodyIndex + offset < *index)
+	{
+		x[bodyIndex + offset] /= mass[bodyIndex + offset];
+		y[bodyIndex + offset] /= mass[bodyIndex + offset];
+		z[bodyIndex + offset] /= mass[bodyIndex + offset];
+
+		offset += stride;
+	}
+}
+
+
+
+//===== sort_kernel
+__global__ void sort_kernel(int *count, int *start, int *sorted, int *child, int *index, int n)
+{
+	int bodyIndex = threadIdx.x + blockIdx.x*blockDim.x;
+	int stride = blockDim.x*gridDim.x;
+	int offset = 0;
+
+	int s = 0;
+	if(threadIdx.x == 0)
+	{
+		for(int i = 0; i < 8; i++)
+		{
+			int node = child[i];
+
+			if(node >= n)
+			{
+			  // not a leaf node
+				start[node] = s;
+				s += count[node];
+			}
+			else if(node >= 0)
+			{
+			  // leaf node
+				sorted[s] = node;
+				s++;
+			}
+		}
+	}
+
+	int cell = n + bodyIndex;
+	int ind = *index;
+	while((cell + offset) < ind)
+	{
+		s = start[cell + offset];
+	
+		if(s >= 0)
+		{
+			for(int i = 0; i < 8; i++)
+			{
+				int node = child[8 * (cell+offset) + i];
+
+				if(node >= n)
+				{
+				  // not a leaf node
+					start[node] = s;
+					s += count[node];
+				}
+				else if(node >= 0)
+				{
+				  // leaf node
+					sorted[s] = node;
+					s++;
+				}
+			}
+			offset += stride;
+		}
+	}
+}
+
+
+//===== compute_forces_kernel
+__global__ void compute_forces_kernel(float *x, float *y, float *z, float *ax, float *ay, float *az, float *mass,
+                                      int *sorted, int *child, float *left, float *right, float *bottom, float *top,
+                                      float *front, float *back, int n)
+{
+	int bodyIndex = threadIdx.x + blockIdx.x*blockDim.x;
+	int stride = blockDim.x*gridDim.x;
+	int offset = 0;
+
+	__shared__ float depth[stackSize*blockSize/warp]; 
+	__shared__ int stack[stackSize*blockSize/warp];  // stack controled by one thread per warp 
+
+	float rad1 = 0.5*(*right - (*left));
+	float rad2 = 0.5*(*bottom - (*top));
+	float rad3 = 0.5*(*front - (*back));
+	float radius = fmaxf(abs(rad1), fmaxf(abs(rad2), abs(rad3)));
+
+	// need this in case some of the first eight entries of child are -1 (otherwise jj = 7)
+	int jj = -1;                 
+	for(int i = 0; i < 8; i++)
+	{       
+		if(child[i] != -1)
+		{     
+			jj++;               
+		}                       
+	}
+
+	int counter = threadIdx.x % warp;
+	int stackStartIndex = stackSize*(threadIdx.x / warp);
+	while(bodyIndex + offset < n)
+	{
+		int sortedIndex = sorted[bodyIndex + offset];
+
+		float pos_x = x[sortedIndex];
+		float pos_y = y[sortedIndex];
+		float pos_z = z[sortedIndex];
+		float acc_x = 0;
+		float acc_y = 0;
+		float acc_z = 0;
+
+		// initialize stack
+		int top = jj + stackStartIndex;
+		if(counter == 0)
+		{
+			int temp = 0;
+			for(int i = 0;i < 8; i++)
+			{
+				if(child[i] != -1)
+				{
+					stack[stackStartIndex + temp] = child[i];
+					depth[stackStartIndex + temp] = radius*radius/theta;
+					temp++;
+				}
+			}
+		}
+
+		__syncthreads();
+
+		// while stack is not empty
+		while(top >= stackStartIndex)
+		{
+			int node = stack[top];
+			float dp = 0.25*depth[top];
+			// float dp = depth[top];
+			for(int i = 0; i < 8; i++)
+			{
+				int ch = child[8*node + i];
+
+				//__threadfence();
+			
+				if(ch >= 0)
+				{
+					float dx = x[ch] - pos_x;
+  				float dy = y[ch] - pos_y;
+  				float dz = z[ch] - pos_z;
+    			float r = dx*dx + dy*dy + dz*dz + eps2;
+    			
+    			if(ch < n /*is leaf node*/ || __all_sync(0xffffffff, dp <= r)/*meets criterion*/)
+    			//if(ch < n /*is leaf node*/)
+    			{    			  
+    			  r = rsqrt(r);
+            float f = mass[ch] * r * r * r;
+
+   					acc_x += f*dx;
+   					acc_y += f*dy;
+   					acc_z += f*dz;
+					}
+					else
+					{
+						if(counter == 0)
+						{
+							stack[top] = ch;
+							depth[top] = dp;
+							// depth[top] = 0.25*dp;
+						}
+						top++;
+						//__threadfence();
+					}
+				}
+			}
+
+			top--;
+		}
+
+		ax[sortedIndex] = acc_x;
+   	ay[sortedIndex] = acc_y;
+   	az[sortedIndex] = acc_z;
+
+   	offset += stride;
+
+   	__syncthreads();
+   	}
+}
+
+
+
+
+
+int main()
+{
+
+  int numParticles;
+	int numNodes;
+
+	float *h_left;
+	float *h_right;
+	float *h_bottom;
+	float *h_top;
+	float *h_front;
+	float *h_back;
+
+	float *h_mass;
+	float *h_x;
+	float *h_y;
+	float *h_z;
+	float *h_ax;
+	float *h_ay;
+	float *h_az;
+
+	int *h_child;
+	int *h_start;
+	int *h_sorted;
+	int *h_count;
+
+	float *d_left;
+	float *d_right;
+	float *d_bottom;
+	float *d_top;
+	float *d_front;
+	float *d_back;
+	
+	float *d_mass;
+	float *d_x;
+	float *d_y;
+	float *d_z;
+	float *d_ax;
+	float *d_ay;
+	float *d_az;
+	
+	int *d_index;
+	int *d_child;
+	int *d_start;
+	int *d_sorted;
+	int *d_count;
+
+	int *d_mutex;  //used for locking 
+
+	cudaEvent_t start, stop; // used for timing
+
+	float *h_output;  //host output array for visualization
+	float *d_output;  //device output array for visualization
+
+  //parameters = p;
+	//step = 0;
+	
+	int n = pow(2, 10);
+	
+	numParticles = n;
+	numNodes = 8 * n + 15000;
+	
+	int m = numNodes;
+
+	// allocate host data
+	h_left = new float;
+	h_right = new float;
+	h_bottom = new float;
+	h_top = new float;
+	h_front = new float;
+  h_back = new float;
+	h_mass = new float[numNodes];
+	h_x = new float[numNodes];
+	h_y = new float[numNodes];
+	h_z = new float[numNodes];
+	h_ax = new float[numNodes];
+	h_ay = new float[numNodes];
+	h_az = new float[numNodes];
+	h_child = new int[8*numNodes];
+	h_start = new int[numNodes];
+	h_sorted = new int[numNodes];
+	h_count = new int[numNodes];
+	h_output = new float[2*numNodes];
+
+	// allocate device data
+	gpuErrchk(cudaMalloc((void**)&d_left, sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_right, sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_bottom, sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_top, sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_front, sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_back, sizeof(float)));
+	gpuErrchk(cudaMemset(d_left, 0, sizeof(float)));
+	gpuErrchk(cudaMemset(d_right, 0, sizeof(float)));
+	gpuErrchk(cudaMemset(d_bottom, 0, sizeof(float)));
+	gpuErrchk(cudaMemset(d_top, 0, sizeof(float)));
+	gpuErrchk(cudaMemset(d_front, 0, sizeof(float)));
+	gpuErrchk(cudaMemset(d_back, 0, sizeof(float)));
+
+	gpuErrchk(cudaMalloc((void**)&d_mass, numNodes*sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_x, numNodes*sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_y, numNodes*sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_z, numNodes*sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_ax, numNodes*sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_ay, numNodes*sizeof(float)));
+	gpuErrchk(cudaMalloc((void**)&d_az, numNodes*sizeof(float)));
+
+	gpuErrchk(cudaMalloc((void**)&d_index, sizeof(int)));
+	gpuErrchk(cudaMalloc((void**)&d_child, 8*numNodes*sizeof(int)));
+	gpuErrchk(cudaMalloc((void**)&d_start, numNodes*sizeof(int)));
+	gpuErrchk(cudaMalloc((void**)&d_sorted, numNodes*sizeof(int)));
+	gpuErrchk(cudaMalloc((void**)&d_count, numNodes*sizeof(int)));
+	gpuErrchk(cudaMalloc((void**)&d_mutex, sizeof(int))); 
+
+	gpuErrchk(cudaMemset(d_start, -1, numNodes*sizeof(int)));
+	gpuErrchk(cudaMemset(d_sorted, 0, numNodes*sizeof(int)));
+
+	int memSize = sizeof(float) * 2 * numParticles;
+
+	gpuErrchk(cudaMalloc((void**)&d_output, 2*numNodes*sizeof(float)));
+
+    
+  reset_arrays_kernel<<< gridSize, blockSize >>>(d_mutex, d_x, d_y, d_z, d_mass, d_count, d_start, d_sorted, d_child, d_index,
+                                                 d_left, d_right, d_bottom, d_top, d_front, d_back, n, m);
+  cudaDeviceSynchronize();
+  cudaError_t err = cudaGetLastError();
+  if (err != cudaSuccess)
+  {
+    fprintf(stderr, "Error: %s\n", cudaGetErrorString(err));
+  }
+
+
+  // initializing x, y, mass -----
+  mt19937 engine(42);
+  uniform_real_distribution<float> distribution(0.0, 1.0);
+  
+  
+  //float xtmp[] = {0.1, 0.1, 0.7, 0.7, 0.4, 0.6};
+  //float ytmp[] = {0.1, 0.7, 0.1, 0.7, 0.3, 0.6};
+  
+  for (int i = 0; i < numParticles; i++)
+  {
+    //h_x[i] = xtmp[i]; // distribution(engine);
+    //h_y[i] = ytmp[i]; //distribution(engine);
+    h_x[i] = distribution(engine);
+    h_y[i] = distribution(engine);
+    h_z[i] = distribution(engine);
+    
+    //cout << h_x[i] << "," << h_y[i] << "," << i << endl;
+    
+    h_mass[i] = 0.5f;
+    
+    //cout << h_x[i] << "," << h_y[i] << "," << h_z[i] << "," << h_mass[i] << endl;
+  }
+  
+  
+  cudaMemcpy(d_x, h_x, numNodes * sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_y, h_y, numNodes * sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_z, h_z, numNodes * sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_mass, h_mass, numNodes * sizeof(float), cudaMemcpyHostToDevice);
+
+  
+
+
+  // After the kernel call and cudaDeviceSynchronize()
+  compute_bounding_box_kernel<<< gridSize, blockSize >>>(d_mutex, d_x, d_y, d_z, d_left, d_right, d_bottom, d_top, d_front, d_back, n);
+  cudaDeviceSynchronize();
+
+  err = cudaGetLastError();
+  if (err != cudaSuccess)
+  {
+    fprintf(stderr, "Error: %s\n", cudaGetErrorString(err));
+  }
+  
+  
+  cudaMemcpy(h_left, d_left, sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_right, d_right, sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_bottom, d_bottom, sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_top, d_top, sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_front, d_front, sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_back, d_back, sizeof(float), cudaMemcpyDeviceToHost);
+  
+  int *h_index = new int;
+  cudaMemcpy(h_index, d_index, sizeof(int), cudaMemcpyDeviceToHost);
+  printf("\n");
+  printf("h_left, h_right, h_bottom, h_top, h_front, h_back = %f, %f, %f, %f, %f, %f\n", h_left[0], h_right[0], h_bottom[0], h_top[0], h_front[0], h_back[0]);
+  printf("\n");
+  printf("initial index = %d\n", h_index[0]);
+  printf("\n");
+  
+
+
+  auto T_Filling = std::chrono::high_resolution_clock::now();
+  //gridSize, blockSize
+  
+  build_tree_kernel<<< 1, 256 >>>(d_x, d_y, d_z, d_mass, d_count, d_start, d_child, d_index, d_left, d_right, d_bottom, d_top, d_front, d_back, n, m);
+  cudaDeviceSynchronize();
+  
+  auto end_Filling = std::chrono::high_resolution_clock::now();
+  auto elapsed_Filling = std::chrono::duration_cast<std::chrono::nanoseconds>(end_Filling - T_Filling);
+  cout << "Elapsed time = " << elapsed_Filling.count() * 1e-9 << endl;
+  
+  
+  /*
+  cudaMemcpy(h_count, d_count, numNodes * sizeof(int), cudaMemcpyDeviceToHost);
+  for (int i = 0; i < numNodes; i++)
+  {
+    cout << "h_count[" << i << "] = " << h_count[i] << endl;
+  }
+  */
+  
+  
+  auto T_CM = std::chrono::high_resolution_clock::now();
+  centre_of_mass_kernel<<<gridSize, blockSize>>>(d_x, d_y, d_z, d_mass, d_index, n);
+  cudaDeviceSynchronize();
+  auto end_CM = std::chrono::high_resolution_clock::now();
+  auto elapsed_CM = std::chrono::duration_cast<std::chrono::nanoseconds>(end_CM - T_CM);
+  cout << "T_CM = " << elapsed_CM.count() * 1e-9 << endl;
+  
+  
+  
+  auto T_sorting = std::chrono::high_resolution_clock::now();
+  sort_kernel<<< 1, 256 >>>(d_count, d_start, d_sorted, d_child, d_index, n);
+  cudaDeviceSynchronize();
+  auto end_sorting = std::chrono::high_resolution_clock::now();
+  auto elapsed_sorting = std::chrono::duration_cast<std::chrono::nanoseconds>(end_sorting - T_sorting);
+  cout << "T_sorting = " << elapsed_sorting.count() * 1e-9 << endl;
+  
+  
+  
+  auto T_Force = std::chrono::high_resolution_clock::now();
+  compute_forces_kernel<<< gridSize, blockSize >>>(d_x, d_y, d_z, d_ax, d_ay, d_az, d_mass, d_sorted, d_child,
+                                                   d_left, d_right, d_bottom, d_top, d_front, d_back, n);
+  cudaDeviceSynchronize();
+  auto end_Force = std::chrono::high_resolution_clock::now();
+  auto elapsed_Force = std::chrono::duration_cast<std::chrono::nanoseconds>(end_Force - T_Force);
+  cout << "T_Force = " << elapsed_Force.count() * 1e-9 << endl;
+  
+
+  cudaMemcpy(h_index, d_index, sizeof(int), cudaMemcpyDeviceToHost);
+  printf("\n");
+  printf("Final index = %d\n", h_index[0]);
+  printf("\n");
+  
+  
+  
+  
+  cudaMemcpy(h_ax, d_ax, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_ay, d_ay, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_az, d_az, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  for (int i = 0; i < numParticles; i++)
+  {
+    //cout << "ax[" << i << "] = " << h_ax[i] << endl;
+    cout << h_ay[i] << endl;
+  }
+  
+  
+  
+  
+  
+  /*
+  cudaMemcpy(h_sorted, d_sorted, numNodes * sizeof(int), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_start, d_start, numNodes * sizeof(int), cudaMemcpyDeviceToHost);  
+  
+  for (int i = 0; i < numNodes; i++)
+  {
+    cout << "start[" << i << "] = " << h_start[i] << endl;
+  }
+  
+  cout << endl;
+  
+  for (int i = 0; i < numNodes; i++)
+  {
+    cout << "sorted[" << i << "] = " << h_sorted[i] << endl;
+  }
+  */
+  
+  cout << endl;
+  
+  /*
+  cudaMemcpy(h_x, d_x, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_y, d_y, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_mass, d_mass, numNodes * sizeof(float), cudaMemcpyDeviceToHost);
+  for (int i = 0; i < numNodes; i++)
+  {
+    cout << "x[" << i << "] = " << h_x[i] << "   mass[" << i << "] = " << h_mass[i] << endl;
+  }
+  */
+
+  /*
+  cudaMemcpy(h_count, d_count, numNodes * sizeof(int), cudaMemcpyDeviceToHost);
+  for (int i = 0; i < numNodes; i++)
+  {
+    cout << "count[" << i << "] = " << h_count[i] << endl;
+  }
+  */
+  
+  cout << endl;
+
+  
+  /*
+  cudaMemcpy(h_child, d_child, 4 * numNodes * sizeof(int), cudaMemcpyDeviceToHost);
+  for (int i = 0; i < numNodes; i++)
+  {
+    cout << i << ", " << h_child[i] << endl;
+    //cout << "child[" << i << "] = " << h_child[i] << endl;
+  }
+  */
+  
+
+
+
+}
+
+
+
