@@ -43,6 +43,9 @@ acc_x, acc_y, acc_z = calculate_accelerations(x, y, z, mass)
 print("Acceleration in y-direction:", np.sort(acc_y))
 #print("Acceleration in y-direction:", acc_y)
 
+print()
+print(acc_y[200:220])
+
 
 
 
