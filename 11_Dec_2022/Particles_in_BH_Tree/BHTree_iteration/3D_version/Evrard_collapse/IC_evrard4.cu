@@ -43,10 +43,6 @@ __global__ void getSmoothing(float *x, float *y, float *z, float *h, float *Nngb
 
         if (rr <= h_new)
         {
-          if (i == 505851)
-            printf("%d\n", j);
-            //printf("j, k, h_new = %d, %d, %f\n", j, k, h_new);
-
           k++;
         }
         
@@ -85,10 +81,6 @@ __global__ void getSmoothing(float *x, float *y, float *z, float *h, float *Nngb
         break;
       }
     }
-
-    
-    if (i == 505851)
-      printf("k = %d\n", k);
 
     Nngb_previous[i] = k;
     h[i] = 0.5 * h_new;
@@ -238,9 +230,6 @@ int main() {
   {
     eps[i] = h[i];
   }
-  
-
-  cout << "h[505851] = " << h[505851] << endl;
   
   //====== Output to a binary file ===========
   std::string filename = "IC_Evrard_" + std::to_string(number_particles) + ".bin";

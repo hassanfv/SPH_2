@@ -75,7 +75,7 @@ def readBinaryFile(filename):
     return N, N_ionFrac, Typ, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac 
 
 
-filename = 'G-0.819965.bin'
+filename = 'G-0.100001.bin'
 
 radius_ppm, rho_ppm, vr_ppm, entropy, press = load_ppm_result()
 

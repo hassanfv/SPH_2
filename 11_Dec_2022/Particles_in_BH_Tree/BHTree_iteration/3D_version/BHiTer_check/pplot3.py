@@ -3,8 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-filename = './OutNoCool/G-0.007600.bin'
+#filename = './No_T_limit/G-0.002200.bin'
 
+filename = 'G-0.000600.bin'
 
 import struct
 

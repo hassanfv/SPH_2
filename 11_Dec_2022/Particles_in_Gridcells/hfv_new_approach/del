@@ -1,6 +1,0 @@
-auto T_h = std::chrono::high_resolution_clock::now();
-
-
-auto end_h = std::chrono::high_resolution_clock::now();
-auto elapsed_h = std::chrono::duration_cast<std::chrono::nanoseconds>(end_h - T_h);
-cout << "T_h = " << elapsed_h.count() * 1e-9 << endl;
