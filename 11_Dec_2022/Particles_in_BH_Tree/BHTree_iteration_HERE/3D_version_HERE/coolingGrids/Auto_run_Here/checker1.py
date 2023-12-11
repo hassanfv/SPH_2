@@ -4,7 +4,7 @@ import pickle
 import matplotlib.pyplot as plt
 
 
-with open('coolHeatGridX.pkl', 'rb') as f:
+with open('coolHeatGridNew.pkl', 'rb') as f:
     data = pickle.load(f)
 
 nH = data['densities']
@@ -13,7 +13,12 @@ Temp = data['temperatures'] # NOTE: This is log T
 uEvol = data['uEvolution']
 tArr_sec = data['timeArr_in_sec']
 muA = data['muArr']
+metalz = data['metalz']
 kpc = data['kpc']
+
+print(uEvol[1, 22, 21, 1, :])
+
+s()
 
 print('kpc = ', kpc)
 print()
@@ -25,6 +30,7 @@ print('Temp = ', Temp)
 print()
 print('uEvol.shape = ', uEvol.shape)
 print('muA.shape = ', muA.shape)
+print('metalz.shape = ', metalz.shape)
 print()
 
 #--- test values ---
@@ -42,7 +48,7 @@ N_Z = len(Z)
 N_T = len(Temp)
 N_Time = len(tArr_sec)
 
-#print(f'N_kpc = {N_kpc},  N_nH = {N_nH}, N_Z = {N_Z}, N_T = {N_T}, N_Time = {N_Time}')
+print(f'N_kpc = {N_kpc},  N_nH = {N_nH}, N_Z = {N_Z}, N_T = {N_T}, N_Time = {N_Time}')
 
 
 #----- Used for debugging !!!
@@ -94,29 +100,11 @@ def hcooler(r_p, u_p, nH_p, Z_p, dt_sec, nH, Z, Temp, uEvol, tArr_sec, N_nH, N_Z
   tmp = uEvol[0, :, ndx_nH, ndx_Z, :]
 
   U = tmp[:, 0] # The list of all initial u, i.e. corresponding to T
-  
-  #print(f'U = ', U)
 
   for i in range(N_T): # Note that N_T = len(U)!
-      
+  
       if (ndx_u == -1) & (u_p <= U[i]):
           ndx_u = i
-
-  #if ndx_u != 0:
-  #  delta1 = np.abs(U[ndx_u] - u_p)
-  #  delta2 = np.abs(U[ndx_u - 1] - u_p)
-
-  #  if delta2 < delta1:
-  #      ndx_u -= 1
-  
-  '''
-  for i, utt in enumerate(U):
-  
-    print(f'{i},  U = {utt:.4E}')
-    
-  print()
-  print(f'u_p = {u_p:.4E},  ndx_u (XXXX) = ', ndx_u)
-  '''
 
   #======== time ============
   for i in range(N_Time):
@@ -146,8 +134,12 @@ def hcooler(r_p, u_p, nH_p, Z_p, dt_sec, nH, Z, Temp, uEvol, tArr_sec, N_nH, N_Z
     print()
     
     uEv = flow * uEv_1 + fhi * uEv_2
+    
+    print(f'uEv (using fhi, flow) = {uEv:.4E}')
+    
   else:
     uEv = uEvol[ndx_kpc, ndx_u, ndx_nH, ndx_Z, ndx_t]
+    print('uEv (without fhi, flow) = ', uEv)
 
   return uEv, mu_tmp
 
@@ -166,11 +158,11 @@ tArr_yrs = tArr_sec / 3600 / 24 / 365.25
 #plt.show()
 
 #--- test values ---
-r_p = 0.2 # kpc
-u_p = 2.081E+14
+r_p = 0.3 # kpc
+u_p = 2.081E+15
 nH_p = 10.
 Z_p = -1.0
-dt_sec = 3.16e7 * 8 # seconds ===> 4 years
+dt_sec = 3.16e7 * 4 # seconds ===> 4 years
 #-------------------
 
 uu, mu = hcooler(r_p, u_p, nH_p, Z_p, dt_sec, nH, Z, Temp, uEvol, tArr_sec, N_nH, N_Z, N_T, N_Time, muA)
@@ -178,6 +170,14 @@ uu, mu = hcooler(r_p, u_p, nH_p, Z_p, dt_sec, nH, Z, Temp, uEvol, tArr_sec, N_nH
 TBefore = (gamma - 1) * mH / kB * mu * u_p
 TAfter = (gamma - 1) * mH / kB * mu * uu 
 
+#-----------------------
+print()
+print('---------------------------------------------------------------')
+T_hsn = 1e6 # K
+u_hsn = kB * T_hsn / mu / (gamma - 1) / mH
+print(f'For T = {T_hsn} (i.e. {T_hsn:.2E} K), we have u = {u_hsn:.3E}')
+print('---------------------------------------------------------------')
+#-----------------------
 
 print()
 print('*****************')
@@ -190,7 +190,7 @@ print()
 
 print(f'u(Before) = {u_p:.4E}, u(After) = {uu:.4E},  mu = {mu:.3f}, T(After) = {TAfter:.2f}')
 print()
-print(f'u(Before code unit) = {u_p/unit_u:.2f}, u(After code unit) = {uu/unit_u:.2f}')
+#print(f'u(Before code unit) = {u_p/unit_u:.2f}, u(After code unit) = {uu/unit_u:.2f}')
 print()
 print(f'T(Before) = {TBefore:.2f}, T(After) = {TAfter:.2f},  deltaT = {(TAfter - TBefore):.2f}')
 
