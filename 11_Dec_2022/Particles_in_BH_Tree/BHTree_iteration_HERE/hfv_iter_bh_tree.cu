@@ -182,10 +182,10 @@ __global__ void build_tree_kernel(float *x, float *y, float *mass, int *count, i
 				b = 0.5*(t+b);
 			}
 		}
-		int childIndex = child[temp*4 + childPath];
+		int childIndex = child[temp*4 + childPath]; // We check whether another particle ALREADY reside in the cell!!
 
 		// traverse tree until we hit leaf node
-		while(childIndex >= n)
+		while(childIndex >= n) //if childIndex >= n, it means this child is a node and has its own children, so we should traverse untill hit leaf to place particle
 		{
 			temp = childIndex;
 			childPath = 0;
@@ -216,7 +216,7 @@ __global__ void build_tree_kernel(float *x, float *y, float *mass, int *count, i
 		}
 
 
-		if(childIndex != -2)
+		if(childIndex != -2)// -2 means it has already been locked!
 		{
 			int locked = temp*4 + childPath;
 			if(atomicCAS(&child[locked], childIndex, -2) == childIndex)

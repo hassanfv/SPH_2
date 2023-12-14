@@ -1,0 +1,66 @@
+
+sudo apt-get update
+sudo apt-get install -y python3-mpi4py
+sudo apt install python3-pip //// needs to type Y and then press Enter!
+pip3 install numpy
+
+
+git clone https://bitbucket.org/richings/chimes
+
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+
+sudo apt-get install git-lfs
+
+git lfs install
+
+git clone https://bitbucket.org/richings/chimes-data
+
+git clone https://bitbucket.org/richings/chimes-driver
+
+wget https://github.com/LLNL/sundials/releases/download/v5.1.0/sundials-5.1.0.tar.gz
+
+tar -zxvf sundials-5.1.0.tar.gz
+
+cd sundials-5.1.0
+
+mkdir build
+
+cd build
+
+sudo apt  install cmake  //// needs to type Y and then press Enter!
+
+cmake -DCMAKE_INSTALL_PREFIX=/path/to/install/dir/ ..
+
+#cmake -DCMAKE_INSTALL_PREFIX=/path/to/install/dir/ -DBUILD_ARKODE=OFF -DBUILD_CVODE=ON -DBUILD_CVODES=OFF -DBUILD_IDA=OFF -DBUILD_IDAS=OFF -DBUILD_KINSOL=OFF -#DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DCMAKE_C_FLAGS="-O2" -DEXAMPLES_ENABLE_C=OFF -DSUNDIALS_PRECISION=double ../
+
+make
+
+sudo make install
+
+!!!!!! Also manually add these two lines in .bashrc !!!!!!!!!!!!
+export PATH=/path/to/install/dir/bin:$PATH
+export LD_LIBRARY_PATH=/path/to/install/dir/lib:$LD_LIBRARY_PATH
+
+
+source ~/.bashrc
+
+
+sudo apt-get install libhdf5-serial-dev    //// needs to type Y and then press Enter!
+
+!!!!!!!! Now copy the Makefile to chimes folder !!!!!!
+!!!!!!!! Got to chimes folder: !!!!!!!
+
+make
+
+pip install h5py
+
+!!!! Now copy the chimes_driver.py and driver_config.py (and grid_noneq_evolution_AGN.param) files to the chimes-driver folder.
+
+
+!!!! Go to chimes-driver folder
+
+mpirun -np 96 python3.8 chimes_driver.py grid_noneq_evolution_AGN.param
+
+
+
+
