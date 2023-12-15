@@ -3,13 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import struct
 
-#filename = './No_T_limit/G-0.002200.bin'
 
-filename = 'G-0.099510.bin'
+filename = 'G-0.014000.bin'
 
-unit_velocity_cgs = 8.39314e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_u = 7.04448e+13 #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_rho = 1.10828e-22 # !!!!!!!!!!!!!!!!!!!
+unit_velocity_cgs = 3.21138e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_u = 1.0313e+13 #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_rho = 1.62251e-23 # !!!!!!!!!!!!!!!!!!!
 
 def readBinaryFile(filename):
     with open(filename, 'rb') as f:
@@ -225,6 +224,11 @@ print()
 ntmp = np.where(h > 0.03)[0]
 print('ntmp = ', ntmp)
 
+print()
+print('Number of particles with T > 1e6 K (Note that this is for the thing layer) = ', len(np.where(Temp > 1e6)[0]))
+print()
+print('Number of particles with T > 1e9 K (Note that this is for the thing layer) = ', len(np.where(Temp > 1e9)[0]))
+print()
 
 plt.figure(figsize=(10, 8))
 
@@ -241,7 +245,7 @@ scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
 # Add a colorbar to the plot to show the relationship between color and T value.
 plt.colorbar(scatter, label='nH Value')
 
-xy = 1.1
+xy = 0.56
 
 plt.xlim(-xy, xy)
 plt.ylim(-xy, xy)

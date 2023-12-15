@@ -28,7 +28,7 @@ cm_to_kpc = 3.086e21
 sigma = 200. * 1000. * 100. # cm/s =====> 200 km/s - See eq.1 in Richings et al - 2018
 
 # In the current simulation all these particles are gas particle. We later add a collisionless BH.
-N_particles = 8 * 200000  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+N_particles = 8 * 250000  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 nH = 10  # cm^-3  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 T_gas = 1e4  # K
@@ -38,7 +38,7 @@ mu = 0.61  # fully ionized gas with solar metallicity!
 XH = 0.7
 rho = mH * nH / XH
 
-mSPH = 2000.0  # M_sun # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+mSPH = 240.0  # M_sun # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 mSPH_in_g = mSPH * Msun  # grams
 M_tot = N_particles * mSPH
 M_tot_in_g = M_tot * Msun  # Total mass in grams.

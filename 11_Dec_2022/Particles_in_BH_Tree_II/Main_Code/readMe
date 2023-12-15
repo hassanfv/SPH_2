@@ -1,0 +1,29 @@
+last val = 1.10556
+Nbins = 250
+(Nbins/2.) = 125
+trunc(Nbins/2) = 125
+N = 3751000
+currentIndex = 1893608
+updated N = 1893608
+First mass = 30
+Last mass = 240
+M_tot_in_Msun = 2.3974e+08
+unitLength_in_cm = 3.086e+21
+unitTime_in_s = 9.60956e+14
+unitVelocity_in_cm_per_s = 3.21138e+06
+Unit_u_in_cgs = 1.0313e+13
+UnitDensity_in_cgs = 1.62251e-23
+First mass in code unit = 1.25136e-07
+Last mass in code unit = 1.00109e-06
+u_tmp in code unit = 0.196817
+First u = 0.196817
+Last u = 0.196817
+
+L_AGN_code_unit = 1.95409e+06
+vin_in_code_unit = 934.177
+M_dot_in_code_unit = 0.224072
+u_for_10K_Temp = 0.196817
+
+M_dot_in_code_unit * dt / m_sph_outflow = 0.895315
+
+Elapsed T = 242.871
