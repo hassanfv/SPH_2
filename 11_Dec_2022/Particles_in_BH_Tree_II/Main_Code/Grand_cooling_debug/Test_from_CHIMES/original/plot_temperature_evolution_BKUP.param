@@ -1,0 +1,23 @@
+plotter_mode	noneq_evolution_temperature 
+input_file  	grid_noneq_evolution.hdf5
+output_file  	temperature_evolution_plot.png 
+
+log_x_min 	0.0 
+log_x_max 	3.0 
+
+log_y_min 	1.0
+log_y_max 	8.5 
+
+N_T_init 	7 
+log_T_init_min 	2.0 
+log_T_init_max  8.0 
+
+line_variable  	metallicity
+N_lines  	3
+line_var_min  	-2.0 
+line_var_max  	0.0 
+
+panel_variable 	density
+N_panels  	9 
+panel_var_min 	-4.0
+panel_var_max 	4.0

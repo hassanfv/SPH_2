@@ -3,9 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import struct
 
-#filename = './WithCooling/G-0.001320.bin'
 
-filename = 'G-0.010000.bin'
+filename = 'G-0.002720.bin'
 
 unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
@@ -80,6 +79,9 @@ x = x[n]
 y = y[n]
 z = z[n]
 
+nCheck = 742726
+xCheck = [x[nCheck]]
+yCheck = [y[nCheck]]
 
 vx = vx[n]
 vy = vy[n]
@@ -141,9 +143,9 @@ r = res[:, 0]
 vr = res[:, 1] * unit_velocity_cgs / 100 / 1000 # km/s
 ur = res[:, 2]
 
-plt.scatter(r, vr, s = 5, color = 'k')
+#plt.scatter(r, vr, s = 5, color = 'k')
 #plt.scatter(r, ur, s = 5, color = 'k')
-plt.show()
+#plt.show()
 
 
 
@@ -181,8 +183,8 @@ XH = 0.7
 nH_cgs = rho_cgs * XH / mH
 
 
-plt.hist(np.log10(Temp), bins = 50)
-plt.show()
+#plt.hist(np.log10(Temp), bins = 50)
+#plt.show()
 
 nT = np.where(Temp < 12000)[0]
 print(nT)
@@ -204,21 +206,19 @@ nH = rho * unit_density_in_cgs * XH /mH
 print(f'max(nH) = {max(rho * unit_density_in_cgs * XH /mH)}')
 print()
 
-plt.hist(nH, bins = 50)
-plt.title('nH')
-plt.ylabel('N (Frequency)')
-plt.yscale('log')
-plt.show()
+#plt.hist(nH, bins = 50)
+#plt.title('nH')
+#plt.ylabel('N (Frequency)')
+#plt.yscale('log')
+#plt.show()
 
 print('rho[nn] = ', rho[nn]*unit_density_in_cgs)
 XH = 0.7
 print('nH[nn] = ', rho[nn]*unit_density_in_cgs * XH /mH)
 
-ntmp = np.where((Temp < 30000) & (nH > 0.01) & (nH < 5))[0]
 
-plt.scatter(np.log10(nH), np.log10(Temp), s = 0.01, color = 'k')
-plt.scatter(np.log10(nH[ntmp]), np.log10(Temp[ntmp]), s = 1.0, color = 'b')
-plt.show()
+#plt.scatter(np.log10(nH), np.log10(Temp), s = 0.1, color = 'k')
+#plt.show()
 
 print()
 print('sort(Temp) = ', np.sort(Temp))
@@ -236,8 +236,8 @@ print(f'Number of particles with 1e6 < Temp < 1e9 is {len(TempT)}')
 print()
 
 
-ntmp = np.where((Temp > 60000) & (Temp < 100000))[0]
-#print('ntmp = ', ntmp)
+ntmp = np.where((Temp > 6800000) & (Temp < 10000000))[0]
+print('ntmp = ', ntmp)
 
 print()
 print('Number of particles with T > 1e6 K (Note that this is for the thing layer) = ', len(np.where(Temp > 1e6)[0]))
@@ -249,19 +249,17 @@ plt.figure(figsize=(10, 8))
 
 # Create a scatter plot. The color of each point will depend on the corresponding T value.
 scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
-#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
-
-
+#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=2)
 
 # Add a colorbar to the plot to show the relationship between color and T value.
 plt.colorbar(scatter, label='nH Value')
 
-#scatter = plt.scatter(x[ntmp], y[ntmp], c='lime', s=2)
+scatter = plt.scatter(xCheck, yCheck, c='red', s=50)
 
-xy = 0.32
+xy = 0.2
 
-plt.xlim(-xy, xy)
-plt.ylim(-xy, xy)
+plt.xlim(-xy, 0)
+plt.ylim(-xy, 0)
 
 
 plt.xlabel('X')

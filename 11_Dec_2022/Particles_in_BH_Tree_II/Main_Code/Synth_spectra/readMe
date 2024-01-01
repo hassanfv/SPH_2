@@ -1,0 +1,27 @@
+total mass of the system = 3.55020E+08 Msun
+
+Unit Length = 3.086e+21 cm
+Unit mass = 7.061351778e+41 grams
+Unit_time_in_s = 7.897E+14 seconds
+Unit_time in kyrs = 25023.22 kyrs
+Unit_time in Myrs = 25.0232 Myrs
+unitVelocity_in_cm_per_s = 3907948.44 cm/s
+unitVelocity_in_km/s = 39.08 km/s
+Unit_u_in_cgs = 1.5272E+13
+UnitDensity_in_cgs = 2.403E-23
+
+r.shape =  (908272, 3)
+mass =  [2.25339291e-07 2.25339291e-07 2.25339291e-07 ... 2.14072326e-06
+ 2.14072326e-06 2.14072326e-06]
+u.shape =  (908272,)
+u =  [0.13290744 0.13290744 0.13290744 ... 0.13290744 0.13290744 0.13290744]
+M_dot_in_code_unit =  0.12434184063427357
+M_dot * dt / np.min(mass) =  0.4414386513034793
+M_dot * dt / np.max(mass) =  0.04646722645299782
+M_dot * dt / m_sph_high_res =  0.4414386513034793
+
+h =  [0.00987477 0.00750202 0.00693478 ... 0.0161988  0.01559368 0.01504206]
+
+M_dot_in_code_unit =  0.12434184063427357
+
+Total gas particle is 908272 with N_blank = 10000. So N_tot = 918272

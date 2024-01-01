@@ -3,68 +3,77 @@ import numpy as np
 import matplotlib.pyplot as plt
 import struct
 
-#filename = './WithCooling/G-0.001320.bin'
 
-filename = 'G-0.010000.bin'
+#filename = './Outputs/G-0.002860.bin'
+
+filename = './Outputs/G-0.005600.bin'
 
 unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_rho = 2.83261e-24 # !!!!!!!!!!!!!!!!!!!
 
 def readBinaryFile(filename):
-    with open(filename, 'rb') as f:
-        file_content = f.read()  # Read the entire file at once
+    with open(filename, 'rb') as file:
+        # Read the total number of elements (N)
+        N = np.fromfile(file, dtype=np.int32, count=1)[0]
 
-    # Use a memoryview to avoid copies
-    buffer = memoryview(file_content)
+        # Read arrays in the order they were written
+        Typ = np.fromfile(file, dtype=np.int32, count=N)
+        x = np.fromfile(file, dtype=np.float32, count=N)
+        y = np.fromfile(file, dtype=np.float32, count=N)
+        z = np.fromfile(file, dtype=np.float32, count=N)
+        vx = np.fromfile(file, dtype=np.float32, count=N)
+        vy = np.fromfile(file, dtype=np.float32, count=N)
+        vz = np.fromfile(file, dtype=np.float32, count=N)
+        rho = np.fromfile(file, dtype=np.float32, count=N)
+        h = np.fromfile(file, dtype=np.float32, count=N)
+        uB = np.fromfile(file, dtype=np.float32, count=N)
+        uA = np.fromfile(file, dtype=np.float32, count=N)
+        u = np.fromfile(file, dtype=np.float32, count=N)
+        dudt = np.fromfile(file, dtype=np.float32, count=N)
+        mass = np.fromfile(file, dtype=np.float32, count=N)
 
-    # Unpack N and N_ionFrac
-    N, N_ionFrac = struct.unpack_from('ii', buffer)
-    offset = 8  # Start after the first two integers
+    return x, y, z, vx, vy, vz, rho, h, uB, uA, u, dudt, mass, Typ, N
 
-    # Function to read and advance the offset
-    def read_array(dtype, size, itemsize):
-        nonlocal offset
-        array = np.frombuffer(buffer, dtype=dtype, count=size, offset=offset)
-        offset += size * itemsize
-        return array
-
-    # Read arrays
-    Typ = read_array(np.int32, N, 4)
-    x = read_array(np.float32, N, 4)
-    y = read_array(np.float32, N, 4)
-    z = read_array(np.float32, N, 4)
-    vx = read_array(np.float32, N, 4)
-    vy = read_array(np.float32, N, 4)
-    vz = read_array(np.float32, N, 4)
-    rho = read_array(np.float32, N, 4)
-    h = read_array(np.float32, N, 4)
-    u = read_array(np.float32, N, 4)
-    mass = read_array(np.float32, N, 4)
-    ionFrac = read_array(np.float32, N_ionFrac, 4)
-    ngbDebug = read_array(np.int32, N, 4)
-
-    return N, N_ionFrac, Typ, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac, ngbDebug
 
 # Usage
-N, N_ionFrac, Typ, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac, ngbDebug = readBinaryFile(filename)
+x, y, z, vx, vy, vz, rho, h, uB, uA, u, dudt, mass, Typ, N = readBinaryFile(filename)
 
 
 print('Typ == 0 ===> ', np.sum(Typ == 0))
 
-print('ionFrac.shape = ', ionFrac.shape)
-
-#print(ionFrac[:14])
-
-
-ntmp = np.where(h > 0.03)[0]
-print('ntmp = ', ntmp)
-
-
-
 n = np.where(u != 0.0)[0]
+
 rho = rho[n]
-u = u[n]
+
+uB_ad = uB[n]
+uA_ad = uA[n]
+uB_hc = uA_ad
+uA_hc = u[n]
+u = uA_hc
+
+dudt = dudt[n]
+
+print('uB = ', uB)
+print('uA = ', uA)
+print('u = ', u)
+print('dudt = ', dudt)
+
+kk = 1000
+print('dudt[kk] = ', dudt[kk])
+dt = 8e-8
+print('(uA_ad[kk] - uB_ad[kk])/dt = ', (uA_ad[kk] - uB_ad[kk])/dt)
+print()
+
+print('mass = ', np.sort(mass))
+print('len(mass) = ', len(mass))
+print(mass[981379], u[981379], Typ[981379], h[981379], rho[981379])
+print(mass[981378], mass[981379], mass[981380])
+print(np.unique(mass))
+#plt.hist(mass, bins = 20)
+#plt.show()
+
+#s()
 
 h = h[n]
 
@@ -214,10 +223,8 @@ print('rho[nn] = ', rho[nn]*unit_density_in_cgs)
 XH = 0.7
 print('nH[nn] = ', rho[nn]*unit_density_in_cgs * XH /mH)
 
-ntmp = np.where((Temp < 30000) & (nH > 0.01) & (nH < 5))[0]
 
-plt.scatter(np.log10(nH), np.log10(Temp), s = 0.01, color = 'k')
-plt.scatter(np.log10(nH[ntmp]), np.log10(Temp[ntmp]), s = 1.0, color = 'b')
+plt.scatter(np.log10(nH), np.log10(Temp), s = 0.1, color = 'k')
 plt.show()
 
 print()
@@ -249,7 +256,7 @@ plt.figure(figsize=(10, 8))
 
 # Create a scatter plot. The color of each point will depend on the corresponding T value.
 scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
-#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
+#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=2)
 
 
 

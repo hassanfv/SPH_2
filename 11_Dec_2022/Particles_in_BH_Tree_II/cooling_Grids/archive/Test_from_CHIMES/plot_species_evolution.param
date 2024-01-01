@@ -1,0 +1,30 @@
+plotter_mode	noneq_evolution_species 
+input_file  	grid_noneq_evolution.hdf5
+output_file  	species_evolution_plot.png 
+
+species  	elec
+species  	HI
+species 	HII 
+species  	H2
+species 	HeI 
+species 	HeII 
+species 	HeIII 
+
+log_x_min 	0.0 
+log_x_max 	3.0 
+
+log_y_min 	-6.0 
+log_y_max 	0.5 
+
+fixed_variable 	temperature 
+fixed_var_value 6.0 
+
+line_variable  	metallicity
+N_lines  	3
+line_var_min  	-2.0 
+line_var_max  	0.0 
+
+panel_variable 	density
+N_panels  	9 
+panel_var_min 	-4.0
+panel_var_max 	4.0

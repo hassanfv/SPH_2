@@ -3,9 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import struct
 
-#filename = './WithCooling/G-0.001320.bin'
 
-filename = 'G-0.010000.bin'
+filename = 'G-0.001320.bin'
 
 unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
@@ -214,10 +213,8 @@ print('rho[nn] = ', rho[nn]*unit_density_in_cgs)
 XH = 0.7
 print('nH[nn] = ', rho[nn]*unit_density_in_cgs * XH /mH)
 
-ntmp = np.where((Temp < 30000) & (nH > 0.01) & (nH < 5))[0]
 
-plt.scatter(np.log10(nH), np.log10(Temp), s = 0.01, color = 'k')
-plt.scatter(np.log10(nH[ntmp]), np.log10(Temp[ntmp]), s = 1.0, color = 'b')
+plt.scatter(np.log10(nH), np.log10(Temp), s = 0.1, color = 'k')
 plt.show()
 
 print()
@@ -249,7 +246,7 @@ plt.figure(figsize=(10, 8))
 
 # Create a scatter plot. The color of each point will depend on the corresponding T value.
 scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
-#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
+#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=2)
 
 
 

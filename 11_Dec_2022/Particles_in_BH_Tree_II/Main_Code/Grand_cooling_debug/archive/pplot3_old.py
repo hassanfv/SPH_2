@@ -3,9 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import struct
 
-#filename = './WithCooling/G-0.001320.bin'
 
-filename = 'G-0.010000.bin'
+#filename = './Outputs/G-0.002860.bin'
+
+filename = './Outputs_1/G-0.001800.bin'
 
 unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
@@ -15,52 +16,46 @@ def readBinaryFile(filename):
     with open(filename, 'rb') as f:
         file_content = f.read()  # Read the entire file at once
 
-    # Use a memoryview to avoid copies
     buffer = memoryview(file_content)
 
-    # Unpack N and N_ionFrac
-    N, N_ionFrac = struct.unpack_from('ii', buffer)
-    offset = 8  # Start after the first two integers
+    # Unpack N
+    N = struct.unpack_from('i', buffer, 0)[0]
+    offset = 4  # Start after the first integer
 
-    # Function to read and advance the offset
-    def read_array(dtype, size, itemsize):
-        nonlocal offset
-        array = np.frombuffer(buffer, dtype=dtype, count=size, offset=offset)
-        offset += size * itemsize
-        return array
+    # Function to create NumPy array from buffer
+    def create_array(dtype, count, offset):
+        dtype_size = np.dtype(dtype).itemsize
+        return np.frombuffer(buffer, dtype=dtype, count=count, offset=offset), offset + dtype_size * count
 
     # Read arrays
-    Typ = read_array(np.int32, N, 4)
-    x = read_array(np.float32, N, 4)
-    y = read_array(np.float32, N, 4)
-    z = read_array(np.float32, N, 4)
-    vx = read_array(np.float32, N, 4)
-    vy = read_array(np.float32, N, 4)
-    vz = read_array(np.float32, N, 4)
-    rho = read_array(np.float32, N, 4)
-    h = read_array(np.float32, N, 4)
-    u = read_array(np.float32, N, 4)
-    mass = read_array(np.float32, N, 4)
-    ionFrac = read_array(np.float32, N_ionFrac, 4)
-    ngbDebug = read_array(np.int32, N, 4)
+    Typ, offset = create_array(np.int32, N, offset)
+    x, offset = create_array(np.float32, N, offset)
+    y, offset = create_array(np.float32, N, offset)
+    z, offset = create_array(np.float32, N, offset)
+    vx, offset = create_array(np.float32, N, offset)
+    vy, offset = create_array(np.float32, N, offset)
+    vz, offset = create_array(np.float32, N, offset)
+    rho, offset = create_array(np.float32, N, offset)
+    h, offset = create_array(np.float32, N, offset)
+    u, offset = create_array(np.float32, N, offset)
+    mass, offset = create_array(np.float32, N, offset)
 
-    return N, N_ionFrac, Typ, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac, ngbDebug
+    return N, Typ, x, y, z, vx, vy, vz, rho, h, u, mass
 
 # Usage
-N, N_ionFrac, Typ, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac, ngbDebug = readBinaryFile(filename)
+N, Typ, x, y, z, vx, vy, vz, rho, h, u, mass = readBinaryFile(filename)
 
 
 print('Typ == 0 ===> ', np.sum(Typ == 0))
-
-print('ionFrac.shape = ', ionFrac.shape)
-
-#print(ionFrac[:14])
 
 
 ntmp = np.where(h > 0.03)[0]
 print('ntmp = ', ntmp)
 
 
+print('mass = ', np.sort(mass))
+print('len(mass) = ', len(mass))
+s()
 
 n = np.where(u != 0.0)[0]
 rho = rho[n]
@@ -214,10 +209,8 @@ print('rho[nn] = ', rho[nn]*unit_density_in_cgs)
 XH = 0.7
 print('nH[nn] = ', rho[nn]*unit_density_in_cgs * XH /mH)
 
-ntmp = np.where((Temp < 30000) & (nH > 0.01) & (nH < 5))[0]
 
-plt.scatter(np.log10(nH), np.log10(Temp), s = 0.01, color = 'k')
-plt.scatter(np.log10(nH[ntmp]), np.log10(Temp[ntmp]), s = 1.0, color = 'b')
+plt.scatter(np.log10(nH), np.log10(Temp), s = 0.1, color = 'k')
 plt.show()
 
 print()
@@ -249,7 +242,7 @@ plt.figure(figsize=(10, 8))
 
 # Create a scatter plot. The color of each point will depend on the corresponding T value.
 scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
-#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
+#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=2)
 
 
 

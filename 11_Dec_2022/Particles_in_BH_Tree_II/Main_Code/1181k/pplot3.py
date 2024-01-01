@@ -5,7 +5,7 @@ import struct
 
 #filename = './WithCooling/G-0.001320.bin'
 
-filename = 'G-0.010000.bin'
+filename = 'G-0.015044.bin'
 
 unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!

@@ -1,0 +1,55 @@
+# General Parameters 
+chimes_library_path         /home/pc/CHIMES/chimes/libchimes.so 
+chimes_data_path            /home/pc/CHIMES/chimes-data 
+
+driver_mode          noneq_evolution
+IO_mode		     grid 
+
+output_file    ./grid_noneq_evolution.hdf5
+UV_field       HM12 
+shield_mode    Jeans 
+dust_depletion None 
+
+log_T_min      2.0  
+log_T_max      8.0
+delta_log_T    1.0
+log_nH_min     -4.0 
+log_nH_max     4.0 
+delta_log_nH   1.0
+log_Z_min      -2.0 
+log_Z_max      0.0
+delta_log_Z    1.0  
+
+shield_length_factor  1.0 
+max_shield_length  3.086e23 
+
+n_iterations    100
+
+# Global Variables
+StaticMolCooling          1 
+Tmol_K                    1.0e5 
+InitIonState              1 
+grain_temperature         10.0 
+cmb_temperature           2.725 
+relativeTolerance         1.0e-4 
+absoluteTolerance         1.0e-10 
+explicitTolerance         0.05 
+scale_metal_tolerances    1 
+IncludeCarbon             1 
+IncludeNitrogen           1 
+IncludeOxygen             1 
+IncludeNeon               1 
+IncludeMagnesium          1
+IncludeSilicon            1
+IncludeSulphur            1
+IncludeCalcium            1
+IncludeIron               1
+redshift                  0.0 
+reionisation_redshift     7.5 
+
+# Gas Parameters
+cr_rate                   1.8e-16 
+doppler_broad             7.1 
+ForceEqOn                 0 
+ThermEvolOn               1 
+hydro_timestep            3.16e7
