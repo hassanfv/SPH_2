@@ -5,11 +5,11 @@ import struct
 
 #filename = './WithCooling/G-0.001320.bin'
 
-filename = 'G-0.020000.bin'
+filename = 'G-0.001100.bin'
 
-unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_rho = 2.83261e-24 # !!!!!!!!!!!!!!!!!!!
+unit_velocity_cgs = 1.03085e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_u = 1.06266e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_rho = 1.67185e-24 # !!!!!!!!!!!!!!!!!!!
 
 def readBinaryFile(filename):
     with open(filename, 'rb') as f:
@@ -248,8 +248,8 @@ print()
 plt.figure(figsize=(10, 8))
 
 # Create a scatter plot. The color of each point will depend on the corresponding T value.
-scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
-#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
+#scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
+scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.1)
 
 
 

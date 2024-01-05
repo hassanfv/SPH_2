@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import struct
 
-#filename = './WithCooling/G-0.001320.bin'
+#filename = '/mnt/Linux_Shared_Folder_2022/Outputs/G-0.016005.bin'
 
-filename = 'G-0.020000.bin'
+filename = './OutputsX/G-0.013763.bin'
 
 unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
@@ -54,25 +54,29 @@ print('Typ == 0 ===> ', np.sum(Typ == 0))
 
 print('ionFrac.shape = ', ionFrac.shape)
 
-#print(ionFrac[:14])
-
-
-ntmp = np.where(h > 0.03)[0]
-print('ntmp = ', ntmp)
-
-
+print('ngbDebug.shape = ', ngbDebug.shape)
+print()
 
 n = np.where(u != 0.0)[0]
 rho = rho[n]
 u = u[n]
+mass = mass[n]
+
+ngbDebugx = ngbDebug[n]
+
+print((ngbDebugx))
+n200 = np.where(ngbDebugx == 200)[0]
+
+print('len(n200) = ', len(n200))
+
+print('sort(mass) = ', np.sort(mass))
 
 h = h[n]
+print('sort(h) = ', np.sort(h))
+print()
+print('sort(rho) = ', np.sort(rho))
 
-print(np.sort(h))
-
-
-#plt.hist(h, bins = 20)
-#plt.show()
+print('sort(rho[n200]) = ', np.sort(rho[n200]))
 
 
 
@@ -86,6 +90,8 @@ vy = vy[n]
 vz = vz[n]
 
 nz = np.where(np.abs(z) < 0.04)[0]
+
+ngbDebugz = ngbDebugx[nz]
 
 x = x[nz]
 y = y[nz]
@@ -152,7 +158,7 @@ plt.show()
 u = u[nz]
 rho = rho[nz]
 
-nx = np.where(rho == max(rho))[0]
+nx = np.where(u == max(u))[0]
 print(f'median(u) = {np.median(u)}, max(u) = {u[nx]},  =====> nx = {nx}')
 
 print('sort(u) = ', np.sort(u))
@@ -235,7 +241,6 @@ print(f'Number of particles with 1e6 < Temp < 1e9 is {len(TempT)}')
 #print('Temp[nk] = ', Temp[nk])
 print()
 
-
 ntmp = np.where((Temp > 60000) & (Temp < 100000))[0]
 #print('ntmp = ', ntmp)
 
@@ -248,13 +253,19 @@ print()
 plt.figure(figsize=(10, 8))
 
 # Create a scatter plot. The color of each point will depend on the corresponding T value.
-scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
-#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
-
-
+#scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
+scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
 
 # Add a colorbar to the plot to show the relationship between color and T value.
 plt.colorbar(scatter, label='nH Value')
+
+
+n200z = np.where(ngbDebugz == 200)[0]
+scatter = plt.scatter(x[n200z], y[n200z], color = 'r', s = 20)
+
+#nLowT = np.where(Temp < 90)[0]
+#scatter = plt.scatter(x[nLowT], y[nLowT], color = 'r', s=20)
+
 
 #scatter = plt.scatter(x[ntmp], y[ntmp], c='lime', s=2)
 

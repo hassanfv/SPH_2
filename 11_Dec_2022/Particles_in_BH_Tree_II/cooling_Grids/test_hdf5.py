@@ -50,6 +50,9 @@ def h_func(N_T, N_nH, N_Z):
       
         utmp, mu = Temp_to_u(T, Ab, ndx_T, ndx_nH, ndx_Z)
         
+        if T < 500:
+          print('XXX = ', T, mu, utmp)
+        
         uEvolution[ndx_T, ndx_nH, ndx_Z, 1] = utmp
         muArr[ndx_T, ndx_nH, ndx_Z, 1] = mu
         
@@ -88,7 +91,7 @@ dist = '0.3' # kpc
 tiMe = '01' # yrs
 #f = h5py.File('./' + dist + 'kpc/' + 'grid_noneq_evolution_' + dist + 'kpc_' + tiMe + 'yrs' + '.hdf5', 'r')
 
-f = h5py.File('grid_noneq_evolution_0.2kpc.hdf5', 'r')
+f = h5py.File('grid_noneq_evolution_1.0kpc.hdf5', 'r')
 
 # Print the attributes of HDF5 objects
 for name, obj in f.items():
@@ -125,7 +128,9 @@ print('Z = ', metallicities[iZ])
 
 AbundanceEvolution = f['AbundanceEvolution'][:]
 
-#uEvolution, muArr, metalz = h_func(N_T, N_nH, N_Z)
+print('TemperatureEvolution = ', TemperatureEvolution)
+
+uEvolution, muArr, metalz = h_func(N_T, N_nH, N_Z)
 
 print('T Evolution original = ', TemperatureEvolution[iTemp, inH, iZ, :])
 

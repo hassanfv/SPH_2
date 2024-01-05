@@ -3,24 +3,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 import struct
 
-#filename = './WithCooling/G-0.001320.bin'
+#filename = '/mnt/Linux_Shared_Folder_2022/Outputs/G-0.016005.bin'
 
-filename = 'G-0.020000.bin'
+filename = 'G-0.000400.bin'
 
-unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_rho = 2.83261e-24 # !!!!!!!!!!!!!!!!!!!
+unit_velocity_cgs = 2.31909e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_u = 5.37816e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_rho = 8.46128e-24 # !!!!!!!!!!!!!!!!!!!
 
-def readBinaryFile(filename):
-    with open(filename, 'rb') as f:
-        file_content = f.read()  # Read the entire file at once
-
-    # Use a memoryview to avoid copies
+def read_binary_file(filename):
+    with open(filename, 'rb') as file:
+        file_content = file.read()
+    
     buffer = memoryview(file_content)
-
-    # Unpack N and N_ionFrac
-    N, N_ionFrac = struct.unpack_from('ii', buffer)
-    offset = 8  # Start after the first two integers
+    offset = 0
 
     # Function to read and advance the offset
     def read_array(dtype, size, itemsize):
@@ -28,6 +24,10 @@ def readBinaryFile(filename):
         array = np.frombuffer(buffer, dtype=dtype, count=size, offset=offset)
         offset += size * itemsize
         return array
+
+    # Read N
+    N = np.frombuffer(buffer, dtype=np.int32, count=1, offset=offset)[0]
+    offset += 4  # Size of int32
 
     # Read arrays
     Typ = read_array(np.int32, N, 4)
@@ -41,39 +41,26 @@ def readBinaryFile(filename):
     h = read_array(np.float32, N, 4)
     u = read_array(np.float32, N, 4)
     mass = read_array(np.float32, N, 4)
-    ionFrac = read_array(np.float32, N_ionFrac, 4)
-    ngbDebug = read_array(np.int32, N, 4)
 
-    return N, N_ionFrac, Typ, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac, ngbDebug
+    return x, y, z, vx, vy, vz, rho, h, u, mass, Typ, N
 
 # Usage
-N, N_ionFrac, Typ, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac, ngbDebug = readBinaryFile(filename)
-
+x, y, z, vx, vy, vz, rho, h, u, mass, Typ, N = read_binary_file(filename)
 
 print('Typ == 0 ===> ', np.sum(Typ == 0))
-
-print('ionFrac.shape = ', ionFrac.shape)
-
-#print(ionFrac[:14])
-
-
-ntmp = np.where(h > 0.03)[0]
-print('ntmp = ', ntmp)
-
-
+print()
 
 n = np.where(u != 0.0)[0]
 rho = rho[n]
 u = u[n]
+mass = mass[n]
+
+print('sort(mass) = ', np.sort(mass))
 
 h = h[n]
-
-print(np.sort(h))
-
-
-#plt.hist(h, bins = 20)
-#plt.show()
-
+print('sort(h) = ', np.sort(h))
+print()
+print('sort(rho) = ', np.sort(rho))
 
 
 x = x[n]
@@ -144,15 +131,12 @@ ur = res[:, 2]
 plt.scatter(r, vr, s = 5, color = 'k')
 #plt.scatter(r, ur, s = 5, color = 'k')
 plt.show()
-
-
-
 #==================================
 
 u = u[nz]
 rho = rho[nz]
 
-nx = np.where(rho == max(rho))[0]
+nx = np.where(u == max(u))[0]
 print(f'median(u) = {np.median(u)}, max(u) = {u[nx]},  =====> nx = {nx}')
 
 print('sort(u) = ', np.sort(u))
@@ -235,7 +219,6 @@ print(f'Number of particles with 1e6 < Temp < 1e9 is {len(TempT)}')
 #print('Temp[nk] = ', Temp[nk])
 print()
 
-
 ntmp = np.where((Temp > 60000) & (Temp < 100000))[0]
 #print('ntmp = ', ntmp)
 
@@ -251,14 +234,17 @@ plt.figure(figsize=(10, 8))
 scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
 #scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
 
-
-
 # Add a colorbar to the plot to show the relationship between color and T value.
 plt.colorbar(scatter, label='nH Value')
 
+
+#nLowT = np.where(Temp < 90)[0]
+#scatter = plt.scatter(x[nLowT], y[nLowT], color = 'r', s=20)
+
+
 #scatter = plt.scatter(x[ntmp], y[ntmp], c='lime', s=2)
 
-xy = 0.32
+xy = 0.45
 
 plt.xlim(-xy, xy)
 plt.ylim(-xy, xy)
