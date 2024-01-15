@@ -5,7 +5,7 @@ import struct
 
 #filename = '/mnt/Linux_Shared_Folder_2022/Outputs/G-0.016005.bin'
 
-filename = 'G-0.000400.bin'
+filename = './Outputs/G-0.036589.bin'
 
 unit_velocity_cgs = 2.31909e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 5.37816e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
@@ -231,8 +231,8 @@ print()
 plt.figure(figsize=(10, 8))
 
 # Create a scatter plot. The color of each point will depend on the corresponding T value.
-scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
-#scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
+#scatter = plt.scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
+scatter = plt.scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.01)
 
 # Add a colorbar to the plot to show the relationship between color and T value.
 plt.colorbar(scatter, label='nH Value')

@@ -1,0 +1,16 @@
+# Start of the input file for Cloudy
+title Heating and Cooling Curve for a Gas Cloud
+# Define the hydrogen number density
+hden 3
+
+# Set the incident radiation field to ISM and include CMB
+table ISM
+background cosmic microwave
+
+# Commands to generate heating and cooling curves
+save heating "heating_curve.txt". last
+save cooling "cooling_curve.txt". last
+
+# End the simulation
+end
+

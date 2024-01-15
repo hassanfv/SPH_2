@@ -5,7 +5,7 @@ import struct
 
 #filename = '/mnt/Linux_Shared_Folder_2022/Outputs/G-0.016005.bin'
 
-filename = './OutputsX/G-0.013763.bin'
+filename = 'G-0.000400.bin'
 
 unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!

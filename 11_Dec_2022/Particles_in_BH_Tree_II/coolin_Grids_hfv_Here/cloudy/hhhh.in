@@ -1,0 +1,6 @@
+blackbody 1.25e5 K
+luminosity 37
+radius 17
+hden 4
+save overview ".ovr"
+save heating ".het"

@@ -50,8 +50,8 @@ def h_func(N_T, N_nH, N_Z):
       
         utmp, mu = Temp_to_u(T, Ab, ndx_T, ndx_nH, ndx_Z)
         
-        if T < 500:
-          print('XXX = ', T, mu, utmp)
+        #if T < 500:
+        #  print('XXX = ', T, mu, utmp)
         
         uEvolution[ndx_T, ndx_nH, ndx_Z, 1] = utmp
         muArr[ndx_T, ndx_nH, ndx_Z, 1] = mu
@@ -119,31 +119,47 @@ densities = f['TableBins/Densities'][:]
 metallicities = f['TableBins/Metallicities'][:]
 temperatures = f['TableBins/Temperatures'][:]
 
-inH = 6
-print('nH = ', densities[inH])
-iTemp = 5
-print('T = ', temperatures[iTemp])
+print('temperatures = ', temperatures)
+#s()
+
+inH = 4
+print('nH = ', 10**densities[inH])
+iTemp = 10
+print('T = ', 10**temperatures[iTemp])
 iZ = 1
 print('Z = ', metallicities[iZ])
 
+TEvol = TemperatureEvolution[iTemp, inH, iZ, :]
+TEvol = [np.round(tmp, 2) for tmp in TEvol]
+
+print(TEvol)
+
+#for i in range(len(TEvol)):  
+#  print((TEvol[i+1]-TEvol[i])/TEvol[i])
+
+
+s()
+
 AbundanceEvolution = f['AbundanceEvolution'][:]
 
-print('TemperatureEvolution = ', TemperatureEvolution)
+#print('TemperatureEvolution = ', TemperatureEvolution)
 
 uEvolution, muArr, metalz = h_func(N_T, N_nH, N_Z)
 
-print('T Evolution original = ', TemperatureEvolution[iTemp, inH, iZ, :])
+#print('T Evolution original = ', TemperatureEvolution[iTemp, inH, iZ, :])
 
 N_time = len(TemperatureEvolution[iTemp, inH, iZ, :])
 
 print()
 print()
 
+
+
 jmp = 1
 
 for i in range(0, N_time-jmp, jmp):
-  #print(t_Arr_in_yrs[i+1], TemperatureEvolution[iTemp, inH, iZ, i+1]-TemperatureEvolution[iTemp, inH, iZ, 0])
-  print(t_Arr_in_yrs[i+1], TemperatureEvolution[iTemp, inH, iZ, i+jmp]-TemperatureEvolution[iTemp, inH, iZ, i])
+  print(t_Arr_in_yrs[i+1], TemperatureEvolution[iTemp, inH, iZ, i+1], TemperatureEvolution[iTemp, inH, iZ, i])
+  #print(t_Arr_in_yrs[i+1], TemperatureEvolution[iTemp, inH, iZ, i+jmp]-TemperatureEvolution[iTemp, inH, iZ, i])
 
 
 

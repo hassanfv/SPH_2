@@ -1,0 +1,14 @@
+hden 3.0
+ionization parameter -4.0
+table AGN
+extinguish column = 20.0
+metals 0.1
+set dr 0 # set zone thickness of 1e3 cm
+constant temperature, t=4 K vary
+grid range from 2 to 8 with 0.1 dex steps
+stop zone 1 # do only one zone
+iterate
+save overview ".ovr"
+save heating ".het"
+
+
