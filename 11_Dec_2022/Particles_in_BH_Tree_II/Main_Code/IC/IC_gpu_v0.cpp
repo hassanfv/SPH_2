@@ -97,6 +97,9 @@ int main()
 
   auto T_beg = std::chrono::high_resolution_clock::now();
 
+  // Set the seed for the random number generator
+  srand(42);
+
   // Constants
   const double Msun = 1.989e33;  // Solar mass in grams
   const double grav_const_in_cgs = 6.67430e-8;  // Gravitational constant in cm^3 g^-1 s^-2
@@ -108,13 +111,13 @@ int main()
   const double mu = 0.61f;
   const double sigma = 200.0f * 1000.0f * 100.0f; // cm/s =====> 200 km/s - See eq.1 in Richings et al - 2018
 
-  const float L_box = 0.65f; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const float L_box = 1.04f; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   const float mSPH_high = 10.0f; // Msun !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const int N_high = 600000; // This is the number of particles for only the high res octant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const int N_high = 5000000; // This is the number of particles for only the high res octant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   const float mSPH_low = 80.0f; // Msun!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const int N_low = 75000; // This is the number of particles for each low-res octant. In total, it will be 7 * N_low for all 7 low-res octants!!!!!!!!!!!!!!!!!!
+  const int N_low = 625000; // This is the number of particles for each low-res octant. In total, it will be 7 * N_low for all 7 low-res octants!!!!!!!!!!!!!!!!!!
 
   const float stp_high = L_box / 2.0f / trunc(pow(N_high, 1.0f/3.0f));
   const float stp_low = L_box / 2.0f / trunc(pow(N_low, 1.0f/3.0f));
@@ -331,7 +334,7 @@ int main()
 
   float clight_code_unit = clight / unitVelocity_in_cm_per_s;
 
-  float vin = 30000.0f * 1000.0f * 100.0f;
+  float vin = 30000.0f * 1000.0f * 100.0f; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   float vin_in_code_unit = vin / unitVelocity_in_cm_per_s;
 
   float M_dot_in_code_unit = Tou_in * L_AGN_code_unit / clight_code_unit / vin_in_code_unit;
@@ -347,7 +350,7 @@ int main()
 
   //====== estimating the multiplier =======
 
-  float dt = 5e-7; //----> used to estimate the multiplier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  float dt = 4e-8; //----> used to estimate the multiplier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   float multiplier = 1.0f;
   float m_sph_outflow = mSPH_high / M_tot_in_Msun * multiplier;  //!!!!!!! divided by M_tot_in_Msun to convert to code unit !!!!!!!!!

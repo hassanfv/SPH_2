@@ -24,7 +24,7 @@ using namespace std;
 int main()
 {
 
-  float dt = 4e-8; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is only the first time step !!
+  float dt = 1e-7; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is only the first time step !!
 
   const float Nngb_f = 64.0f; // used in smoothing func.
   const int Nngb = 64;
@@ -1589,10 +1589,12 @@ int main()
       
       cudaMemcpy(mass, d_mass, N * sizeof(float), cudaMemcpyDeviceToHost);
 
+      cudaMemcpy(ionFrac, d_ionFrac, N_ionFrac * sizeof(float), cudaMemcpyDeviceToHost);
+
       // Specify the output file name
       std::string filename = "./Outputs/G-" + to_string(t * 10) + ".bin";
       // Save the arrays to binary format
-      saveArraysToBinary(filename, x, y, z, vx, vy, vz, rho, h, u, mass, Typ, N);
+      saveArraysToBinary(filename, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac, Typ, N, N_ionFrac);
     }
     auto end_SaveFile = std::chrono::high_resolution_clock::now();
     auto elapsed_SaveFile = std::chrono::duration_cast<std::chrono::nanoseconds>(end_SaveFile - T_SaveFile);

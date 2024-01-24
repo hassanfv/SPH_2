@@ -1597,7 +1597,7 @@ int main()
     auto T_SaveFile = std::chrono::high_resolution_clock::now();
     //------------ SAVING SNAP-SHOTS ------------
     cudaMemcpy(h, d_h, N * sizeof(float), cudaMemcpyDeviceToHost); // Moved outside so that it can be used by nSplit calculator in ach time step.
-    if (!(counter % 50))
+    if (!(counter % 200))
     //if (counter > -1)
     {
       cudaMemcpy(Typ, d_Typ, N * sizeof(int), cudaMemcpyDeviceToHost);

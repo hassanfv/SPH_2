@@ -12,7 +12,6 @@
 // smoothing_h function updated (16 Oct 2023).
 // Updating the "h" assignment for outflow particles to improve the smoothin_h calculation speed (13 Oct 2023).
 // We Re-set the BH position back to (0, 0, 0). This was forgotten to be implemented !! (13 Oct 2023).
-// We set max limit for uEv corresponding to 1e10K (9 Oct 2023).
 // phi updated in outflow injection function (4 Oct 2023).
 // Heating, Cooling using CHIMES added. Also UnitDensity_in_cgs, Unit_u_in_cgs, unitTime_in_s added to params.txt (11 Aug 2023).
 // Added the isothermal gravitational field acceleration. (24 May 2023).
@@ -109,7 +108,7 @@ readVectorsFromFile(const std::string &filename)
 //*************** Function to save the OUTPUT Snap-Shots!! ****************
 //*************************************************************************
 void saveArraysToBinary(const std::string &filename, float *x, float *y, float *z, float *vx, float *vy, float *vz,
-                        float *rho, float *h, float *u, float *mass,int *Typ, int N)
+                        float *rho, float *h, float *u, float *mass, float *ionFrac, int *Typ, int N, int N_ionFrac)
 {
   // Open the file in binary mode
   std::ofstream file(filename, std::ios::binary);
@@ -123,6 +122,7 @@ void saveArraysToBinary(const std::string &filename, float *x, float *y, float *
 
   // Write N and NG to the file
   file.write(reinterpret_cast<const char *>(&N), sizeof(int));
+  file.write(reinterpret_cast<const char *>(&N_ionFrac), sizeof(int));
 
   // Write the arrays to the file
   file.write(reinterpret_cast<const char *>(Typ), N * sizeof(int));
@@ -136,10 +136,14 @@ void saveArraysToBinary(const std::string &filename, float *x, float *y, float *
   file.write(reinterpret_cast<const char *>(h), N * sizeof(float));
   file.write(reinterpret_cast<const char *>(u), N * sizeof(float));
   file.write(reinterpret_cast<const char *>(mass), N * sizeof(float));
+  
+  file.write(reinterpret_cast<const char *>(ionFrac), N_ionFrac * sizeof(float));
 
   // Close the file
   file.close();
 }
+
+
 
 //*******************************
 //********* max_finder **********

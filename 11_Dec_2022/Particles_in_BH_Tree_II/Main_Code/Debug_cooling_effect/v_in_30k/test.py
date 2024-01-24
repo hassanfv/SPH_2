@@ -7,15 +7,15 @@ import imageio
 import time
 import pandas as pd
 
-filez = np.sort(glob.glob('./Outputs_1181X/*.bin'))
+filez = np.sort(glob.glob('./Outputs_1631_vin_30k/*.bin'))
 
 #filez = np.sort(glob.glob('./Outputs/*.bin'))
 
 Nfiles = len(filez)
 
-unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_rho = 2.83261e-24 # !!!!!!!!!!!!!!!!!!!
+unit_velocity_cgs = 1.67655e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_u = 2.81081e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_rho = 4.42216e-24 # !!!!!!!!!!!!!!!!!!!
 
 def readBinaryFile(filename):
     with open(filename, 'rb') as file:
@@ -61,8 +61,6 @@ TA = time.time()
 
 jj = 751969
 
-output_folder = './' + str(jj) + '_Plots_for_Animation/'
-image_files = []
 
 nHArr = np.zeros(Nfiles)
 TArr = np.zeros(Nfiles)
@@ -71,8 +69,6 @@ grid = np.zeros(Nfiles)
 vArr = np.zeros(Nfiles)
 
 res = []
-
-plt.figure(figsize = (12, 12))
 
 check = 0
 
@@ -85,6 +81,8 @@ for i in range(0, len(filez), 1):
   x, y, z, vx, vy, vz, rho, h, dudt, dudt_pre, uBad, uAad, u, mass, Typ, Nn = readBinaryFile(filez[i])
 
   #print(f'{i+1} out of {Nfiles}')
+  
+  print(f'{i}/{len(filez)}')
 
   n = np.where(u != 0.0)[0]
   
@@ -144,6 +142,9 @@ df.columns = ['t', 'r', 'nH', 'v', 'T', 'P', 'ut', 'ut_pre', 'ut_c', 'uBad', 'uA
 
 print()
 print(df)
+
+nH = df['nH'].values
+print('np.sort(nH) = ', np.sort(nH))
 
 df.to_csv('X-' + str(jj) + '.csv', index = False)
 

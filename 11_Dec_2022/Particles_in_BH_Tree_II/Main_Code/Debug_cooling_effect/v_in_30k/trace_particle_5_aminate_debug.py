@@ -7,15 +7,15 @@ import imageio
 import time
 import os
 
-filez = np.sort(glob.glob('./Outputs_1181X/*.bin'))
+filez = np.sort(glob.glob('./Outputs_1631_vin_30k/*.bin'))
 
 #filez = np.sort(glob.glob('./Outputs/*.bin'))
 
 Nfiles = len(filez)
 
-unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_rho = 2.83261e-24 # !!!!!!!!!!!!!!!!!!!
+unit_velocity_cgs = 1.67655e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_u = 2.81081e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_rho = 4.42216e-24 # !!!!!!!!!!!!!!!!!!!
 
 def readBinaryFile(filename):
     with open(filename, 'rb') as file:
@@ -59,7 +59,7 @@ def readBinaryFile(filename):
 
 TA = time.time()
 
-jj = 751969
+jj = 553474 #563567 594611 604624 614885 615102 615443 625519 656800 656913
 
 
 
@@ -83,7 +83,7 @@ check = 0
 x, y, z, vx, vy, vz, rho, h, dudt, dudt_pre, uBad, uAad, u, mass, Typ, N = readBinaryFile(filez[0]) #!!! Just to get REAL N
 N = len(np.where(u != 0.0)[0])
 
-for i in range(0, len(filez), 10):
+for i in range(0, len(filez), 5):
   x, y, z, vx, vy, vz, rho, h, dudt, dudt_pre, uBad, uAad, u, mass, Typ, Nn = readBinaryFile(filez[i])
 
   n = np.where(u != 0.0)[0]
@@ -117,10 +117,10 @@ for i in range(0, len(filez), 10):
   yy = y[nz]
   zz = z[nz]
   
-  #nt = np.where((x > 0.14) & (x < 0.145) & (np.abs(y) < 0.03) & (np.abs(z) < 0.01))[0]
+  #nt = np.where((x > 0.10) & (x < 0.11) & (np.abs(y) < 0.01) & (np.abs(z) < 0.01))[0]
   #print(nt)
   #s()
-
+  
   vx = vx[n]
   vy = vy[n]
   vz = vz[n]
@@ -136,6 +136,10 @@ for i in range(0, len(filez), 10):
   
   XH = 0.7
   nH = rho * unit_rho * XH /mH
+  
+  
+  print(np.where((np.log10(nH) > 3.7) & (np.abs(z) < 0.01))[0])
+  
   
   print(f'rkpc = {dist[jj]:.3f}, v = {vv[jj]:.3f}, nH = {nH[jj]:.2f}, ut = {ut:.4f}, ut_pre = {ut_pre:.4f}, ut_c = {ut_c:.4f}, uBad = {uB:.4f}, uAad = {uA:.4f}, uAC = {uC:.4f}')
   
@@ -187,7 +191,7 @@ for i in range(0, len(filez), 10):
   except:
     pass
   plt.title(f'vr = {round(vv[jj], 2)}')
-  xy = 0.32
+  xy = 0.36
   plt.xlim(-xy, xy)
   plt.ylim(-xy, xy)
   
@@ -209,7 +213,7 @@ for i in range(0, len(filez), 10):
     plt.scatter(rr[jj], vv[jj], s = 30, color = 'r')
   except:
     pass
-  plt.xlim(0, 0.30)
+  plt.xlim(0, 0.37)
   plt.ylim(-2000, 32000)
   #plt.ylim(29750, 30250)
   #plt.yscale('log')

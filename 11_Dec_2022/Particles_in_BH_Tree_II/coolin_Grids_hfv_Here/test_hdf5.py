@@ -91,7 +91,7 @@ dist = '0.3' # kpc
 tiMe = '01' # yrs
 #f = h5py.File('./' + dist + 'kpc/' + 'grid_noneq_evolution_' + dist + 'kpc_' + tiMe + 'yrs' + '.hdf5', 'r')
 
-f = h5py.File('grid_noneq_evolution_1.0kpc.hdf5', 'r')
+f = h5py.File('grid_noneq_evolution_0.1kpc.hdf5', 'r')
 
 # Print the attributes of HDF5 objects
 for name, obj in f.items():
@@ -122,7 +122,7 @@ temperatures = f['TableBins/Temperatures'][:]
 print('temperatures = ', temperatures)
 #s()
 
-inH = 6
+inH = 7
 print('nH = ', 10**densities[inH])
 iTemp = 10
 print('T = ', 10**temperatures[iTemp])

@@ -1,0 +1,54 @@
+# General Parameters 
+chimes_library_path         /home/pc/CHIMES/chimes/libchimes.so 
+chimes_data_path            /home/pc/CHIMES/chimes-data
+
+driver_mode          cooling_rates
+IO_mode		     grid 
+
+output_file    ./cooling_rates.hdf5
+UV_field       None
+dust_depletion None 
+
+log_T_min      2.0  
+log_T_max      9.0
+delta_log_T    0.1
+log_nH_min     -4.0 
+log_nH_max     4.0 
+delta_log_nH   1.0
+log_Z_min      -3.0 
+log_Z_max      -1.0
+delta_log_Z    1.0
+
+shield_length_factor  1.0 
+max_shield_length  3.086e23 
+
+n_iterations    1000
+
+# Global Variables
+StaticMolCooling          1 
+Tmol_K                    1.0e2
+InitIonState              1 
+grain_temperature         10.0 
+cmb_temperature           2.725 
+relativeTolerance         1.0e-4 
+absoluteTolerance         1.0e-10 
+explicitTolerance         1.0e-5 
+scale_metal_tolerances    1 
+IncludeCarbon             0 
+IncludeNitrogen           0 
+IncludeOxygen             0 
+IncludeNeon               0 
+IncludeMagnesium          0
+IncludeSilicon            0
+IncludeSulphur            0
+IncludeCalcium            0
+IncludeIron               0
+
+
+
+# Gas Parameters
+cr_rate                   1.8e-16 
+doppler_broad             7.1 
+ForceEqOn                 0 
+ThermEvolOn               0
+hydro_timestep            3.16e8

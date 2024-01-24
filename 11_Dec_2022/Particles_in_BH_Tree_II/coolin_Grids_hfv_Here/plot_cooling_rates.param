@@ -2,8 +2,8 @@ plotter_mode	cooling_rates
 input_file  	cooling_rates.hdf5
 output_file  	cooling_plot.png
 
-log_y_min 	-30.0 
-log_y_max 	-20.0
+log_y_min 	-25.0 
+log_y_max 	-21.0
 
 x_variable  	temperature
 log_x_min 	2.0 
@@ -11,8 +11,8 @@ log_x_max 	9.0
 
 line_variable  	metallicity
 N_lines  	3
-line_var_min  	-2.0
-line_var_max  	0.0 
+line_var_min  	-3.0
+line_var_max  	-1.0 
 
 panel_variable 	density
 N_panels  	9

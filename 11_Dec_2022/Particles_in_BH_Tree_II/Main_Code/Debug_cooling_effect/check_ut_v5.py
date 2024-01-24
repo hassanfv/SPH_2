@@ -86,7 +86,8 @@ def plot_dut_vs_t(ndx, file_ndx, color): # ndx is particle index.
   #plt.scatter(t1, res1, s = 5, color = color, label = 'T = ' + str(np.round(max(T1), 2)) + '   ' + str(ndx))
   #plt.scatter(t1[file_ndx], res1[file_ndx], s = 50, color = color)
   plt.scatter(t1, T1, s = 5, color = color)
-  #plt.scatter(t1, nH1/50, s = 1, color = color)
+  #plt.scatter(t1, nH1, s = 1, color = color)
+  #plt.scatter(t1[file_ndx], nH1[file_ndx], s = 120, color = color)
   plt.scatter(t1[file_ndx], T1[file_ndx], s = 120, color = color)
   
 
