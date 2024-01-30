@@ -59,9 +59,9 @@ def h_func(N_T, N_nH, N_Z, N_t):
           if ndx_t == 0:
             uArr[ndx_T, ndx_nH, ndx_Z] = utmp # uArr will be used to find N_T in the main SPH code!
           
-          #        HI  HII  CI  CII  CII  CIV  SiII  SiIII  SiIV  NV  OVI  FeII  MgI  MgII
+          #        HI  HII  CI  CII CIII  CIV  SiII  SiIII  SiIV  NV  OVI  FeII  MgI  MgII
           nxIDz = [1,  2,   7,  8,   9,   10,  58,   59,    60,   19, 28,  111,  44,  45]
-          IDz = ['HI', 'HII', 'CI', 'CII', 'CII', 'CIV', 'SiII', 'SiIII', 'SiIV', 'NV', 'OVI', 'FeII', 'MgI', 'MgII']
+          IDz = ['HI', 'HII', 'CI', 'CII', 'CIII', 'CIV', 'SiII', 'SiIII', 'SiIV', 'NV', 'OVI', 'FeII', 'MgI', 'MgII']
           for ii in range(len(IDz)):
             metalz[ndx_T, ndx_nH, ndx_Z, ii, ndx_t] = Ab[nxIDz[ii]]
 

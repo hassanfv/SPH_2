@@ -61,7 +61,7 @@ vx = vx[n]
 vy = vy[n]
 vz = vz[n]
 
-nz = np.where(np.abs(z) < 1111.04)[0]
+nz = np.where(np.abs(z) < 0.04)[0]
 
 x = x[nz]
 y = y[nz]
@@ -234,6 +234,10 @@ print()
 
 # Plot 5: Scatter Plot (X and Y, colored by Temperature)
 scatter = axs[1, 1].scatter(x, y, c=np.log10(Temp), cmap='rainbow', s=2)
+
+#jpp = 576108
+#scatter = axs[1, 1].scatter(x[jpp], y[jpp], color = yellow, s=50)
+
 fig.colorbar(scatter, ax=axs[1, 1], label='log10(Temperature)')
 
 xy = 0.36

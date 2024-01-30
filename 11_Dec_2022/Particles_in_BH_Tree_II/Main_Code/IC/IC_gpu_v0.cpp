@@ -350,7 +350,7 @@ int main()
 
   //====== estimating the multiplier =======
 
-  float dt = 4e-8; //----> used to estimate the multiplier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  float dt = 1e-7; //----> used to estimate the multiplier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   float multiplier = 1.0f;
   float m_sph_outflow = mSPH_high / M_tot_in_Msun * multiplier;  //!!!!!!! divided by M_tot_in_Msun to convert to code unit !!!!!!!!!

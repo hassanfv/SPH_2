@@ -439,8 +439,10 @@ __global__ void smoothing_h_ngb(int *Typ, float *x, float *y, float *z, float *h
       N_iter++;
       if (N_iter > 200)
       {
-        printf("Maximum N_iter REACHED in smoothing_h_ngb for i =  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %d\n", i);
-        break;
+        printf("Max N_iter REACHED in smoothing_h_ngb for i, k, h_new, h[i], x, y, z =  !!!!!!!!!!!!!!!!!!!!!!!!!!! %d, %d, %f, %f, %f, %f, %f\n",
+                                                          i, k, h_new, h[i], x[i], y[i], z[i]);
+        h_new = 2.0 * h[i]; // When max N_iter reached we do not change the smoothing length for safety!!
+        //break;
       }
     }
     

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from numba import njit
 
 
-filename = './Outputs/G-0.017600.bin'
+filename = './Outputs/G-0.007800.bin'
 
 unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
@@ -162,7 +162,10 @@ def readBinaryFile(filename):
 
     return N, N_ionFrac, Typ, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac
 
-# Usage
+
+# 0    1   2    3    4    5    6      7      8   9    10   11    12   13
+# HI  HII  CI  CII CIII  CIV  SiII  SiIII  SiIV  NV  OVI  FeII  MgI  MgII
+
 N, N_ionFrac, Typ, x, y, z, vx, vy, vz, rho, h, u, mass, ionFrac = readBinaryFile(filename)
 
 print('Typ == 0 ===> ', np.sum(Typ == 0))
