@@ -1,0 +1,9 @@
+hden 3.5
+ionization parameter 2.0
+stop neutral column density  21.30
+table AGN
+stop temperature 15
+table HM05 redshift= 2.500
+CMB z= 2.500
+metals -1.0
+grains ism 1.0

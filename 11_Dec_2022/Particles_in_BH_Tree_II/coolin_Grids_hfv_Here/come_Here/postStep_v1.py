@@ -79,7 +79,7 @@ print(df)
 AtomicMass = df['A']
 
 
-dirX = './h5Files/' #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+dirX = './h5Files_ShieldColibre/' #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #------- This is only needed for getting N_nH, N_T, N_Z, etc --------
 f = h5py.File(dirX + 'grid_noneq_evolution_0.2kpc.hdf5', 'r')
@@ -117,7 +117,7 @@ print()
 TT = time.time()
 
 #kpcs = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', '1.1'] #!!!!!!!!!!!!!!! Update this if needed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-kpcs = ['0.1', '0.2', '0.3', '0.4', '0.5'] #!!!!!!!!!!!!!!! Update this if needed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+kpcs = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6'] #!!!!!!!!!!!!!!! Update this if needed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 kpcsF = [np.float32(tmp) for tmp in kpcs]
 N_kpc = len(kpcs)
 
@@ -171,10 +171,10 @@ metallicities = np.array([10**tmp for tmp in metallicities])
 
 dictx = {'densities': densities, 'metallicities': metallicities, 'temperatures': temperatures, 'timeArr_in_sec': timeArr_in_sec, 'kpc': kpcsF,
          'uEvolution': uEvolutionX, 'uArr': uArrX, 'muArr': muArrX, 'metalz': metalzX}
-with open('coolHeatGridJan2024.pkl', 'wb') as f:
+with open('coolHeatGridFeb2024Colibre.pkl', 'wb') as f:
   pickle.dump(dictx, f)
 
-with open('coolHeatGridJan2024.bin', 'wb') as f:
+with open('coolHeatGridFeb2024Colibre.bin', 'wb') as f:
   # Save N_Kpc, N_T, N_nH, N_Z, N_M for dimensions
   f.write(struct.pack('i', N_kpc))
   f.write(struct.pack('i', N_T))

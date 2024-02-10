@@ -11,6 +11,7 @@ bolometric_AGN_luminosity_cgs  1.0e46
 distance_to_AGN_kpc 0.1
 shield_mode    Jeans
 
+
 log_T_min      2.0  
 log_T_max      10.6
 delta_log_T    0.1

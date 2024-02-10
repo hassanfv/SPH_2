@@ -49,7 +49,7 @@ temperatures = f['TableBins/Temperatures'][:]
 
 print('temperatures = ', temperatures)
 
-inH = 7
+inH = 6
 print('nH = ', 10**densities[inH])
 iTemp = 40
 print('T = ', 10**temperatures[iTemp])
@@ -59,9 +59,19 @@ print('Z = ', metallicities[iZ])
 
 TEvol = TemperatureEvolution[iTemp, inH, iZ, :]
 
+nH0 = AbundanceEvolution[iTemp, inH, iZ, 1, :]
+nHp = AbundanceEvolution[iTemp, inH, iZ, 2, :]
+
 nHe0 = AbundanceEvolution[iTemp, inH, iZ, 4, :]
 nHep = AbundanceEvolution[iTemp, inH, iZ, 5, :]
 nHepp= AbundanceEvolution[iTemp, inH, iZ, 6, :]
+
+print()
+print(f'nH0/nH = {(nH0[-1]/(nH0[-1]+nHp[-1])):.4f}, nHp/nH = {(nHp[-1]/(nH0[-1]+nHp[-1])):.4f}')
+print(f'log(nH0/nH) = {np.log10(nH0[-1]/(nH0[-1]+nHp[-1])):.4f}, log(nHp/nH) = {np.log10(nHp[-1]/(nH0[-1]+nHp[-1])):.4f}')
+print()
+
+s()
 
 plt.figure(figsize = (12, 6))
 

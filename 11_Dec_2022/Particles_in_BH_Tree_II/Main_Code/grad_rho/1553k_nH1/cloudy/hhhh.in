@@ -1,0 +1,7 @@
+hden 2.6
+ionization parameter -1.0
+stop neutral column density  14.00
+table AGN
+CMB z= 2.500
+metals -1.0
+save continuum "tableAGN.txt"

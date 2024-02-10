@@ -238,7 +238,10 @@ __global__ void ngbDB_new_v3(int *Typ, float *x, float *y, float *z, float *h,
       }
       
       if (Lim == 3)
-        printf("!!!!!!!!!!!!!!!!!!!!!!!!! LIM = 4, LIM = 4, LIM = 4, LIM = 4,  =====> i, k = %d, %d\n", i, k);
+      {
+        float rttt = sqrt(x_i*x_i + y_i*y_i + z_i*z_i);
+        printf("!!!!!!!!!!!!!! LIM = 4 ===> i, k, x[i], y[i], z[i], r = %d, %d, %f, %f, %f, %f\n", i, k, x_i, y_i, z_i, rttt);
+      }
       
       Lim += 1; // This will be activated when the particle distribution is so sparse that 27 neighboring cells do not contain at least 70 particles!
       

@@ -1,0 +1,9 @@
+hden 2.55
+ionization parameter = -0.3
+stop column density  21.30
+table AGN
+stop temperature 15
+CMB z= 3.1909
+extinguish column = 21.30
+metals 0.1
+save continuum ".sed"

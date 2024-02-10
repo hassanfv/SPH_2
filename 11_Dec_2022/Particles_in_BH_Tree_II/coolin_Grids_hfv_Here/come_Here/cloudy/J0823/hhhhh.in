@@ -1,0 +1,13 @@
+abundances  he =-1.07  li =-8.69  be =-10.58  b =-9.21  c =-3.57  n =-4.17  
+continue    o =-3.31  f =-7.44  ne =-4.07  na =-5.76  mg =-4.40  al =-5.55
+continue    si =-4.49  p =-6.59  s =-4.88  cl =-6.50  ar =-5.60  k =-6.97
+continue    ca =-5.66  sc =-8.83  ti =-7.01  v =-8.00  cr =-6.36  mn =-6.57
+continue    fe =-4.50  co =-7.01  ni =-5.78  cu =-7.81  zn =-7.44
+hden 2.55
+ionization parameter = -0.3
+stop neutral column density  21.70
+table AGN
+stop temperature 15
+table HM05 redshift= 3.1910
+CMB z= 3.1909
+metals 0.162

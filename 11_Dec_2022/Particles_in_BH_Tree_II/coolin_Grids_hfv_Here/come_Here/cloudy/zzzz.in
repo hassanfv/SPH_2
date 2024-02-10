@@ -1,0 +1,6 @@
+hden -1.0
+constant temperature 12805.30
+table ism
+extinguish column = 18.2
+metals -1.0
+stop zone 1

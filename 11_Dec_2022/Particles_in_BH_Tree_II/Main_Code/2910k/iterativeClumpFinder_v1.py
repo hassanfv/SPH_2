@@ -6,7 +6,7 @@ import os
 import struct
 
 
-filename = './Outputs/G-0.049590.bin'
+filename = './Outputs/G-0.083604.bin'
 
 unit_velocity_cgs = 3.21164e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
 unit_u = 1.03146e+13 #!!!!!!!!!!!!!!!!!!!!!!!!
@@ -152,7 +152,7 @@ nt = np.where(nH_cgs == max(nH_cgs))[0][0] #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 rtmp = np.sqrt((x - x[nt])**2 + (y - y[nt])**2 + (z - z[nt])**2)
 ntmpx = np.argsort(rtmp)
-ntmpx = ntmpx[:4000]
+ntmpx = ntmpx[:3000]
 
 ntmp = ntmpx[np.where(nH_cgs[ntmpx] > 500)[0]]
 

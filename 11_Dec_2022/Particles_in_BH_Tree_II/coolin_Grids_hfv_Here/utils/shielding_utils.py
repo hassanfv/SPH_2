@@ -5,8 +5,11 @@ from phys_const import proton_mass_cgs, boltzmann_cgs, newton_G_cgs
 # Compute Jeans length assuming 
 # hydrogen mass fraction XH = 0.7 
 # mean molecular weight mu = 1 
-def compute_jeans_shield_length(T, nH, shield_length_factor, max_shield_length): 
-    return min(shield_length_factor * np.sqrt(((5.0 / 3.0) * np.pi * boltzmann_cgs * 0.7) / (newton_G_cgs * (proton_mass_cgs ** 2.0))) * np.sqrt(T / nH), max_shield_length)
+def compute_jeans_shield_length(T, nH, shield_length_factor, max_shield_length):
+    LJ = 5. * 3.086e18 * 10.0
+    #LJ = shield_length_factor * np.sqrt(((5.0 / 3.0) * np.pi * boltzmann_cgs * 0.7) / (newton_G_cgs * (proton_mass_cgs ** 2.0))) * np.sqrt(T / nH)
+    #print(f'{T:.1f}, {nH:.3f}, {(LJ/3.086e18):.2f} pc')
+    return min(LJ, max_shield_length)
 
 # Compute reference column density 
 # used in the COLIBRE model 

@@ -1,0 +1,10 @@
+hden 2.55
+constant temperature 9204
+ionization parameter -0.3
+table AGN
+extinguish column = 23
+table HM05 redshift= 3.1910
+COSMIC RAYS BACKGROUND
+CMB z= 3.1909
+metals 0.162
+stop zone 1

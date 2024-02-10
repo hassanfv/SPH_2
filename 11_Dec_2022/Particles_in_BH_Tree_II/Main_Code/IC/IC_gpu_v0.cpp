@@ -111,13 +111,13 @@ int main()
   const double mu = 0.61f;
   const double sigma = 200.0f * 1000.0f * 100.0f; // cm/s =====> 200 km/s - See eq.1 in Richings et al - 2018
 
-  const float L_box = 1.04f; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const float L_box = 1.0f; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   const float mSPH_high = 10.0f; // Msun !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const int N_high = 5000000; // This is the number of particles for only the high res octant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const int N_high = 2200000; // This is the number of particles for only the high res octant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   const float mSPH_low = 80.0f; // Msun!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const int N_low = 625000; // This is the number of particles for each low-res octant. In total, it will be 7 * N_low for all 7 low-res octants!!!!!!!!!!!!!!!!!!
+  const int N_low = 275000; // This is the number of particles for each low-res octant. In total, it will be 7 * N_low for all 7 low-res octants!!!!!!!!!!!!!!!!!!
 
   const float stp_high = L_box / 2.0f / trunc(pow(N_high, 1.0f/3.0f));
   const float stp_low = L_box / 2.0f / trunc(pow(N_low, 1.0f/3.0f));

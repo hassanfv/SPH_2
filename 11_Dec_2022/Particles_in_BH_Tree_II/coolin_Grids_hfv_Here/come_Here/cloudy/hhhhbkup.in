@@ -1,0 +1,7 @@
+hden 2.6
+constant temperature 12000
+ionization parameter -1.0
+table AGN
+extinguish column = 21.30
+metals -1.0
+stop zone 1

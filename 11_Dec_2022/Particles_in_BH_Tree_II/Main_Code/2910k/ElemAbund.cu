@@ -180,7 +180,7 @@ __global__ void getIonFrac(int *Typ, float *x, float *y, float *z, float *xpos, 
 int main()
 {
 
-  const char* filename = "G-0.049590.bin"; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const char* filename = "G-0.089583.bin"; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   float unit_rho = 1.62276e-23; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   float unit_length = 3.086e+21; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -236,7 +236,7 @@ int main()
     return 1;
   }
 
-  int j = 4; // For example, if you want to read the 3rd sublist (0-indexed)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  int j = 1; // For example, if you want to read the 3rd sublist (0-indexed)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   std::vector<int> nx; // This will store the elements of the j-th sublist
 
   for (int i = 0; i <= j; ++i)

@@ -1,0 +1,32 @@
+hden 1.0
+ionization parameter -1.0
+stop neutral column density  21.30
+table AGN
+stop temperature 15
+table HM05 redshift= 2.500
+CMB z= 2.500
+metals -1.0
+grains ism 0.39
+save species column densities "column_densities.txt"
+"C"
+"C+"
+"C+2"
+"C+3"
+"O"
+"O+"
+"O+5"
+"N"
+"N+"
+"N+4"
+"Al+"
+"Al+2"
+"Si+"
+"Si+2"
+"Si+3"
+"S"
+"S+"
+"S+2"
+"Fe+"
+"Fe+2"
+end
+

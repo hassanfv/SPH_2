@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import struct
 
-filename = './Outputs/G-0.083604.bin'
+filename = './Outputs/G-0.004400.bin'
 
 #filename = '/mnt/Linux_Shared_Folder_2022/Out5k28Jan_1/G-0.147522.bin'
 
