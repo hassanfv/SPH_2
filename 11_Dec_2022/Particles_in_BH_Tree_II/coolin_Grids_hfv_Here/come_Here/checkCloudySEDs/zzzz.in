@@ -1,0 +1,10 @@
+hden 3.0
+#ionization parameter = -0.68
+AGN T =1.5e5 k, a(ox) = -1.4, a(uv)=-0.5 a(x)=-1
+phi(H) = 12.80
+#L(nu) = 29.94
+#radius 20.97
+extinguish column = 21.30
+metals -1.0
+stop zone 1
+save continuum ".sed"

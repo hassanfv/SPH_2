@@ -1,0 +1,28 @@
+
+
+1) curl -O https://gitlab.nublado.org/cloudy/cloudy/-/archive/master/cloudy-master.tar.gz
+
+2) tar xvfz c17.03.tar.gz
+
+3) cd cloudy-master/source/
+
+4) make
+
+5) cd ~/
+
+6) mkdir .my_bin
+
+7) cd .my_bin
+
+8) touch cloudy # here we try to create an empty file. We will add text to it later!
+
+9) Now add this line to the cloudy file: /home/ubuntu/cloudy-master/source/cloudy.exe -p $1
+
+19) chmod +x cloudy
+
+20) echo "export PATH=/home/ubuntu/.my_bin:$PATH" >> ~/.bashrc
+
+21) source ~/.bashrc
+
+22) cd ~/
+
