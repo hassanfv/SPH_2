@@ -84,7 +84,7 @@ def mainFunc(nbeg, nend, RiD):
     createRunScript(nH, logNHtot, T, Z, dist, RiD)
 
     #---- Executing CLOUDY ----
-    command = f"cloudy script_{RiD:02}"
+    command = f"/home/ubuntu/cloudy-master/source/cloudy.exe -p script_{RiD:02}"
     os.system(command)
     #----
 
@@ -154,7 +154,7 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 nCPUs = comm.Get_size()
 
-N = 100#len(inputLists)
+N = len(inputLists)
 
 #------- used in MPI --------
 count = N // nCPUs
