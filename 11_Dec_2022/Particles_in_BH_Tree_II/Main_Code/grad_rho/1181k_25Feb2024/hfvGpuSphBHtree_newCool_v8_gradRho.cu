@@ -1,4 +1,4 @@
-%%writefile test.cu
+//%%writefile test.cu
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -24,7 +24,7 @@ using namespace std;
 int main()
 {
 
-  float dt = 1e-7; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is only the first time step !!
+  float dt = 5e-8; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is only the first time step !!
 
   const float Nngb_f = 64.0f; // used in smoothing func.
   const int Nngb = 64;
