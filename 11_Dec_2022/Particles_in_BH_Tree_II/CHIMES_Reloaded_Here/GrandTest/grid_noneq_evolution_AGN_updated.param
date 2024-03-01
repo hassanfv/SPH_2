@@ -1,36 +1,36 @@
 # General Parameters 
-chimes_library_path         /home/ubuntu/chimes/libchimes.so 
-chimes_data_path            /home/ubuntu/chimes-data
+chimes_library_path         /home/pc/CHIMES/chimes/libchimes.so 
+chimes_data_path            /home/pc/CHIMES/chimes-data
 
 driver_mode          noneq_evolution
 IO_mode		     grid 
 
-output_file    ./grid_noneq_evolution_0.1kpc.hdf5
+output_file    ./test.hdf5
 UV_field       S04
 bolometric_AGN_luminosity_cgs  1.0e46
-distance_to_AGN_kpc 0.1
+distance_to_AGN_kpc 0.32
 shield_mode    Jeans
 
 
-log_T_min      2.0  
-log_T_max      11.0
-delta_log_T    0.1
-log_nH_min     -4.0 
-log_nH_max     5.0 
-delta_log_nH   0.1
-log_Z_min      -2.0 
-log_Z_max      0.0
+log_T_min      4.0
+log_T_max      4.0
+delta_log_T    1.0
+log_nH_min     1.0
+log_nH_max     1.0
+delta_log_nH   1.0
+log_Z_min     -1.0 
+log_Z_max     -1.0
 delta_log_Z    1.0  
 
 shield_length_factor  1.0 
-max_shield_length  3.086e23 
+max_shield_length  1.0e19
 
 n_iterations    10
 
 # Global Variables
 StaticMolCooling          1 
 Tmol_K                    1.0e5 
-InitIonState              1 
+InitIonState              1
 grain_temperature         10.0 
 cmb_temperature           2.725 
 relativeTolerance         1.0e-4 

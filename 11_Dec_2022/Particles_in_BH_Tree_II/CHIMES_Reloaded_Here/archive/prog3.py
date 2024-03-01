@@ -155,7 +155,7 @@ for i in range(nbeg, nend):
 
 
 with open('data.pkl', 'wb') as f: # Use post1.py to read this file!
-  pickle.dump(AbRes, f)
+  pickle.dump(muRes, f)
 
 
 

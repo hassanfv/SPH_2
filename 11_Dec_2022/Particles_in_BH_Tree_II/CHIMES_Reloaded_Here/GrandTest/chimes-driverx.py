@@ -39,7 +39,7 @@ except ImportError:
     from phys_const import solar_mass_cgs 
     
 ## mpi parallelization
-from mpi4py import MPI
+#from mpi4py import MPI
 
 ## import parameter routines 
 from driver_config import read_parameters, print_parameters 
@@ -584,9 +584,9 @@ class ChimesDriver(object):
 
 def main():
     ## setup MPI variables
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank() 
-    N_task = comm.Get_size()
+    #comm = MPI.COMM_WORLD
+    rank = 0#comm.Get_rank() 
+    N_task = 1#comm.Get_size()
     
     ## Parse parameter file 
     parameter_file = sys.argv[1]
@@ -694,10 +694,10 @@ def main():
         raise KeyError("IO_mode %s not recognised. Aborting." % (driver_pars["IO_mode"], )) 
 
     ## send the total number of particles to each MPI task
-    N_tot = comm.bcast(N_tot,root=0)
+    #N_tot = comm.bcast(N_tot,root=0)
 
-    if driver_pars["UV_field"] == "StellarFluxes" and driver_pars["compute_stellar_fluxes"] == 1: 
-        N_star = comm.bcast(N_star, root = 0) 
+    #if driver_pars["UV_field"] == "StellarFluxes" and driver_pars["compute_stellar_fluxes"] == 1: 
+        #N_star = comm.bcast(N_star, root = 0) 
 
     ## split the particles among the tasks
     N_parts = [int(N_tot/N_task)+(i<N_tot%N_task) for i in range(N_task)]
@@ -710,7 +710,7 @@ def main():
         sys.stdout.flush()
 
     assert sum(N_parts) == N_tot
-    comm.Barrier()
+    #comm.Barrier()
 
     ## allocate space for receiving the copy of the array chunks
     if rank !=0:
@@ -752,13 +752,13 @@ def main():
         for i in range(1,N_task):
             N_this_chunk = N_parts[i]
 
-            for j,arr in enumerate(send_buffer):
+            #for j,arr in enumerate(send_buffer):
 
                 ## send the array to the correct destination
-                comm.send(
+                #comm.send(
                     ## copy the array because numpy masks arrays when you slice
-                    copy.copy(arr[current_left_index:current_left_index+N_this_chunk]),
-                    dest = i, tag = j)
+                    #copy.copy(arr[current_left_index:current_left_index+N_this_chunk]),
+                    #dest = i, tag = j)
             ## move to the next chunk of the array
             current_left_index += N_this_chunk
 
@@ -778,22 +778,22 @@ def main():
         elif driver_pars["UV_field"] == "S04" and driver_pars["IO_mode"] == "snapshot": 
             gas_coords_arr = copy.copy(gas_coords_arr[:N_parts[0]]) 
 
-    else:
+    #else:
         ## receive the correct chunk for each array
-        nH_arr = comm.recv(source = 0, tag=0)
-        temperature_arr = comm.recv(source = 0, tag=1)
-        metallicity_arr = comm.recv(source = 0, tag=2)
-        shieldLength_arr = comm.recv(source = 0, tag=3)
-        init_chem_arr = comm.recv(source = 0, tag=4)
+        #nH_arr = comm.recv(source = 0, tag=0)
+        #temperature_arr = comm.recv(source = 0, tag=1)
+        #metallicity_arr = comm.recv(source = 0, tag=2)
+        #shieldLength_arr = comm.recv(source = 0, tag=3)
+        #init_chem_arr = comm.recv(source = 0, tag=4)
 
-        if driver_pars["UV_field"] == "StellarFluxes": 
-            if driver_pars["compute_stellar_fluxes"] == 0:
-                ChimesFluxIon_arr = comm.recv(source = 0, tag = 5) 
-                ChimesFluxG0_arr = comm.recv(source = 0, tag = 6) 
-            else: 
-                gas_coords_arr = comm.recv(source = 0, tag = 5)
-        elif driver_pars["UV_field"] == "S04" and driver_pars["IO_mode"] == "snapshot": 
-            gas_coords_arr = comm.recv(source = 0, tag = 5) 
+        #if driver_pars["UV_field"] == "StellarFluxes": 
+            #if driver_pars["compute_stellar_fluxes"] == 0:
+                #ChimesFluxIon_arr = comm.recv(source = 0, tag = 5) 
+                #ChimesFluxG0_arr = comm.recv(source = 0, tag = 6) 
+            #else: 
+                #gas_coords_arr = comm.recv(source = 0, tag = 5)
+        #elif driver_pars["UV_field"] == "S04" and driver_pars["IO_mode"] == "snapshot": 
+            #gas_coords_arr = comm.recv(source = 0, tag = 5) 
 
     ## make sure we received the correct number of particles
     for arr in [
@@ -811,15 +811,15 @@ def main():
     elif driver_pars["UV_field"] == "S04" and driver_pars["IO_mode"] == "snapshot": 
         assert len(gas_coords_arr) == N_parts[rank] 
 
-    comm.Barrier()
+    #comm.Barrier()
 
-    if driver_pars["UV_field"] == "StellarFluxes" and driver_pars["compute_stellar_fluxes"] == 1 and N_star > 0: 
+    #if driver_pars["UV_field"] == "StellarFluxes" and driver_pars["compute_stellar_fluxes"] == 1 and N_star > 0: 
         # Broadcast all star particles to all MPI tasks 
-        star_coords_arr = comm.bcast(star_coords_arr, root = 0) 
-        star_mass_arr = comm.bcast(star_mass_arr, root = 0) 
-        star_age_Myr_arr = comm.bcast(star_age_Myr_arr, root = 0) 
+        #star_coords_arr = comm.bcast(star_coords_arr, root = 0) 
+        #star_mass_arr = comm.bcast(star_mass_arr, root = 0) 
+        #star_age_Myr_arr = comm.bcast(star_age_Myr_arr, root = 0) 
 
-        comm.Barrier()
+        #comm.Barrier()
 
         if rank == 0: 
             print("Computing stellar fluxes")
@@ -827,7 +827,7 @@ def main():
 
         ChimesFluxIon_arr, ChimesFluxG0_arr = compute_stellar_fluxes(gas_coords_arr, star_coords_arr, star_mass_arr / solar_mass_cgs, star_age_Myr_arr, driver_pars["stellar_fluxes_fEsc_ion"], driver_pars["stellar_fluxes_fEsc_G0"], rank) 
 
-        comm.Barrier() 
+        #comm.Barrier() 
 
         if rank == 0: 
             print("Finished computing stellar fluxes")
@@ -863,7 +863,7 @@ def main():
 
     final_output_array_thisTask, chimes_cumulative_time = my_driver.run()
     
-    comm.Barrier()
+    #comm.Barrier()
 
     ## Send the final output arrays from each MPI task to the 
     ## root task. A simple comm.gather() will fail if these 
@@ -901,12 +901,12 @@ def main():
 
         for i in range(1, N_task): 
             thisTag = i * 10 
-            comm.Recv([final_output_array_buffer_list[i][0], MPI.DOUBLE], source = i, tag = thisTag) 
+            #comm.Recv([final_output_array_buffer_list[i][0], MPI.DOUBLE], source = i, tag = thisTag) 
     else: 
         thisTag = rank * 10 
-        comm.Send([final_output_array_thisTask_buffer, MPI.DOUBLE], dest = 0, tag = thisTag) 
+        #comm.Send([final_output_array_thisTask_buffer, MPI.DOUBLE], dest = 0, tag = thisTag) 
 
-    comm.Barrier() 
+    #comm.Barrier() 
 
     if rank == 0: 
         ## Rank 0 now needs to go through the 
@@ -924,7 +924,7 @@ def main():
                 
     ## Gather the elapsed time spent 
     ## by each task. 
-    chimes_total_time = comm.gather(chimes_cumulative_time, root = 0) 
+    #chimes_total_time = comm.gather(chimes_cumulative_time, root = 0) 
 
     if driver_pars["UV_field"] == "StellarFluxes" and driver_pars["compute_stellar_fluxes"] == 1: 
         # Collect stellar fluxes on the root node 
@@ -935,15 +935,15 @@ def main():
                 ion_recv_buffer.append(np.empty((N_parts[i], 8), dtype = np.float32)) 
                 G0_recv_buffer.append(np.empty((N_parts[i], 8), dtype = np.float32)) 
 
-        if rank != 0: 
-            comm.send(ChimesFluxIon_arr, dest = 0, tag = 0) 
-            comm.send(ChimesFluxG0_arr, dest = 0, tag = 1) 
-        else: 
-            for i in range(1, N_task): 
-                ion_recv_buffer[i - 1] = comm.recv(source = i, tag = 0) 
-                G0_recv_buffer[i - 1] = comm.recv(source = i, tag = 1) 
+       # if rank != 0: 
+            #comm.send(ChimesFluxIon_arr, dest = 0, tag = 0) 
+            #comm.send(ChimesFluxG0_arr, dest = 0, tag = 1) 
+        #else: 
+            #for i in range(1, N_task): 
+                #ion_recv_buffer[i - 1] = comm.recv(source = i, tag = 0) 
+                #G0_recv_buffer[i - 1] = comm.recv(source = i, tag = 1) 
 
-        comm.Barrier() 
+        #comm.Barrier() 
 
         if rank == 0: 
             ChimesFluxIon_ALL = ChimesFluxIon_arr.copy() 
@@ -955,7 +955,7 @@ def main():
 
     ## Write outputs 
     if rank == 0:
-        print("Total time spent in chemistry solver across all MPI ranks: %.4f seconds" % (sum(chimes_total_time, )))
+        #print("Total time spent in chemistry solver across all MPI ranks: %.4f seconds" % (sum(chimes_total_time, )))
         sys.stdout.flush()
         
         if driver_pars["IO_mode"] == "snapshot": 

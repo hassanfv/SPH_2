@@ -2,8 +2,8 @@ import numpy as np
 
 ####### Parameters that control the behaviour of chimes-driver 
 driver_parameters = {
-    "chimes_library_path" : "/home/ubuntu/chimes/libchimes.so", 
-    "chimes_data_path" : "/home/ubuntu/chimes-data", 
+    "chimes_library_path" : "/home/pc/CHIMES/chimes/libchimes.so", 
+    "chimes_data_path" : "/home/pc/CHIMES/chimes-data", 
     "EqAbundanceTable_filename": None, 
     "IO_mode" : "grid",                 # Options: grid, snapshot 
     "driver_mode" : "noneq_evolution",  # Options: eqm_state, eqm_table, cooling_rates, noneq_evolution 

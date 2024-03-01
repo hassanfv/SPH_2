@@ -2,12 +2,10 @@
 import numpy as np
 import pandas as pd
 import pickle
-import readchar
 import os
 import time
 import h5py
 from mpi4py import MPI
-import subprocess
 
 
 gamma = 5./3.
@@ -42,7 +40,7 @@ def mainFunc(nbeg, nend):
 
     lst = inLists[i]
 
-    OutFile = './TempFiles/' + 'grid_' + str(i) + '.hdf5'
+    OutFile = 'grid_' + str(i) + '.hdf5'
 
     L_max = 3.086e23
     Lsh = 10**lst[3] / 10**lst[1]
@@ -63,7 +61,7 @@ def mainFunc(nbeg, nend):
     updated_content = update_parameters(original_content, user_input)
 
     # Write the updated content to a new file
-    updated_file_path = './TempFiles/' + 'grid_' + str(i) + '.param'
+    updated_file_path = 'grid_' + str(i) + '.param'
     with open(updated_file_path, 'w') as file:
         file.writelines(updated_content)
 
@@ -88,14 +86,17 @@ def mainFunc(nbeg, nend):
       muRes += [mu]
 
     nxIDz = [1,   2,     7,     8,      9,     10,    58,     59,      60,    19,   23,  28,    73,    111,    44,    45]
-    IDz = ['HI', 'HII', 'CI', 'CII', 'CIII', 'CIV', 'SiII', 'SiIII', 'SiIV', 'NV', 'OI' 'OVI', 'SII', 'FeII', 'MgI', 'MgII']
+    IDz = ['HI', 'HII', 'CI', 'CII', 'CIII', 'CIV', 'SiII', 'SiIII', 'SiIV', 'NV', 'OI', 'OVI', 'SII', 'FeII', 'MgI', 'MgII']
     N_IDz = len(IDz)
     
     for j in range(N_IDz):
       for k in range(N_time):
         AbundEvol = AbundEvolution[0, 0, 0, nxIDz[j], k] # order ---> [T, nH, r, NH, Elm, time]
-        if AbundEvol < 1e-30:
-          AbundEvol = 0.0
+        AbundEvol = np.log10(AbundEvol+1e-30)
+        if AbundEvol < -30.0:
+          AbundEvol = -30.0
+        
+        AbundEvol = np.round(AbundEvol, 3)
         AbRes.append(AbundEvol)
 
     Tres += TEvol
@@ -143,7 +144,7 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 nCPUs = comm.Get_size()
 
-N = 20#len(inLists)
+N = len(inLists)
 
 #------- used in MPI --------
 count = N // nCPUs
@@ -179,20 +180,35 @@ if rank == 0:
 else:
 	comm.send(local_res, dest = 0)
 
-Xres1 = comm.bcast(Xres1, root = 0) # Tres
-Xres2 = comm.bcast(Xres2, root = 0) # uRes
-Xres3 = comm.bcast(Xres3, root = 0) # muRes
-Xres4 = comm.bcast(Xres4, root = 0) # AbRes
+#Xres1 = comm.bcast(Xres1, root = 0) # Tres
+#Xres2 = comm.bcast(Xres2, root = 0) # uRes
+#Xres3 = comm.bcast(Xres3, root = 0) # muRes
+#Xres4 = comm.bcast(Xres4, root = 0) # AbRes
 #----------------------------
 
 if rank == 0:
-  print()
-  print(Xres4)
   
-  # WRITE as binary file so that we can read it in C++!!!!
+  with open('z-TRes.pkl', 'wb') as f:
+    pickle.dump(Xres1, f)
+  
+  Xres1 = None
+  
+  with open('z-uRes.pkl', 'wb') as f:
+    pickle.dump(Xres2, f)
 
-#if rank == 0:
-#  print(f'Elapsed time = ', time.time() - T1)
+  Xres2 = None
+  
+  with open('z-muRes.pkl', 'wb') as f:
+    pickle.dump(Xres3, f)
+  
+  Xres3 = None
+  
+  with open('z-AbRes.pkl', 'wb') as f:
+    pickle.dump(Xres4, f)
+  
+  Xres4 = None
+
+  print(f'Elapsed time = ', time.time() - T1)
 
 
 

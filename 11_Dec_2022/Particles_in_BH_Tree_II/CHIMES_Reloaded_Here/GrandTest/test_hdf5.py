@@ -92,7 +92,7 @@ tiMe = '01' # yrs
 #f = h5py.File('./' + dist + 'kpc/' + 'grid_noneq_evolution_' + dist + 'kpc_' + tiMe + 'yrs' + '.hdf5', 'r')
 
 #f = h5py.File('grid_noneq_evolution_0.1kpc.hdf5', 'r')
-f = h5py.File('grid_501499.hdf5', 'r')
+f = h5py.File('./test.hdf5', 'r')
 
 # Print the attributes of HDF5 objects
 for name, obj in f.items():
@@ -103,6 +103,18 @@ for name, obj in f.items():
 TemperatureEvolution = f['TemperatureEvolution'][:]
 print(TemperatureEvolution.shape)
 print('T Evolution original = ', TemperatureEvolution)
+print()
+
+AbundanceEvolution = f['AbundanceEvolution'][:]
+print(AbundanceEvolution.shape)
+#print('AbundanceEvolution = ', AbundanceEvolution)
+
+for i in range(7, 14):
+
+  Abund = AbundanceEvolution[0, 0, 0, i, :]
+  Abund = [np.log10(_+1e-30) for _ in Abund]
+  print('Abund = ', Abund)
+  print()
 
 s()
 
