@@ -8,7 +8,7 @@
 #include <chrono>
 #include <random>
 #include <tuple>
-#include "hfvCLibs_v7_hfv_v8_gradRho_v2.h"
+#include "hfvCLibs_v7_hfv_v8_gradRho_v3.h"
 #include "bh_tree_iteration_v2.h"
 #include "ngb_v5.h"
 #include <cstdlib> // This is ONLY used for the "exit(0)" function !!

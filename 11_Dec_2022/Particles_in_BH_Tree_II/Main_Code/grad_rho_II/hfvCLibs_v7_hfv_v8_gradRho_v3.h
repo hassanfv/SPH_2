@@ -1403,14 +1403,14 @@ __device__ float interpolate_5d_hypercube(float nH_p, float u_p, float r_p, floa
   float c15 = pData[15] * (1.0f - dx) + pData[31] * dx;
 
   // Interpolate along the y-axis
-  float c0 = c00 * (1.0f - dy) + c04 * dy;
-  float c1 = c01 * (1.0f - dy) + c05 * dy;
-  float c2 = c02 * (1.0f - dy) + c06 * dy;
-  float c3 = c03 * (1.0f - dy) + c07 * dy;
-  float c4 = c08 * (1.0f - dy) + c12 * dy;
-  float c5 = c09 * (1.0f - dy) + c13 * dy;
-  float c6 = c10 * (1.0f - dy) + c14 * dy;
-  float c7 = c11 * (1.0f - dy) + c15 * dy;
+  float c0 = c00 * (1.0f - dy) + c08 * dy;
+  float c1 = c01 * (1.0f - dy) + c09 * dy;
+  float c2 = c02 * (1.0f - dy) + c10 * dy;
+  float c3 = c03 * (1.0f - dy) + c11 * dy;
+  float c4 = c04 * (1.0f - dy) + c12 * dy;
+  float c5 = c05 * (1.0f - dy) + c13 * dy;
+  float c6 = c06 * (1.0f - dy) + c14 * dy;
+  float c7 = c07 * (1.0f - dy) + c15 * dy;
 
   // Interpolate along the z-axis
   float c = c0 * (1.0f - dz) + c4 * dz;

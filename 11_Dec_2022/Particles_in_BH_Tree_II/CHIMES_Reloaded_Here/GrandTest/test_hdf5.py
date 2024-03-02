@@ -102,8 +102,10 @@ for name, obj in f.items():
     
 TemperatureEvolution = f['TemperatureEvolution'][:]
 print(TemperatureEvolution.shape)
-print('T Evolution original = ', TemperatureEvolution)
+print('T Evolution = ', TemperatureEvolution)
 print()
+
+s()
 
 AbundanceEvolution = f['AbundanceEvolution'][:]
 print(AbundanceEvolution.shape)
