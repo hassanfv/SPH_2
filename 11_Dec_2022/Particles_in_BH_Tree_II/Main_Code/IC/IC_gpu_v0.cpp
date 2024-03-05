@@ -111,13 +111,13 @@ int main()
   const double mu = 0.61f;
   const double sigma = 200.0f * 1000.0f * 100.0f; // cm/s =====> 200 km/s - See eq.1 in Richings et al - 2018
 
-  const float L_box = 1.0f; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const float L_box = 1.08f; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   const float mSPH_high = 10.0f; // Msun !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const int N_high = 2200000; // This is the number of particles for only the high res octant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const int N_high = 5500000; // This is the number of particles for only the high res octant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   const float mSPH_low = 80.0f; // Msun!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const int N_low = 275000; // This is the number of particles for each low-res octant. In total, it will be 7 * N_low for all 7 low-res octants!!!!!!!!!!!!!!!!!!
+  const int N_low = 687500; // This is the number of particles for each low-res octant. In total, it will be 7 * N_low for all 7 low-res octants!!!!!!!!!!!!!!!!!!
 
   const float stp_high = L_box / 2.0f / trunc(pow(N_high, 1.0f/3.0f));
   const float stp_low = L_box / 2.0f / trunc(pow(N_low, 1.0f/3.0f));
@@ -350,7 +350,7 @@ int main()
 
   //====== estimating the multiplier =======
 
-  float dt = 1e-7; //----> used to estimate the multiplier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  float dt = 5e-8; //----> used to estimate the multiplier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   float multiplier = 1.0f;
   float m_sph_outflow = mSPH_high / M_tot_in_Msun * multiplier;  //!!!!!!! divided by M_tot_in_Msun to convert to code unit !!!!!!!!!
@@ -441,7 +441,7 @@ int main()
   //***********************************************
   //************* adding N_blank ******************
   //***********************************************
-  int N_blank = 100000; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  int N_blank = 200000; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   int N_tot = N + N_blank;
   

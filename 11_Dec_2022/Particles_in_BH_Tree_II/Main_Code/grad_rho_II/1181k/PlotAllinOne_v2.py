@@ -5,7 +5,7 @@ import struct
 
 # Is used with outputs with CLOUDY h/cooling implementation (24 Feb 2024).
 
-filename = './Outputs/G-0.030592.bin'
+filename = './Outputs/G-0.015000.bin'
 
 #filename = './Outputs_NoHCooling/G-0.002800.bin'
 
@@ -14,10 +14,10 @@ filename = './Outputs/G-0.030592.bin'
 tCode = np.float64(filename[-12:-4]) / 10.0 #!!!!!!!!!!!!!!!!! Double check if during the file-saving the multiplication by 10 is actually done!!!!!!!!!!
 
 
-unit_velocity_cgs = 3.1338e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_u = 9.82068e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
-unit_rho = 1.54506e-23 # !!!!!!!!!!!!!!!!!!!
-unitTime_in_s = 9.84748e+14 #!!!!!!!!!!!!!!!!!!!!!!!!!
+unit_velocity_cgs = 1.34181e+06 # cm/s #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_u = 1.80046e+12 #!!!!!!!!!!!!!!!!!!!!!!!!
+unit_rho = 2.83261e-24 # !!!!!!!!!!!!!!!!!!!
+unitTime_in_s = 2.29987e+15 #!!!!!!!!!!!!!!!!!!!!!!!!!
 
 t_in_kyrs = tCode * unitTime_in_s / 3600./24./365.25/1000.
 
@@ -84,7 +84,7 @@ if False:
   print()
   s()
 
-nz = np.where((rr < 0.50) & (np.abs(z) < 0.005))[0]
+nz = np.where((rr < 0.27) & (np.abs(z) < 1110.03))[0]
 #nz = np.where(np.abs(z) < 0.03)[0]
 
 x = x[nz]
@@ -262,7 +262,7 @@ scatter = axs[1, 1].scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.2)
 
 fig.colorbar(scatter, ax=axs[1, 1], label='log10(Temperature)')
 
-xy = 0.55
+xy = 0.31
 
 axs[1, 1].set_title(f'current time in kyears = {round(t_in_kyrs, 2)}')
 

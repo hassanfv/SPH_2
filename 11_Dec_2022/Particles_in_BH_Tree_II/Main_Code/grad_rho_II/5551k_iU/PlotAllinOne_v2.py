@@ -5,7 +5,7 @@ import struct
 
 # Is used with outputs with CLOUDY h/cooling implementation (24 Feb 2024).
 
-filename = './Outputs/G-0.030592.bin'
+filename = './Outputs/G-0.015000.bin'
 
 #filename = './Outputs_NoHCooling/G-0.002800.bin'
 
@@ -84,7 +84,7 @@ if False:
   print()
   s()
 
-nz = np.where((rr < 0.50) & (np.abs(z) < 0.005))[0]
+nz = np.where((rr < 0.27) & (np.abs(z) < 1110.03))[0]
 #nz = np.where(np.abs(z) < 0.03)[0]
 
 x = x[nz]
@@ -262,7 +262,7 @@ scatter = axs[1, 1].scatter(x, y, c=np.log10(nH_cgs), cmap='rainbow', s=0.2)
 
 fig.colorbar(scatter, ax=axs[1, 1], label='log10(Temperature)')
 
-xy = 0.55
+xy = 0.31
 
 axs[1, 1].set_title(f'current time in kyears = {round(t_in_kyrs, 2)}')
 

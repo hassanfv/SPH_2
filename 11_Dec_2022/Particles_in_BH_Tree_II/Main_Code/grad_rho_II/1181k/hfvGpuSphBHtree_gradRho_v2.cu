@@ -8,7 +8,7 @@
 #include <chrono>
 #include <random>
 #include <tuple>
-#include "hfvCLibs_v7_hfv_v8_gradRho_v4.h"
+#include "hfvCLibs_v7_hfv_v8_gradRho_v3.h"
 #include "bh_tree_iteration_v2.h"
 #include "ngb_v5.h"
 #include <cstdlib> // This is ONLY used for the "exit(0)" function !!
@@ -42,7 +42,7 @@ int main()
   float mH = 1.673534e-24;
   float gamma = 5.0f/3.0f;
 
-  std::ifstream file("HCoolChimes03March2024.bin", std::ios::binary);
+  std::ifstream file("HCoolChimes.bin", std::ios::binary);
   if (!file.is_open())
   {
     std::cerr << "Failed to open HCoolChimes.bin file" << std::endl;
@@ -965,8 +965,6 @@ int main()
   cudaMalloc((void **)&d_leftover_mass, sizeof(float));
   cudaMemcpy(d_leftover_mass, &leftover_mass, sizeof(float), cudaMemcpyHostToDevice);
 
-  float RR0 = maxRange - 0.02; // particles at this radius will not be moved.... my boundary condition to avoid very low density and nspli problem!!!
-
   // **************************************************************
   // *********************** MAIN LOOP ****************************
   // **************************************************************
@@ -997,10 +995,9 @@ int main()
     cudaDeviceSynchronize();
 
     //****************** position evolution (BH fixed at [0, 0, 0]) *******************
-    
-    //r_evolve<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_vx, d_vy, d_vz, dt, ndx_BH, N);!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    r_evolve_fixPos_atRadiusRR0<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_vx, d_vy, d_vz, dt, ndx_BH, N, RR0); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    cudaDeviceSynchronize(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    r_evolve<<<gridSize, blockSize>>>(d_Typ, d_x, d_y, d_z, d_vx, d_vy, d_vz, dt, ndx_BH, N);
+    cudaDeviceSynchronize();
     
     
     //------- For ngb_new -----

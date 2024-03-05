@@ -1,4 +1,4 @@
-%%writefile test.cu
+//%%writefile test.cu
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -737,7 +737,7 @@ int main()
   cout << "nBodies = " << nBodies << endl;
   
   numParticles = nBodies; // nBodies is the number of patticles with Typ != -1.
-  int eXtraSpace = 10000000;
+  int eXtraSpace = 30000000;
   numNodes = 2 * numParticles + eXtraSpace;
 
   blockSize_bh = blockSize;

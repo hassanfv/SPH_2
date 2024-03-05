@@ -5,7 +5,7 @@ import pickle
 
 logT = np.arange(2, 11.1, 0.1)
 lognH = np.arange(-4, 5.1, 0.1)
-rkpc = np.arange(0.02, 0.33, 0.1)
+rkpc = np.arange(0.02, 0.73, 0.1)
 logNHtot = np.arange(16, 23.1, 0.2)
 
 N_T = len(logT)
